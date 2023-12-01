@@ -97,7 +97,7 @@ function App() {
 
         <main style={{ display: "flex", flexGrow: "1" }}>
           <Header />
-          <Router>
+          <Router basename={"/Powertek-GUI"}>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<h1>About</h1>} />
