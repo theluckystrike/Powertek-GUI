@@ -28,74 +28,179 @@ export default function HomePage(props) {
     { name: "Apparent Power", value: "65.60kVAh" },
   ];
 
+  const colors = ["success", "warning", "error"];
+
   return (
     <Box sx={{ p: 4, backgroundColor: "rgb(249, 249, 249, 0.7)", height: "100%" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={3}>
-              <Item color="#fff" p="4" height="100%">
+            <Grid item xs={6}>
+              <Item
+                color="#fff"
+                p="4"
+                sx={{ height: "calc(100% - 16px)", display: "flex", flexDirection: "column", flexGrow: 1 }}
+              >
                 <Typography variant="h5" fontWeight="600">
                   INLET
                 </Typography>
                 <Divider sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginTop: "10px", marginBottom: "10px" }} />
-                <div style={{ display: "flex", flexDirection: "column", padding: "4" }}>
-                  {stats.map((stat) => (
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                      <Typography
-                        fontSize="1rem"
-                        fontWeight="600"
-                        component="div"
-                        sx={{ width: "50%", textAlign: "end" }}
-                      >
-                        {stat.name} :
-                      </Typography>
-                      <Typography
-                        fontSize="1rem"
-                        fontWeight="400"
-                        component="div"
-                        sx={{ width: "50%", textAlign: "center" }}
-                      >
-                        {stat.value}
-                      </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    alignContent: "center",
+                    justifyContent: "center",
+                    margin: "auto",
+                    flexGrow: 1,
+                  }}
+                >
+                  <div style={{ display: "flex", flexDirection: "row", flexGrow: 1 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignContent: "center",
+                        justifyContent: "center",
+                        flexGrow: 1,
+                      }}
+                    >
+                      <Grid container spacing={0} sx={{ display: "flex", alignItems: "start" }}>
+                        {["L1", "L2", "L3", "Neutral"].map((x, i) => (
+                          <Grid item xs={6} sx={{ margin: "auto" }}>
+                            <Item
+                              color="#fff"
+                              sx={{
+                                boxShadow: "none",
+                              }}
+                            >
+                              {/* <div style={{ display: "flex", flexDirection: "row" }}> */}
+                              <Typography variant="body1" component="div" fontWeight="600" sx={{ textAlign: "center" }}>
+                                {x} : {i + 1}/32 A
+                              </Typography>
+
+                              <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                                <div>0</div> {/* Label for min value */}
+                                <div
+                                  style={{
+                                    background:
+                                      "linear-gradient(90deg, rgba(15,218,30,1) 0%, rgba(223,226,16,1) 65%, rgba(255,0,0,1) 100%)",
+                                    height: "10px",
+                                    width: `100%`,
+                                    borderRadius: 50,
+                                    position: "relative", // Needed to position the pointer and value label correctly
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      left: `${((i + 1) / 100) * 100 * 10}%`,
+                                      top: "-5px",
+                                      width: "2px",
+                                      height: "20px",
+                                      background: "#000",
+                                    }}
+                                  ></div>
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      left: `${((i + 1) / 100) * 100 * 10 + 1}%`,
+                                      top: "-4px",
+                                      color: "#000",
+                                      fontSize: "12px",
+                                      fontWeight: "600",
+                                    }}
+                                  >{`${i + 1}`}</div>
+                                </div>
+                                <div>16</div>
+                              </div>
+                            </Item>
+                          </Grid>
+                        ))}
+                      </Grid>
+                      <Divider sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginTop: "10px", marginBottom: "10px" }} />
+                      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
+                        <Typography
+                          fontSize="2rem"
+                          fontWeight="700"
+                          component="div"
+                          sx={{ width: "50%", textAlign: "center" }}
+                        >
+                          4.5 W
+                        </Typography>
+                        <Divider
+                          orientation="vertical"
+                          sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginTop: "10px", marginBottom: "10px" }}
+                          flexItem
+                        />
+                        <Typography
+                          fontSize="2rem"
+                          fontWeight="700"
+                          component="div"
+                          sx={{ width: "50%", textAlign: "center", borderRight: "10px" }}
+                        >
+                          12.4 VA
+                        </Typography>
+                      </div>
                     </div>
-                  ))}
-                </div>
-                <Divider sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginTop: "10px", marginBottom: "10px" }} />
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
-                  <Typography
-                    fontSize="2rem"
-                    fontWeight="700"
-                    component="div"
-                    sx={{ width: "50%", textAlign: "center" }}
-                  >
-                    4.5 W
-                  </Typography>
-                  <Divider
-                    orientation="vertical"
-                    sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginTop: "10px", marginBottom: "10px" }}
-                    flexItem
-                  />
-                  <Typography
-                    fontSize="2rem"
-                    fontWeight="700"
-                    component="div"
-                    sx={{ width: "50%", textAlign: "center", borderRight: "10px" }}
-                  >
-                    12.4 VA
-                  </Typography>
+                    <div>
+                      <Divider
+                        orientation="vertical"
+                        sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginRight: "10px", marginLeft: "10px", height: "-1%" }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "50%",
+                        justifyContent: "center",
+                        alignContent: "center",
+                        flexGrow: 1,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          padding: "4",
+                        }}
+                      >
+                        {stats.map((stat) => (
+                          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                            <Typography
+                              fontSize="1rem"
+                              fontWeight="600"
+                              component="div"
+                              sx={{ width: "50%", textAlign: "end" }}
+                            >
+                              {stat.name} :
+                            </Typography>
+                            <Typography
+                              fontSize="1rem"
+                              fontWeight="400"
+                              component="div"
+                              sx={{ width: "50%", textAlign: "center" }}
+                            >
+                              {stat.value}
+                            </Typography>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </Item>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={6}>
               <Item color="#fff" p="4" sx={{ height: "calc(100% - 16px)" }}>
                 <Typography variant="h5" fontWeight="600">
                   OVERCURRENT CIRCUIT BREAKER
                 </Typography>
                 <Divider sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginTop: "10px", marginBottom: "10px" }} />
                 <Grid container spacing={2}>
-                  {[...Array(6)].map((x, i) => (
-                    <Grid item xs={4}>
+                  {[...Array(12)].map((x, i) => (
+                    <Grid item xs={3}>
                       <Item color="#fff" sx={{ boxShadow: "none" }}>
                         {/* <div style={{ display: "flex", flexDirection: "row" }}> */}
                         <Typography variant="body1" component="div" fontWeight="600" sx={{ textAlign: "center" }}>
@@ -106,11 +211,12 @@ export default function HomePage(props) {
                         </Typography>
                         {/* </div> */}
                         {/* <Divider sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginTop: "10px", marginBottom: "10px" }} /> */}
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                           <div>0</div> {/* Label for min value */}
                           <div
                             style={{
-                              background: "#e0e0de",
+                              background:
+                                "linear-gradient(90deg, rgba(15,218,30,1) 0%, rgba(223,226,16,1) 65%, rgba(255,0,0,1) 100%)",
                               height: "10px",
                               width: `100%`,
                               borderRadius: 50,
@@ -119,17 +225,8 @@ export default function HomePage(props) {
                           >
                             <div
                               style={{
-                                background: `linear-gradient(90deg, rgba(15,218,30,1) 0%, rgba(223,226,16,1) 65%, rgba(255,0,0,1) 100%)`,
-                                height: "10px",
-                                width: `${((i + 1) / 100) * 100 * 10}%`,
-                                borderRadius: "inherit",
-                                backgroundAttachment: "fixed",
-                              }}
-                            ></div>
-                            <div
-                              style={{
                                 position: "absolute",
-                                left: `${((i + 1) / 100) * 100 * 10}%`,
+                                left: `${(i + 1) * (100 / 15)}%`,
                                 top: "-5px",
                                 width: "2px",
                                 height: "20px",
@@ -139,7 +236,7 @@ export default function HomePage(props) {
                             <div
                               style={{
                                 position: "absolute",
-                                left: `${((i + 1) / 100) * 100 * 10 + 1}%`,
+                                left: `${(i + 1) * (100 / 15) + 1}%`,
                                 top: "-4px",
                                 color: "#000",
                                 fontSize: "12px",
@@ -159,7 +256,7 @@ export default function HomePage(props) {
         </Grid>
         <Grid item xs={12}>
           <Grid item xs={12}>
-            <Item color="#fff" p="4" height="100%">
+            <Item color="#fff" p="4" sx={{ height: "calc(100% - 16px)" }}>
               <Typography variant="h5" fontWeight="600">
                 OUTLET STATUS
               </Typography>
@@ -170,7 +267,7 @@ export default function HomePage(props) {
                     <Chip
                       sx={{ "& .MuiChip-label": { fontWeight: 600 } }}
                       icon={<OfflineBoltIcon />}
-                      color="success"
+                      color={colors[Math.floor(Math.random() * colors.length)]}
                       label={`Outlet ${i + 1} (0.00A)`}
                       clickable={true}
                     />

@@ -5,7 +5,6 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import styled from "@emotion/styled";
-import Sidebar from "./Sidebar";
 import Box from "@mui/material/Box";
 import { AccountCircle } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
