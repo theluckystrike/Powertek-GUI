@@ -4,13 +4,13 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import { AccountCircle } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LanguageIcon from "@mui/icons-material/Language";
-
-const drawerWidth = 15;
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { useTheme } from "@mui/material";
 
 const pageStyles = {
   appBar: {
@@ -29,21 +29,26 @@ const pageStyles = {
   },
 };
 
-export default function Header() {
+export default function Header(props) {
+  const theme = useTheme();
+  console.log(props);
   return (
     <AppBar position="sticky" sx={pageStyles.appBar}>
       <Toolbar sx={{ flexGrow: 1 }}>
         <Typography sx={{ marginRight: "30px" }} variant="h6">{`Powertek GUI Demo`}</Typography>
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <IconButton size="large" edge="end" aria-label="account of current user" aria-haspopup="true" color="inherit">
+          <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
             <LanguageIcon />
           </IconButton>
-          <IconButton size="large" edge="end" aria-label="account of current user" aria-haspopup="true" color="inherit">
+          <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
             <LogoutIcon />
           </IconButton>
-          <IconButton size="large" edge="end" aria-label="account of current user" aria-haspopup="true" color="inherit">
+          <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
             <AccountCircle />
+          </IconButton>
+          <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.toggleTheme}>
+            {theme.palette.mode == "light" ? <LightModeIcon /> : <DarkModeIcon />}
           </IconButton>
         </Box>
       </Toolbar>

@@ -37,7 +37,7 @@ export const lightTheme = createTheme({
     //   paper: "#ffffff",
     // },
     // text: {
-    //   primary: "#2e3c47",
+    //   primary: "#ff0000",
     //   secondary: "#606f7b",
     // },
   },
@@ -55,9 +55,9 @@ export const darkTheme = createTheme({
     //   default: "#121212",
     //   paper: "#1e1e1e",
     // },
-    // text: {
-    //   primary: "#e0e0e0",
-    //   secondary: "#a5a5a5",
-    // },
+    text: {
+      primary: "#e0e0e0",
+      secondary: "#a5a5a5",
+    },
   },
 });
