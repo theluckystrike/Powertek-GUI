@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, Divider, Typography, useTheme } from "@mui/material";
+import { Button, Container, Typography, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -28,8 +28,9 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import WarningIcon from "@mui/icons-material/Warning";
 import GppBadIcon from "@mui/icons-material/GppBad";
 
-import { NamedContainer } from "../../components/common/NamedContainer";
+import NamedContainer from "../../components/common/NamedContainer";
 import InletStats from "../../components/homepage/InletStats";
+import Divider from "../../components/common/styled/Divider";
 
 function ThresholdDialog({ open, onClose, onSave, defaultValues }) {
   const [values, setValues] = useState(defaultValues);
@@ -96,7 +97,7 @@ function ThresholdDialog({ open, onClose, onSave, defaultValues }) {
   );
 }
 
-export default function Inlet(props) {
+function Inlet(props) {
   const theme = useTheme();
   const [settingsEdit, setsettingsEdit] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -106,15 +107,6 @@ export default function Inlet(props) {
     lowerCritical: "",
     higherCritical: "",
   });
-
-  const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-  }));
-
-  const DividerStyled = styled(Divider)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.87)" : "rgba(0, 0, 0, 0.87)",
-  }));
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     padding: "4px", // Set the padding to a low value, adjust as needed
@@ -311,39 +303,42 @@ export default function Inlet(props) {
               </NamedContainer>
             </Grid>
             <Grid item lg={6} md={12}>
-              <Item color="#fff" p="4" sx={{ height: "calc(100% - 16px)", display: "flex", flexDirection: "column" }}>
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                  <Typography variant="h5" fontWeight="600">
-                    SETTINGS
-                  </Typography>
-                  <ToggleButton
-                    value="settingsEdit"
-                    selected={settingsEdit}
-                    onChange={() => {
-                      setsettingsEdit(!settingsEdit);
-                    }}
-                    sx={{
-                      padding: "0px",
-                      paddingRight: "5px",
-                      paddingLeft: "5px",
-                      borderRadius: "5px",
-                      textTransform: "none",
-                      border: "1px solid rgba(0, 0, 0, 0.87)",
-                    }}
-                    color="primary"
-                  >
-                    <Typography
-                      variant=""
-                      fontWeight="400"
-                      sx={{ marginRight: "5px" }}
-                      //   color={settingsEdit ? "red" : "blue"}
-                    >
-                      Edit Settings
+              <NamedContainer
+                overridetitle
+                title={
+                  <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                    <Typography variant="h5" fontWeight="600">
+                      SETTINGS
                     </Typography>
-                    {settingsEdit ? <FaLockOpen color="red" /> : <FaLock color="#FFD700" />}
-                  </ToggleButton>
-                </div>
-                <DividerStyled sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginTop: "10px", marginBottom: "10px" }} />
+                    <ToggleButton
+                      value="settingsEdit"
+                      selected={settingsEdit}
+                      onChange={() => {
+                        setsettingsEdit(!settingsEdit);
+                      }}
+                      sx={{
+                        padding: "0px",
+                        paddingRight: "5px",
+                        paddingLeft: "5px",
+                        borderRadius: "5px",
+                        textTransform: "none",
+                        border: "1px solid rgba(0, 0, 0, 0.87)",
+                      }}
+                      color="primary"
+                    >
+                      <Typography
+                        variant=""
+                        fontWeight="400"
+                        sx={{ marginRight: "5px" }}
+                        //   color={settingsEdit ? "red" : "blue"}
+                      >
+                        Edit Settings
+                      </Typography>
+                      {settingsEdit ? <FaLockOpen color="red" /> : <FaLock color="#FFD700" />}
+                    </ToggleButton>
+                  </div>
+                }
+              >
                 <div
                   style={{
                     display: "flex",
@@ -357,8 +352,6 @@ export default function Inlet(props) {
                       display: "flex",
                       flexDirection: "row",
                       justifyContent: "center",
-                      borderBottom: "1px solid #D3D3D3",
-
                       padding: "5px",
                     }}
                   >
@@ -379,13 +372,12 @@ export default function Inlet(props) {
                       L1
                     </Typography>
                   </div>
+                  <Divider />
                   <div
                     style={{
                       display: "flex",
                       flexDirection: "row",
                       justifyContent: "center",
-                      borderBottom: "1px solid #D3D3D3",
-                      //   borderTop: "none",
                       padding: "5px",
                     }}
                   >
@@ -404,13 +396,12 @@ export default function Inlet(props) {
                       style={{ width: "50%", textAlign: "center" }}
                     ></Typography>
                   </div>
+                  <Divider />
                   <div
                     style={{
                       display: "flex",
                       flexDirection: "row",
                       justifyContent: "center",
-                      borderBottom: "1px solid #D3D3D3",
-                      //   borderTop: "none",
                       padding: "5px",
                     }}
                   >
@@ -431,13 +422,12 @@ export default function Inlet(props) {
                       </Button>
                     </div>
                   </div>
+                  <Divider />
                   <div
                     style={{
                       display: "flex",
                       flexDirection: "row",
                       justifyContent: "center",
-                      //   borderBottom: "1px solid #D3D3D3",
-
                       padding: "5px",
                     }}
                   >
@@ -459,18 +449,14 @@ export default function Inlet(props) {
                     </div>
                   </div>
                 </div>
-              </Item>
+              </NamedContainer>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Item color="#fff" p="4" height="100%">
-                <Typography variant="h5" fontWeight="600">
-                  CONFIGURATION
-                </Typography>
-                <DividerStyled sx={{ bgcolor: "rgba(0, 0, 0, 0.87)", marginTop: "10px" }} />
+              <NamedContainer title="CONFIGURATION">
                 <TableContainer>
                   <Table size="small">
                     <TableHead>
@@ -524,7 +510,7 @@ export default function Inlet(props) {
                     </TableBody>
                   </Table>
                 </TableContainer>
-              </Item>
+              </NamedContainer>
             </Grid>
           </Grid>
         </Grid>
@@ -538,3 +524,5 @@ export default function Inlet(props) {
     </Box>
   );
 }
+
+export default Inlet;

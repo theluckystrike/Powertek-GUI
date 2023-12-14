@@ -7,10 +7,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { AccountCircle } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
 import LanguageIcon from "@mui/icons-material/Language";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { useTheme } from "@mui/material";
+import { Tooltip, useTheme } from "@mui/material";
 
 const pageStyles = {
   appBar: {
@@ -41,15 +42,21 @@ export default function Header(props) {
           <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
             <LanguageIcon />
           </IconButton>
-          <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
-            <LogoutIcon />
-          </IconButton>
-          <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.toggleTheme}>
-            {theme.palette.mode == "light" ? <LightModeIcon /> : <DarkModeIcon />}
-          </IconButton>
+          <Tooltip title={props.isAuthenticated ? "Logout" : "Login"} placement="bottom">
+            <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.logout}>
+              {props.isAuthenticated ? <LogoutIcon /> : <LoginIcon />}
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Account" placement="bottom">
+            <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
+              <AccountCircle />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Toggle Theme" placement="bottom">
+            <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.toggleTheme}>
+              {theme.palette.mode == "light" ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+          </Tooltip>
         </Box>
       </Toolbar>
     </AppBar>

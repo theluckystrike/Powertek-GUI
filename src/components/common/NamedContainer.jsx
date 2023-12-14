@@ -33,4 +33,4 @@ function NamedContainer(props) {
   );
 }
 
-export { NamedContainer };
+export default NamedContainer;

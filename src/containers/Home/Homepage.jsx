@@ -6,12 +6,11 @@ import Chip from "@mui/material/Chip";
 
 import OfflineBoltIcon from "@mui/icons-material/OfflineBolt";
 
-import { NamedContainer } from "../../components/common/NamedContainer";
-
+import NamedContainer from "../../components/common/NamedContainer";
 import InletStats from "../../components/homepage/InletStats";
 import CircuitBreakerStatus from "../../components/homepage/CircuitBreakerStatus";
 
-export default function HomePage(props) {
+function HomePage(props) {
   const [stats, setStats] = useState([
     { name: "Power Factor", value: "0.45" },
     { name: "Frequency", value: "50Hz" },
@@ -29,6 +28,11 @@ export default function HomePage(props) {
   });
 
   const [circuitBreakerMap, setCircuitBreakerMap] = useState({});
+  const [outletStatus, setOutletStatus] = useState([]);
+
+  // Configs
+  const [outletWarningThreshold, setOutletWarningThreshold] = useState(5);
+  const [outletErrorThreshold, setOutletErrorThreshold] = useState(10);
   const [circuitBreakerNumber, setCircuitBreakerNumber] = useState(12);
 
   useEffect(() => {
@@ -37,6 +41,25 @@ export default function HomePage(props) {
       temp[`L${i}`] = Math.floor(Math.random() * 16);
     }
     setCircuitBreakerMap(temp);
+
+    let outletStatusTemp = [];
+    for (let i = 1; i <= 35; i++) {
+      let temp2 = {};
+      temp2[`Label`] = `Outlet ${i}`;
+      temp2[`Current`] = (Math.random() * 16).toFixed(2);
+
+      if (temp2[`Current`] > outletWarningThreshold) {
+        temp2[`Status`] = "warning";
+      } else if (temp2[`Current`] > outletErrorThreshold) {
+        temp2[`Status`] = "error";
+      } else {
+        temp2[`Status`] = "success";
+      }
+
+      outletStatusTemp.push(temp2);
+    }
+    setOutletStatus(outletStatusTemp);
+
     const interval = setInterval(() => {
       setCurrentMap({
         L1: Math.floor(Math.random() * 16),
@@ -44,17 +67,34 @@ export default function HomePage(props) {
         L3: Math.floor(Math.random() * 16),
         Neutral: Math.floor(Math.random() * 16),
       });
-
       let temp = {};
       for (let i = 1; i <= circuitBreakerNumber; i++) {
         temp[`L${i}`] = Math.floor(Math.random() * 16);
       }
       setCircuitBreakerMap(temp);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [circuitBreakerNumber]);
 
-  const colors = ["success", "warning", "error"];
+      let outletStatusTemp = [];
+
+      for (let i = 1; i <= 35; i++) {
+        let temp2 = {};
+        temp2[`Label`] = `Outlet ${i}`;
+        temp2[`Current`] = (Math.random() * 16).toFixed(2);
+
+        if (temp2[`Current`] > outletErrorThreshold) {
+          temp2[`Status`] = "error";
+        } else if (temp2[`Current`] > outletWarningThreshold) {
+          temp2[`Status`] = "warning";
+        } else {
+          temp2[`Status`] = "success";
+        }
+        outletStatusTemp.push(temp2);
+      }
+
+      setOutletStatus(outletStatusTemp);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [circuitBreakerNumber, outletErrorThreshold, outletWarningThreshold]);
 
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
@@ -81,40 +121,38 @@ export default function HomePage(props) {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Grid item xs={12}>
-            <NamedContainer title="OUTLET STATUS">
-              <Grid
-                container
-                spacing={1}
-                sx={{ display: "flex", alignContent: "center", justifyContent: "space-between", alignItems: "center" }}
-              >
-                {[...Array(35)].map((x, i) => (
-                  <Grid
-                    item
-                    lg={1.5}
-                    sx={{
-                      display: "flex",
-                      alignContent: "center",
-                      justifyContent: "space-evenly",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Chip
-                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, width: "100%" }}
-                      icon={<OfflineBoltIcon />}
-                      color={colors[Math.floor(Math.random() * colors.length)]}
-                      label={`Outlet ${i + 1} (0.00A)`}
-                      clickable={true}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-            </NamedContainer>
-          </Grid>
+          <NamedContainer title="OUTLET STATUS">
+            <Grid
+              container
+              spacing={1}
+              sx={{ display: "flex", alignContent: "center", justifyContent: "space-between", alignItems: "center" }}
+            >
+              {outletStatus.map((outlet) => (
+                <Grid
+                  item
+                  lg={1.5}
+                  sx={{
+                    display: "flex",
+                    alignContent: "center",
+                    justifyContent: "space-evenly",
+                    alignItems: "center",
+                  }}
+                >
+                  <Chip
+                    sx={{ "& .MuiChip-label": { fontWeight: 600 }, width: "200px" }}
+                    icon={<OfflineBoltIcon />}
+                    color={outlet[`Status`]}
+                    label={`${outlet["Label"]} (${outlet["Current"]} A)`}
+                    clickable={true}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </NamedContainer>
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={4}>
+            <Grid item lg={4} md={12} sx={{ width: "100%" }}>
               <NamedContainer
                 overridetitle
                 title={
@@ -131,7 +169,7 @@ export default function HomePage(props) {
                 }
               ></NamedContainer>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item lg={8} md={12} sx={{ width: "100%" }}>
               <NamedContainer title="PlaceHolder"></NamedContainer>
             </Grid>
           </Grid>
@@ -140,3 +178,5 @@ export default function HomePage(props) {
     </Box>
   );
 }
+
+export default HomePage;
