@@ -72,16 +72,14 @@ function App() {
             <Route path="/outlet" element={<PrivateRoute Component={<OutletPage />} />} />
             <Route
               path="/breaker-overcurrent-protection"
-              element={
-                <PrivateRoute
-                  Component={
-                    <>
-                      <h1>Not Implemented...</h1>
-                    </>
-                  }
-                />
-              }
+              element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />}
             />
+            <Route path="/outlet-grouping" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/environment-sensor" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/user-settings" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/device-settings" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/maintenance" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/powertek-analytics" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
             <Route path="/about" element={<h1>About</h1>} />
           </Route>
         </Routes>
