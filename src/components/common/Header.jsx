@@ -32,7 +32,6 @@ const pageStyles = {
 
 export default function Header(props) {
   const theme = useTheme();
-  console.log(props);
   return (
     <AppBar position="sticky" sx={pageStyles.appBar}>
       <Toolbar sx={{ flexGrow: 1 }}>

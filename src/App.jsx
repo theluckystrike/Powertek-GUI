@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 
 import PrivateRoute from "./components/common/PrivateRoute";
 import { ThemeProvider } from "@mui/material/styles";
+import ConfigContext from "./components/common/ConfigContext";
 import Box from "@mui/material/Box";
 
 import { lightTheme, darkTheme } from "./theme";
 import HomePage from "./containers/Home/Homepage";
 import Inlet from "./containers/Intel/Inlet";
+import BreakerOverCurrent from "./containers/BreakerOverCurrent/BreakerOverCurrent";
 import OutletPage from "./containers/Outlets/Outlet";
 import Login from "./containers/Login/Login";
 import Header from "./components/common/Header";
@@ -16,6 +18,8 @@ import SidebarCustom from "./components/common/SidebarCustom";
 import "./App.css";
 
 function App() {
+  const config = useContext(ConfigContext);
+  console.log("Config loaded:", config);
   const navigate = useNavigate();
   const [theme, setTheme] = useState("dark");
   const [sideBarCollapsed, setsideBarCollapsed] = useState(false);
@@ -72,7 +76,7 @@ function App() {
             <Route path="/outlet" element={<PrivateRoute Component={<OutletPage />} />} />
             <Route
               path="/breaker-overcurrent-protection"
-              element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />}
+              element={<PrivateRoute Component={<BreakerOverCurrent />} />}
             />
             <Route path="/outlet-grouping" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
             <Route path="/environment-sensor" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />

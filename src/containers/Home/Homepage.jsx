@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -10,7 +10,11 @@ import NamedContainer from "../../components/common/NamedContainer";
 import InletStats from "../../components/homepage/InletStats";
 import CircuitBreakerStatus from "../../components/homepage/CircuitBreakerStatus";
 
+import ConfigContext from "../../components/common/ConfigContext";
+
 function HomePage(props) {
+  const config = useContext(ConfigContext);
+
   const [stats, setStats] = useState([
     { name: "Power Factor", value: "0.45" },
     { name: "Frequency", value: "50Hz" },
@@ -31,9 +35,10 @@ function HomePage(props) {
   const [outletStatus, setOutletStatus] = useState([]);
 
   // Configs
-  const [outletWarningThreshold, setOutletWarningThreshold] = useState(5);
-  const [outletErrorThreshold, setOutletErrorThreshold] = useState(10);
-  const [circuitBreakerNumber, setCircuitBreakerNumber] = useState(12);
+  const outletWarningThreshold = config[`outletWarningThreshold`];
+  const outletErrorThreshold = config[`outletErrorThreshold`];
+  const circuitBreakerNumber = config[`circuitBreakerNumber`];
+  const maxCurrent = config[`maxBreakerCurrent`];
 
   useEffect(() => {
     let temp = {};
@@ -115,7 +120,7 @@ function HomePage(props) {
             </Grid>
             <Grid item lg={circuitBreakerNumber <= 12 ? 6 : 12} md={12}>
               <NamedContainer title="CIRCUIT BREAKER STATUS">
-                <CircuitBreakerStatus circuitBreakerMap={circuitBreakerMap} minCurrent={0} maxCurrent={16} />
+                <CircuitBreakerStatus circuitBreakerMap={circuitBreakerMap} minCurrent={0} maxCurrent={maxCurrent} />
               </NamedContainer>
             </Grid>
           </Grid>

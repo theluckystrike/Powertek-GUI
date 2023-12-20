@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -19,9 +19,13 @@ import { RiListSettingsLine } from "react-icons/ri";
 import { GrHostMaintenance } from "react-icons/gr";
 import { IoMdAnalytics } from "react-icons/io";
 
+import ConfigContext from "./ConfigContext";
 import logo from "../../assets/logo-clear.png";
 
 function SidebarCustom(props) {
+  const config = useContext(ConfigContext);
+  const logoName = config[`logoName`];
+  const imageurl = new URL(`../../assets/${logoName}`, import.meta.url).href;
   const { collapsed, setsideBarCollapsed } = props;
   const menuItemStyles = {
     button: {
@@ -69,7 +73,7 @@ function SidebarCustom(props) {
               overflow: "hidden",
             }}
             alt="Logo"
-            src={logo}
+            src={imageurl}
           />
         </div>
         <Menu menuItemStyles={menuItemStyles}>
