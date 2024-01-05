@@ -3,5 +3,7 @@
   "maxBreakerCurrent": 30,
   "outletWarningThreshold": 10,
   "outletErrorThreshold": 12,
-  "logoName": "logo-clear.png"
+  "logoName": "logo-clear.png",
+  "model": "IEXCBPOMS50",
+  "firmwareVersion": "PWT.23.0764"
 }

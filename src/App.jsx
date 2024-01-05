@@ -11,9 +11,13 @@ import HomePage from "./containers/Home/Homepage";
 import Inlet from "./containers/Intel/Inlet";
 import BreakerOverCurrent from "./containers/BreakerOverCurrent/BreakerOverCurrent";
 import OutletPage from "./containers/Outlets/Outlet";
+import EnvironmentSensor from "./containers/EnvironmentSensor/EnvironmentSensor";
 import Login from "./containers/Login/Login";
 import Header from "./components/common/Header";
 import SidebarCustom from "./components/common/SidebarCustom";
+
+import Network from "./containers/DeviceSetting/Network/Network";
+import NetworkServices from "./containers/DeviceSetting/NetworkServices/NetworkServices";
 
 import "./App.css";
 
@@ -79,9 +83,11 @@ function App() {
               element={<PrivateRoute Component={<BreakerOverCurrent />} />}
             />
             <Route path="/outlet-grouping" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
-            <Route path="/environment-sensor" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/environment-sensor" element={<PrivateRoute Component={<EnvironmentSensor />} />} />
             <Route path="/user-settings" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
             <Route path="/device-settings" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/device-settings/network" element={<PrivateRoute Component={<Network />} />} />
+            <Route path="/device-settings/networkServices" element={<PrivateRoute Component={<NetworkServices />} />} />
             <Route path="/maintenance" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
             <Route path="/powertek-analytics" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
             <Route path="/about" element={<h1>About</h1>} />

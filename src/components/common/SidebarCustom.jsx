@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
@@ -29,14 +29,14 @@ function SidebarCustom(props) {
   const { collapsed, setsideBarCollapsed } = props;
   const menuItemStyles = {
     button: {
-      // [`&.${menuClasses.disabled}`]: {
-      //   color: themes[theme].menu.disabled.color,
-      // },
       "&:hover": {
         backgroundColor: "rgba(0, 0, 0, 0.04)",
         color: "#CDCDCD",
       },
     },
+    subMenuContent: ({ level }) => ({
+      backgroundColor: level === 0 ? "#3D545F" : "transparent",
+    }),
     label: ({ open }) => ({
       fontWeight: open ? 600 : undefined,
     }),
@@ -103,9 +103,25 @@ function SidebarCustom(props) {
             User Settings
           </MenuItem>
 
-          <MenuItem icon={<RiListSettingsLine size={23} />} component={<Link to="/device-settings" />}>
-            Device Settings
-          </MenuItem>
+          <SubMenu label="Device Settings" icon={<RiListSettingsLine size={23} />}>
+            <MenuItem component={<Link to="/device-settings/network" />}>Network</MenuItem>
+            <MenuItem component={<Link to="/device-settings/networkServices" />}>Network Services</MenuItem>
+            {/* <SubMenu label="Network Services">
+              <MenuItem component={<Link to="/device-settings" />}>Device Settings</MenuItem>
+            </SubMenu> */}
+            <SubMenu label="Security">
+              <MenuItem component={<Link to="/device-settings" />}>Device Settings</MenuItem>
+              <MenuItem component={<Link to="/device-settings" />}>Device Settings</MenuItem>
+            </SubMenu>
+            <MenuItem component={<Link to="/device-settings" />}>Date/Time</MenuItem>
+            <MenuItem component={<Link to="/device-settings" />}>Event Rules</MenuItem>
+            <MenuItem component={<Link to="/device-settings" />}>Data Logging</MenuItem>
+            <MenuItem component={<Link to="/device-settings" />}>Data Push</MenuItem>
+            <MenuItem component={<Link to="/device-settings" />}>Server Reachability</MenuItem>
+            <MenuItem component={<Link to="/device-settings" />}>Front Panel</MenuItem>
+            <MenuItem component={<Link to="/device-settings" />}>Lua Scripts</MenuItem>
+            <MenuItem component={<Link to="/device-settings" />}>Miscellaneous</MenuItem>
+          </SubMenu>
 
           <MenuItem icon={<GrHostMaintenance size={23} />} component={<Link to="/maintenance" />}>
             Maintenance
@@ -116,10 +132,44 @@ function SidebarCustom(props) {
           </MenuItem>
         </Menu>
         <Box sx={{ flexGrow: "1" }} />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "5px",
+            flexDirection: "column",
+          }}
+        >
+          <Typography variant="subtitle2" color="#fff">
+            Last Login: {new Date().toLocaleString()}
+          </Typography>
+        </div>
+
         <Button size="large" color="inherit" onClick={() => setsideBarCollapsed(!collapsed)}>
           <MenuIcon />
         </Button>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "5px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "5px",
+            flexDirection: "column",
+          }}
+        >
+          <Typography variant="caption" color="#fff">
+            Model: {config[`model`]}
+          </Typography>
+          <Typography variant="caption" color="#fff">
+            Firmware version: {config[`firmwareVersion`]}
+          </Typography>
+          <Typography variant="caption" color="#fff">
+            Help:{" "}
+            <Link style={{ color: "orange" }} to="/help">
+              Online Documentation
+            </Link>
+          </Typography>
           <Typography variant="caption" color="#fff">
             © 2023
           </Typography>
