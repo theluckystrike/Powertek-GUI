@@ -106,15 +106,9 @@ function SidebarCustom(props) {
           <SubMenu label="Device Settings" icon={<RiListSettingsLine size={23} />}>
             <MenuItem component={<Link to="/device-settings/network" />}>Network</MenuItem>
             <MenuItem component={<Link to="/device-settings/networkServices" />}>Network Services</MenuItem>
-            {/* <SubMenu label="Network Services">
-              <MenuItem component={<Link to="/device-settings" />}>Device Settings</MenuItem>
-            </SubMenu> */}
-            <SubMenu label="Security">
-              <MenuItem component={<Link to="/device-settings" />}>Device Settings</MenuItem>
-              <MenuItem component={<Link to="/device-settings" />}>Device Settings</MenuItem>
-            </SubMenu>
-            <MenuItem component={<Link to="/device-settings" />}>Date/Time</MenuItem>
-            <MenuItem component={<Link to="/device-settings" />}>Event Rules</MenuItem>
+            <MenuItem component={<Link to="/device-settings/security" />}>Security</MenuItem>
+            <MenuItem component={<Link to="/device-settings/datetime" />}>Date/Time</MenuItem>
+            <MenuItem component={<Link to="/device-settings/eventlogs" />}>Event Logs</MenuItem>
             <MenuItem component={<Link to="/device-settings" />}>Data Logging</MenuItem>
             <MenuItem component={<Link to="/device-settings" />}>Data Push</MenuItem>
             <MenuItem component={<Link to="/device-settings" />}>Server Reachability</MenuItem>

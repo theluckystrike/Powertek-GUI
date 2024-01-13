@@ -18,6 +18,9 @@ import SidebarCustom from "./components/common/SidebarCustom";
 
 import Network from "./containers/DeviceSetting/Network/Network";
 import NetworkServices from "./containers/DeviceSetting/NetworkServices/NetworkServices";
+import Security from "./containers/DeviceSetting/Security/Security";
+import DateTime from "./containers/DeviceSetting/DateTime/DateTime";
+import EventLogs from "./containers/DeviceSetting/EventLogs/EventLogs";
 
 import "./App.css";
 
@@ -88,6 +91,9 @@ function App() {
             <Route path="/device-settings" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
             <Route path="/device-settings/network" element={<PrivateRoute Component={<Network />} />} />
             <Route path="/device-settings/networkServices" element={<PrivateRoute Component={<NetworkServices />} />} />
+            <Route path="/device-settings/security" element={<PrivateRoute Component={<Security />} />} />
+            <Route path="/device-settings/datetime" element={<PrivateRoute Component={<DateTime />} />} />
+            <Route path="/device-settings/eventlogs" element={<PrivateRoute Component={<EventLogs />} />} />
             <Route path="/maintenance" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
             <Route path="/powertek-analytics" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
             <Route path="/about" element={<h1>About</h1>} />
