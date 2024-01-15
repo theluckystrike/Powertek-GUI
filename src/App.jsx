@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 
 import { lightTheme, darkTheme } from "./theme";
 import HomePage from "./containers/Home/Homepage";
-import Inlet from "./containers/Intel/Inlet";
+import Inlet from "./containers/Inlet/Inlet";
 import BreakerOverCurrent from "./containers/BreakerOverCurrent/BreakerOverCurrent";
 import OutletPage from "./containers/Outlets/Outlet";
 import EnvironmentSensor from "./containers/EnvironmentSensor/EnvironmentSensor";
@@ -21,6 +21,9 @@ import NetworkServices from "./containers/DeviceSetting/NetworkServices/NetworkS
 import Security from "./containers/DeviceSetting/Security/Security";
 import DateTime from "./containers/DeviceSetting/DateTime/DateTime";
 import EventLogs from "./containers/DeviceSetting/EventLogs/EventLogs";
+import OutletGrouping from "./containers/OutletGrouping/OutletGrouping";
+import PowertekAnalytics from "./containers/PowertekAnalytics/PowertekAnalytics";
+import USBHostPorts from "./containers/DeviceSetting/USBHostPorts/USBHostPorts";
 
 import "./App.css";
 
@@ -85,7 +88,7 @@ function App() {
               path="/breaker-overcurrent-protection"
               element={<PrivateRoute Component={<BreakerOverCurrent />} />}
             />
-            <Route path="/outlet-grouping" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/outlet-grouping" element={<PrivateRoute Component={<OutletGrouping />} />} />
             <Route path="/environment-sensor" element={<PrivateRoute Component={<EnvironmentSensor />} />} />
             <Route path="/user-settings" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
             <Route path="/device-settings" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
@@ -94,8 +97,9 @@ function App() {
             <Route path="/device-settings/security" element={<PrivateRoute Component={<Security />} />} />
             <Route path="/device-settings/datetime" element={<PrivateRoute Component={<DateTime />} />} />
             <Route path="/device-settings/eventlogs" element={<PrivateRoute Component={<EventLogs />} />} />
+            <Route path="/device-settings/usb-host-port" element={<PrivateRoute Component={<USBHostPorts />} />} />
             <Route path="/maintenance" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
-            <Route path="/powertek-analytics" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/powertek-analytics" element={<PrivateRoute Component={<PowertekAnalytics />} />} />
             <Route path="/about" element={<h1>About</h1>} />
           </Route>
         </Routes>

@@ -19,7 +19,13 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
+import { CSVLink } from "react-csv";
+import { ResponsiveContainer, AreaChart, XAxis, YAxis, Area, Tooltip, CartesianGrid } from "recharts";
 
 import { FaLockOpen } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
@@ -28,7 +34,7 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import WarningIcon from "@mui/icons-material/Warning";
 import GppBadIcon from "@mui/icons-material/GppBad";
 
-import NamedContainer from "../../components/common/NamedContainer";
+import NamedContainer, { CollapsiableNamedContainer } from "../../components/common/NamedContainer";
 import InletStats from "../../components/homepage/InletStats";
 import Divider from "../../components/common/styled/Divider";
 
@@ -97,10 +103,122 @@ function ThresholdDialog({ open, onClose, onSave, defaultValues }) {
   );
 }
 
+function IntelHistory() {
+  const downloadHistory = () => {
+    console.log("download history");
+  };
+  const sampleData = [
+    { xaxis: "00:00", value: 0.07 },
+    { xaxis: "01:00", value: 0.07 },
+    { xaxis: "02:00", value: 0.07 },
+    { xaxis: "03:00", value: 0.08 },
+    { xaxis: "04:00", value: 0.07 },
+    { xaxis: "05:00", value: 0.06 },
+    { xaxis: "06:00", value: 0.07 },
+    { xaxis: "07:00", value: 0.06 },
+    { xaxis: "08:00", value: 0.06 },
+    { xaxis: "09:00", value: 0.07 },
+    { xaxis: "10:00", value: 0.07 },
+    { xaxis: "11:00", value: 0.07 },
+    { xaxis: "12:00", value: 0.07 },
+    { xaxis: "13:00", value: 0.07 },
+    { xaxis: "14:00", value: 0.07 },
+    { xaxis: "15:00", value: 0.07 },
+    { xaxis: "16:00", value: 0.07 },
+    { xaxis: "17:00", value: 0.06 },
+    { xaxis: "18:00", value: 0.07 },
+    { xaxis: "19:00", value: 0.06 },
+    { xaxis: "20:00", value: 0.05 },
+    { xaxis: "21:00", value: 0.07 },
+    { xaxis: "22:00", value: 0.07 },
+    { xaxis: "23:00", value: 0.06 },
+  ];
+  const [dropdown, setdropdown] = React.useState("peakcurrent");
+  const [chartData, setchartData] = useState(sampleData); // [xaxis, yaxis
+  const handleDropDown = (event) => {
+    event.preventDefault();
+    setdropdown(event.target.value);
+    // Add additional logic if needed to filter or change the chart data
+  };
+  return (
+    <Grid container rowSpacing={2}>
+      <Grid item xs={12}>
+        <ResponsiveContainer width="100%" height={300}>
+          <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 30, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="xaxis" />
+            <YAxis hide />
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#203246"
+              strokeWidth={2}
+              dot={{ stroke: "white", strokeWidth: 2, fill: "#8884d8" }}
+              fill="rgba(33, 233, 246, 0.2)"
+            />
+            <Tooltip />
+          </AreaChart>
+        </ResponsiveContainer>
+      </Grid>
+      <Grid item xs={12} sx={{ display: "flex", placeContent: "center" }}>
+        <CSVLink data={chartData} filename={"powertek-history.csv"}>
+          <Button variant="contained" size="small" onClick={downloadHistory}>
+            Download History
+          </Button>
+        </CSVLink>
+      </Grid>
+    </Grid>
+  );
+}
+
+function HisotryDialog({ open, onClose, onSave, data }) {
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    fontWeight: "bold",
+    backgroundColor: theme.palette.action.hover,
+  }));
+
+  const handleReset = () => {
+    // Reset logic here
+    console.log("Reset min/max values");
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth={"lg"}>
+      <Box sx={{ display: "flex", justifyContent: "center", padding: "16px", flexDirection: "column" }}>
+        <TableContainer>
+          <Table aria-label="Sensor table">
+            <TableBody>
+              {Object.entries(data).map(([key, { value, lastChanged }]) => (
+                <TableRow key={key}>
+                  <TableCell component="th" scope="row">
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                  </TableCell>
+                  <TableCell>{value}</TableCell>
+                  <TableCell>{lastChanged}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button onClick={handleReset} variant="contained" color="primary" style={{ margin: "16px" }}>
+              Reset
+            </Button>
+          </Box>
+        </TableContainer>
+        <CollapsiableNamedContainer title="History">
+          <IntelHistory />
+        </CollapsiableNamedContainer>
+      </Box>
+    </Dialog>
+  );
+}
+
 function Inlet(props) {
   const theme = useTheme();
   const [settingsEdit, setsettingsEdit] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
   const [currentThresholds, setCurrentThresholds] = useState({
     lowerWarning: "",
     higherWarning: "",
@@ -136,7 +254,13 @@ function Inlet(props) {
     console.log("Threshold settings for:", row);
   }
 
+  function handleHistoryClick(row) {
+    setHistoryDialogOpen(true);
+    console.log("History settings for:", row);
+  }
+
   const handleDialogClose = () => {
+    setHistoryDialogOpen(false);
     setDialogOpen(false);
   };
 
@@ -262,6 +386,16 @@ function Inlet(props) {
       intelMetering: "Reactive Power",
       value: "0.15A",
       status: "error",
+      lowerWarning: "",
+      higherWarning: "",
+      lowerCritical: "",
+      higherCritical: "",
+    },
+    {
+      id: 13,
+      intelMetering: "Phase Angle",
+      value: "20º",
+      status: "normal",
       lowerWarning: "",
       higherWarning: "",
       lowerCritical: "",
@@ -484,7 +618,13 @@ function Inlet(props) {
                               index % 2 === 0 ? (theme.palette.mode === "dark" ? "#3C3C3C" : "#E0E0E0") : "inherit", // Alternating color
                           }}
                         >
-                          <StyledTableCell align="center" component="th" scope="row">
+                          <StyledTableCell
+                            align="center"
+                            component="th"
+                            scope="row"
+                            onClick={() => handleHistoryClick(row)}
+                            sx={{ cursor: "pointer" }}
+                          >
                             {row.intelMetering}
                           </StyledTableCell>
                           <StyledTableCell align="center">{row.value}</StyledTableCell>
@@ -520,6 +660,17 @@ function Inlet(props) {
         onClose={handleDialogClose}
         onSave={handleSave}
         defaultValues={currentThresholds}
+      />
+      <HisotryDialog
+        open={historyDialogOpen}
+        onClose={handleDialogClose}
+        onSave={handleSave}
+        data={{
+          actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+          state: { value: "normal", lastChanged: "State hasn’t been reset" },
+          minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+          maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+        }}
       />
     </Box>
   );

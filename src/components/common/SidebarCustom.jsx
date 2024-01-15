@@ -110,11 +110,11 @@ function SidebarCustom(props) {
             <MenuItem component={<Link to="/device-settings/datetime" />}>Date/Time</MenuItem>
             <MenuItem component={<Link to="/device-settings/eventlogs" />}>Event Logs</MenuItem>
             <MenuItem component={<Link to="/device-settings" />}>Data Logging</MenuItem>
-            <MenuItem component={<Link to="/device-settings" />}>Data Push</MenuItem>
-            <MenuItem component={<Link to="/device-settings" />}>Server Reachability</MenuItem>
+            <MenuItem component={<Link to="/device-settings/usb-host-port" />}>USB Host Ports</MenuItem>
+            {/* <MenuItem component={<Link to="/device-settings" />}>Server Reachability</MenuItem>
             <MenuItem component={<Link to="/device-settings" />}>Front Panel</MenuItem>
             <MenuItem component={<Link to="/device-settings" />}>Lua Scripts</MenuItem>
-            <MenuItem component={<Link to="/device-settings" />}>Miscellaneous</MenuItem>
+            <MenuItem component={<Link to="/device-settings" />}>Miscellaneous</MenuItem> */}
           </SubMenu>
 
           <MenuItem icon={<GrHostMaintenance size={23} />} component={<Link to="/maintenance" />}>
