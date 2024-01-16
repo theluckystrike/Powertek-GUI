@@ -17,6 +17,7 @@ import {
   TableRow,
   Tabs,
   Tab,
+  Button,
 } from "@mui/material";
 import NamedContainer from "../../components/common/NamedContainer";
 import { ReportingBar } from "../../components/common/ReportingBar";
@@ -427,6 +428,11 @@ function EnvironmentSensor() {
                   </Grid>
                 </CustomTabPanel>
               ))}
+              <Box sx={{ display: "flex", placeContent: "center" }}>
+                <Button variant="contained" sx={{ marginTop: "10px", width: "10%" }}>
+                  Save
+                </Button>
+              </Box>
             </Box>
           </NamedContainer>
         </Grid>
