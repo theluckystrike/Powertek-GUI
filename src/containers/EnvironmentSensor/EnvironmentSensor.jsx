@@ -55,6 +55,14 @@ const data = [
     { label: "Location Name", value: "Lab Room", status: "" },
   ],
   [
+    { label: "EMD5-H(%)", value: 46.3, status: "Normal" },
+    { label: "EMD5-T(°C)", value: 18.4, status: "Normal" },
+    { label: "Smoke", value: "", status: "Normal" },
+    { label: "water", value: "", status: "Normal" },
+    { label: "Address", value: "1", status: "" },
+    { label: "Location Name", value: "Lab Room", status: "" },
+  ],
+  [
     { label: "EMD6-H(%)", value: 46.3, status: "Normal" },
     { label: "EMD6-T(°C)", value: 18.4, status: "Normal" },
     { label: "Smoke", value: "", status: "Normal" },
@@ -65,6 +73,14 @@ const data = [
   [
     { label: "EMD7-H(%)", value: 46.3, status: "Normal" },
     { label: "EMD7-T(°C)", value: 18.4, status: "Normal" },
+    { label: "Smoke", value: "", status: "Normal" },
+    { label: "water", value: "", status: "Normal" },
+    { label: "Address", value: "1", status: "" },
+    { label: "Location Name", value: "Lab Room", status: "" },
+  ],
+  [
+    { label: "EMD8-H(%)", value: 46.3, status: "Normal" },
+    { label: "EMD8-T(°C)", value: 18.4, status: "Normal" },
     { label: "Smoke", value: "", status: "Normal" },
     { label: "water", value: "", status: "Normal" },
     { label: "Address", value: "1", status: "" },
