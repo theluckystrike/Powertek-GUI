@@ -3,8 +3,15 @@ import { Box, Grid, Button, Select, MenuItem, InputLabel, FormControl } from "@m
 import { ResponsiveContainer, AreaChart, XAxis, YAxis, Area, Tooltip, CartesianGrid } from "recharts";
 import { CSVLink } from "react-csv";
 import NamedContainer, { CollapsiableNamedContainer } from "../../components/common/NamedContainer";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 function IntelHistory() {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   const downloadHistory = () => {
     console.log("download history");
   };
@@ -61,44 +68,57 @@ function IntelHistory() {
           </AreaChart>
         </ResponsiveContainer>
       </Grid>
-      <Grid item xs={6} sx={{ display: "flex", placeContent: "center" }}>
-        <FormControl>
-          <InputLabel id="Metric-select-label">Metric</InputLabel>
-          <Select
-            labelId="Metric-select-label"
-            id="Metric-select"
-            value={dropdown}
-            label="Metric"
-            onChange={handleDropDown}
-            size="small"
-          >
-            <MenuItem value={"rmscurrent"}>RMS Current</MenuItem>
-            <MenuItem value={"peakcurrent"}>Peak Current</MenuItem>
-            <MenuItem value={"currentharmonicdistortion"}>Current Harmonic Distortion</MenuItem>
-            <MenuItem value={"rmsneutralcurrent"}>RMS Neutral Current</MenuItem>
-            <MenuItem value={"rmsvoltage"}>RMS Voltage</MenuItem>
-            <MenuItem value={"frequency"}>Frequency</MenuItem>
-            <MenuItem value={"powerfactor"}>Power Factor</MenuItem>
-            <MenuItem value={"activepower"}>Active Power</MenuItem>
-            <MenuItem value={"activeenergy"}>Active Energy</MenuItem>
-            <MenuItem value={"apparentpower"}>Apparent Power</MenuItem>
-            <MenuItem value={"apparentenergy"}>Apparent Energy</MenuItem>
-            <MenuItem value={"reactivepower"}>Reactive Power</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={6} sx={{ display: "flex", placeContent: "center" }}>
-        <CSVLink data={chartData} filename={"powertek-history.csv"}>
-          <Button variant="contained" size="small" onClick={downloadHistory}>
-            Download History
-          </Button>
-        </CSVLink>
+      <Grid container rowSpacing={2} sx={{ display: "flex", placeContent: "center", margin: "auto" }}>
+        <Grid item xs={4} sx={{ display: "flex", placeContent: "center", margin: "auto" }}>
+          <FormControl>
+            <InputLabel id="Metric-select-label">Metric</InputLabel>
+            <Select
+              labelId="Metric-select-label"
+              id="Metric-select"
+              value={dropdown}
+              label="Metric"
+              onChange={handleDropDown}
+              size="small"
+            >
+              <MenuItem value={"rmscurrent"}>RMS Current</MenuItem>
+              <MenuItem value={"peakcurrent"}>Peak Current</MenuItem>
+              <MenuItem value={"currentharmonicdistortion"}>Current Harmonic Distortion</MenuItem>
+              <MenuItem value={"rmsneutralcurrent"}>RMS Neutral Current</MenuItem>
+              <MenuItem value={"rmsvoltage"}>RMS Voltage</MenuItem>
+              <MenuItem value={"frequency"}>Frequency</MenuItem>
+              <MenuItem value={"powerfactor"}>Power Factor</MenuItem>
+              <MenuItem value={"activepower"}>Active Power</MenuItem>
+              <MenuItem value={"activeenergy"}>Active Energy</MenuItem>
+              <MenuItem value={"apparentpower"}>Apparent Power</MenuItem>
+              <MenuItem value={"apparentenergy"}>Apparent Energy</MenuItem>
+              <MenuItem value={"reactivepower"}>Reactive Power</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={4} sx={{ display: "flex", placeContent: "center", margin: "auto" }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <div style={{ display: "flex", placeContent: "center", gap: "4px" }}>
+              <DatePicker label="From" value={startDate} onChange={(newValue) => setStartDate(newValue)} />
+              <code style={{ margin: "auto" }}>&#8212;</code>
+              <DatePicker label="To" value={endDate} onChange={(newValue) => setEndDate(newValue)} />
+            </div>
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={4} sx={{ display: "flex", placeContent: "center", margin: "auto" }}>
+          <CSVLink data={chartData} filename={"powertek-history.csv"}>
+            <Button variant="contained" size="small" onClick={downloadHistory}>
+              Download History
+            </Button>
+          </CSVLink>
+        </Grid>
       </Grid>
     </Grid>
   );
 }
 
 function OverCurrentBreakerHistory() {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const downloadHistory = () => {
     console.log("download history");
   };
@@ -155,20 +175,21 @@ function OverCurrentBreakerHistory() {
           </AreaChart>
         </ResponsiveContainer>
       </Grid>
-      <Grid item xs={6} sx={{ display: "flex", placeContent: "center" }}>
-        <FormControl>
-          <InputLabel id="Metric-select-label">Metric</InputLabel>
-          <Select
-            labelId="Metric-select-label"
-            id="Metric-select"
-            value={dropdown}
-            label="Metric"
-            onChange={handleDropDown}
-            size="small"
-          >
-            <MenuItem value={"rmscurrent"}>RMS Current</MenuItem>
-            <MenuItem value={"peakcurrent"}>Peak Current</MenuItem>
-            {/* <MenuItem value={"currentharmonicdistortion"}>Current Harmonic Distortion</MenuItem>
+      <Grid container rowSpacing={2} sx={{ display: "flex", placeContent: "center", margin: "auto" }}>
+        <Grid item xs={4} sx={{ display: "flex", placeContent: "center", margin: "auto" }}>
+          <FormControl>
+            <InputLabel id="Metric-select-label">Metric</InputLabel>
+            <Select
+              labelId="Metric-select-label"
+              id="Metric-select"
+              value={dropdown}
+              label="Metric"
+              onChange={handleDropDown}
+              size="small"
+            >
+              <MenuItem value={"rmscurrent"}>RMS Current</MenuItem>
+              <MenuItem value={"peakcurrent"}>Peak Current</MenuItem>
+              {/* <MenuItem value={"currentharmonicdistortion"}>Current Harmonic Distortion</MenuItem>
             <MenuItem value={"rmsneutralcurrent"}>RMS Neutral Current</MenuItem>
             <MenuItem value={"rmsvoltage"}>RMS Voltage</MenuItem>
             <MenuItem value={"frequency"}>Frequency</MenuItem>
@@ -178,21 +199,33 @@ function OverCurrentBreakerHistory() {
             <MenuItem value={"apparentpower"}>Apparent Power</MenuItem>
             <MenuItem value={"apparentenergy"}>Apparent Energy</MenuItem>
             <MenuItem value={"reactivepower"}>Reactive Power</MenuItem> */}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={6} sx={{ display: "flex", placeContent: "center" }}>
-        <CSVLink data={chartData} filename={"powertek-history.csv"}>
-          <Button variant="contained" size="small" onClick={downloadHistory}>
-            Download History
-          </Button>
-        </CSVLink>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={4} sx={{ display: "flex", placeContent: "center", margin: "auto" }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <div style={{ display: "flex", placeContent: "center", gap: "4px" }}>
+              <DatePicker label="From" value={startDate} onChange={(newValue) => setStartDate(newValue)} />
+              <code style={{ margin: "auto" }}>&#8212;</code>
+              <DatePicker label="To" value={endDate} onChange={(newValue) => setEndDate(newValue)} />
+            </div>
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={4} sx={{ display: "flex", placeContent: "center", margin: "auto" }}>
+          <CSVLink data={chartData} filename={"powertek-history.csv"}>
+            <Button variant="contained" size="small" onClick={downloadHistory}>
+              Download History
+            </Button>
+          </CSVLink>
+        </Grid>
       </Grid>
     </Grid>
   );
 }
 
 function OutletHistory() {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const downloadHistory = () => {
     console.log("download history");
   };
@@ -296,7 +329,7 @@ function OutletHistory() {
             <MenuItem value={3}>Outlet 3</MenuItem>
             <MenuItem value={4}>Outlet 4</MenuItem>
             <MenuItem value={5}>Outlet 5</MenuItem>
-            <MenuItem value={6}>Outlet 6</MenuItem>
+            <MenuItem value={4}>Outlet 6</MenuItem>
             <MenuItem value={7}>Outlet 7</MenuItem>
             <MenuItem value={8}>Outlet 8</MenuItem>
             <MenuItem value={9}>Outlet 9</MenuItem>
@@ -312,6 +345,15 @@ function OutletHistory() {
             Download History
           </Button>
         </CSVLink>
+      </Grid>
+      <Grid item xs={4} sx={{ display: "flex", placeContent: "center", margin: "auto" }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <div style={{ display: "flex", placeContent: "center", gap: "4px" }}>
+            <DatePicker label="From" value={startDate} onChange={(newValue) => setStartDate(newValue)} />
+            <code style={{ margin: "auto" }}>&#8212;</code>
+            <DatePicker label="To" value={endDate} onChange={(newValue) => setEndDate(newValue)} />
+          </div>
+        </LocalizationProvider>
       </Grid>
     </Grid>
   );
