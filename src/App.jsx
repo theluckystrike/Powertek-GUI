@@ -24,6 +24,7 @@ import EventLogs from "./containers/DeviceSetting/EventLogs/EventLogs";
 import OutletGrouping from "./containers/OutletGrouping/OutletGrouping";
 import PowertekAnalytics from "./containers/PowertekAnalytics/PowertekAnalytics";
 import USBHostPorts from "./containers/DeviceSetting/USBHostPorts/USBHostPorts";
+import Maintenance from "./containers/Maintenance/Maintenance";
 
 import "./App.css";
 
@@ -98,7 +99,7 @@ function App() {
             <Route path="/device-settings/datetime" element={<PrivateRoute Component={<DateTime />} />} />
             <Route path="/device-settings/eventlogs" element={<PrivateRoute Component={<EventLogs />} />} />
             <Route path="/device-settings/usb-host-port" element={<PrivateRoute Component={<USBHostPorts />} />} />
-            <Route path="/maintenance" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+            <Route path="/maintenance" element={<PrivateRoute Component={<Maintenance />} />} />
             <Route path="/powertek-analytics" element={<PrivateRoute Component={<PowertekAnalytics />} />} />
             <Route path="/about" element={<h1>About</h1>} />
           </Route>
