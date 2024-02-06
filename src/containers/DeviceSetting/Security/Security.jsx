@@ -20,6 +20,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  FormControl,
+  InputLabel,
+  FormGroup,
+  Checkbox,
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import SaveIcon from "@mui/icons-material/Save";
@@ -183,6 +187,138 @@ function RoleACL({ title }) {
   );
 }
 
+function TLSCertificate() {
+  return (
+    <Box elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
+      <Typography variant="h6" component="h2" gutterBottom>
+        Active TLS Certificate
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <TextField fullWidth margin="normal" label="Device Certificate" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Country" variant="outlined" />
+          <TextField fullWidth margin="normal" label="State or Province" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Locality" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Organization" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Organizational Unit" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Common Name" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Email Address" variant="outlined" />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField fullWidth margin="normal" label="Issuer Country" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Issuer State or Province" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Issuer Locality" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Issuer Organization" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Issuer Organizational Unit" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Issuer Common Name" variant="outlined" />
+          <TextField fullWidth margin="normal" label="Issuer Email Address" variant="outlined" />
+        </Grid>
+      </Grid>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+        <Button variant="outlined" sx={{ mr: 1 }}>
+          Download Key
+        </Button>
+        <Button variant="outlined" color="primary">
+          Download Certificate
+        </Button>
+      </Box>
+    </Box>
+  );
+}
+
+function Authentication() {
+  const [authnticationType, setAuthnticationType] = React.useState("");
+
+  const handleChange = (event) => {
+    setAuthnticationType(event.target.value);
+  };
+  return (
+    <Box elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
+      <Grid container spacing={3}>
+        <Grid
+          item
+          xs={2}
+          sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center", margin: "auto" }}
+        >
+          <Typography variant="h6" component="h2">
+            Authentication
+          </Typography>
+        </Grid>
+        <Grid item xs={10}>
+          <FormControl sx={{ m: 1, minWidth: "100%" }} size="small">
+            <InputLabel id="demo-select-small-label">Authntication Type</InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={authnticationType}
+              label="Authntication Type"
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={"Local"}>Local</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+        <Button variant="outlined" sx={{ mr: 1 }}>
+          Save
+        </Button>
+      </Box>
+    </Box>
+  );
+}
+
+function Login() {
+  return (
+    <Box sx={{ width: "90%", display: "flex", margin: "auto", placeContent: "center" }}>
+      <FormGroup sx={{ width: "100%", display: "flex", margin: "auto", placeContent: "center" }}>
+        <h2>Login Settings</h2>
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Block user on login failure" />
+        <TextField label="Block timeout" defaultValue="10 min" margin="normal" fullWidth />
+        <TextField label="Maximum number of failed logins" defaultValue="3" margin="normal" fullWidth />
+        <TextField label="Timeout for failed login attempts" defaultValue="10 min" margin="normal" fullWidth />
+        <h2>Login Limitations</h2>
+        <TextField label="Idle timeout period" defaultValue="1 d" margin="normal" fullWidth />
+        <FormControlLabel control={<Checkbox />} label="Prevent concurrent login with same username" />
+        <Button variant="contained" color="primary">
+          Save
+        </Button>
+      </FormGroup>
+    </Box>
+  );
+}
+
+function PasswordPolicy() {
+  return (
+    <Box sx={{ width: "90%", display: "flex", margin: "auto", placeContent: "center" }}>
+      <FormGroup sx={{ width: "100%", display: "flex", margin: "auto", placeContent: "center" }}>
+        <h2>Password Policy</h2>
+
+        <h3>Password Aging</h3>
+        <FormControlLabel control={<Checkbox />} label="Password aging" />
+        <TextField label="Password aging interval" defaultValue="60 d" margin="normal" fullWidth />
+
+        <h3>Strong Passwords</h3>
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Strong passwords" />
+        <TextField label="Minimum password length" defaultValue="8" margin="normal" fullWidth />
+        <TextField label="Maximum password length" defaultValue="64" margin="normal" fullWidth />
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Enforce at least one lower case character" />
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Enforce at least one upper case character" />
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Enforce at least one numeric character" />
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Enforce at least one special character" />
+        <TextField label="Password history size" defaultValue="5" margin="normal" fullWidth />
+
+        <Button variant="contained" color="primary" style={{ marginTop: "20px" }}>
+          Save
+        </Button>
+      </FormGroup>
+    </Box>
+  );
+}
+
 function Security() {
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
@@ -208,6 +344,36 @@ function Security() {
                   <CollapsiableNamedContainer title="IPv6">
                     <RoleACL title={"IPv6"} />
                   </CollapsiableNamedContainer>
+                </CollapsiableNamedContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <CollapsiableNamedContainer title="TLS Certificate">
+                  <TLSCertificate />
+                </CollapsiableNamedContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <CollapsiableNamedContainer title="Authentication">
+                  <Authentication />
+                </CollapsiableNamedContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <CollapsiableNamedContainer title="LDAP">
+                  <Authentication />
+                </CollapsiableNamedContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <CollapsiableNamedContainer title="Radius">
+                  <Authentication />
+                </CollapsiableNamedContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <CollapsiableNamedContainer title="Login">
+                  <Login />
+                </CollapsiableNamedContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <CollapsiableNamedContainer title="Password Policy">
+                  <PasswordPolicy />
                 </CollapsiableNamedContainer>
               </Grid>
             </Grid>
