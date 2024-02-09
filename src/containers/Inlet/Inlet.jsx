@@ -498,8 +498,14 @@ function ThreePhaseCase() {
     {
       id: 1,
       intelMetering: "RMS Current",
-      value: "0.15A",
-      status: "normal",
+      TIValue: "0.15A",
+      L1Value: "0.15A",
+      L2Value: "0.15A",
+      L3Value: "0.15A",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "0.1A",
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
@@ -508,8 +514,14 @@ function ThreePhaseCase() {
     {
       id: 2,
       intelMetering: "Peak Current",
-      value: "0.18A",
-      status: "warning",
+      TIValue: "0.18A",
+      L1Value: "0.18A",
+      L2Value: "0.18A",
+      L3Value: "0.18A",
+      TIStatus: "warning",
+      L1Status: "warning",
+      L2Status: "warning",
+      L3Status: "warning",
       lowerWarning: "0.1A",
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
@@ -518,8 +530,14 @@ function ThreePhaseCase() {
     {
       id: 3,
       intelMetering: "Current Harmonic Distortion",
-      value: "1%",
-      status: "normal",
+      TIValue: "1%",
+      L1Value: "1%",
+      L2Value: "1%",
+      L3Value: "1%",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "0.1%",
       higherWarning: "0.2%",
       lowerCritical: "0.05%",
@@ -528,8 +546,14 @@ function ThreePhaseCase() {
     {
       id: 4,
       intelMetering: "RMS Neutral Current",
-      value: "0.12A",
-      status: "normal",
+      TIValue: "0.12A",
+      L1Value: "0.12A",
+      L2Value: "0.12A",
+      L3Value: "0.12A",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "0.1A",
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
@@ -538,8 +562,14 @@ function ThreePhaseCase() {
     {
       id: 5,
       intelMetering: "RMS Voltage",
-      value: "230V",
-      status: "normal",
+      TIValue: "230V",
+      L1Value: "230V",
+      L2Value: "230V",
+      L3Value: "230V",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "0.1V",
       higherWarning: "0.2V",
       lowerCritical: "0.05V",
@@ -548,8 +578,14 @@ function ThreePhaseCase() {
     {
       id: 6,
       intelMetering: "Frequency",
-      value: "50.0Hz",
-      status: "normal",
+      TIValue: "50.0Hz",
+      L1Value: "50.0Hz",
+      L2Value: "50.0Hz",
+      L3Value: "50.0Hz",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "49.5Hz",
       higherWarning: "50.5Hz",
       lowerCritical: "49.0Hz",
@@ -558,8 +594,14 @@ function ThreePhaseCase() {
     {
       id: 7,
       intelMetering: "Power Factor",
-      value: "0.98",
-      status: "normal",
+      TIValue: "0.98",
+      L1Value: "0.98",
+      L2Value: "0.98",
+      L3Value: "0.98",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "0.9",
       higherWarning: "1.0",
       lowerCritical: "0.8",
@@ -568,8 +610,14 @@ function ThreePhaseCase() {
     {
       id: 8,
       intelMetering: "Active Power",
-      value: "66",
-      status: "normal",
+      TIValue: "66",
+      L1Value: "66",
+      L2Value: "66",
+      L3Value: "66",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "60",
       higherWarning: "70",
       lowerCritical: "50",
@@ -578,8 +626,14 @@ function ThreePhaseCase() {
     {
       id: 9,
       intelMetering: "Active Energy",
-      value: "25748Wh",
-      status: "normal",
+      TIValue: "25748Wh",
+      L1Value: "25748Wh",
+      L2Value: "25748Wh",
+      L3Value: "25748Wh",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "20000",
       higherWarning: "40000",
       lowerCritical: "100000",
@@ -588,8 +642,14 @@ function ThreePhaseCase() {
     {
       id: 10,
       intelMetering: "Apparent Power",
-      value: "15VA",
-      status: "normal",
+      TIValue: "15VA",
+      L1Value: "15VA",
+      L2Value: "15VA",
+      L3Value: "15VA",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "10VA",
       higherWarning: "20VA",
       lowerCritical: "5VA",
@@ -598,8 +658,14 @@ function ThreePhaseCase() {
     {
       id: 11,
       intelMetering: "Apparent Energy",
-      value: "65874 Vah",
-      status: "normal",
+      TIValue: "65874 Vah",
+      L1Value: "65874 Vah",
+      L2Value: "65874 Vah",
+      L3Value: "65874 Vah",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "",
       higherWarning: "",
       lowerCritical: "",
@@ -608,8 +674,14 @@ function ThreePhaseCase() {
     {
       id: 12,
       intelMetering: "Reactive Power",
-      value: "0.15A",
-      status: "error",
+      TIValue: "0.15A",
+      L1Value: "0.15A",
+      L2Value: "0.15A",
+      L3Value: "0.15A",
+      TIStatus: "error",
+      L1Status: "error",
+      L2Status: "error",
+      L3Status: "error",
       lowerWarning: "",
       higherWarning: "",
       lowerCritical: "",
@@ -617,19 +689,15 @@ function ThreePhaseCase() {
     },
     {
       id: 13,
-      intelMetering: "Phase Angle",
-      value: "20º",
-      status: "normal",
-      lowerWarning: "",
-      higherWarning: "",
-      lowerCritical: "",
-      higherCritical: "",
-    },
-    {
-      id: 13,
-      intelMetering: "Unbalanced Current",
-      value: "33%",
-      status: "normal",
+      intelMetering: "Phase Usage",
+      TIValue: "18%",
+      L1Value: "18%",
+      L2Value: "18%",
+      L3Value: "18%",
+      TIStatus: "normal",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
       lowerWarning: "",
       higherWarning: "",
       lowerCritical: "",
@@ -707,11 +775,30 @@ function ThreePhaseCase() {
                 <Typography variant="h6">INLET METERING</Typography>
               </StyledTableCell>
               <StyledTableCell align="center">
+                <Typography variant="h6">TOTAL INLET</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <Typography variant="h6">TOTAL INLET STATUS</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="center">
                 <Typography variant="h6">L1</Typography>
               </StyledTableCell>
               <StyledTableCell align="center">
-                <Typography variant="h6">STATUS</Typography>
+                <Typography variant="h6">L1-STATUS</Typography>
               </StyledTableCell>
+              <StyledTableCell align="center">
+                <Typography variant="h6">L2</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <Typography variant="h6">L2-STATUS</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <Typography variant="h6">L3</Typography>
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <Typography variant="h6">L3-STATUS</Typography>
+              </StyledTableCell>
+
               <StyledTableCell align="center">
                 <Typography variant="h6">THRESHOLDS</Typography>
               </StyledTableCell>
@@ -735,19 +822,59 @@ function ThreePhaseCase() {
                 >
                   {row.intelMetering}
                 </StyledTableCell>
-                <StyledTableCell align="center">{row.value}</StyledTableCell>
+                <StyledTableCell align="center">{row.TIValue}</StyledTableCell>
                 <StyledTableCell align="center">
                   <Chip
-                    label={row.status}
-                    color={getStatusColor(row.status)[0]}
+                    label={row.TIStatus}
+                    color={getStatusColor(row.TIStatus)[0]}
                     size="small"
-                    icon={getStatusColor(row.status)[1]}
+                    icon={getStatusColor(row.TIStatus)[1]}
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
                     }}
                   />
                 </StyledTableCell>
+                <StyledTableCell align="center">{row.L1Value}</StyledTableCell>
+                <StyledTableCell align="center">
+                  <Chip
+                    label={row.L1Status}
+                    color={getStatusColor(row.L1Status)[0]}
+                    size="small"
+                    icon={getStatusColor(row.L1Status)[1]}
+                    sx={{
+                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      width: "40%",
+                    }}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">{row.L2Value}</StyledTableCell>
+                <StyledTableCell align="center">
+                  <Chip
+                    label={row.L2Status}
+                    color={getStatusColor(row.L2Status)[0]}
+                    size="small"
+                    icon={getStatusColor(row.L2Status)[1]}
+                    sx={{
+                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      width: "40%",
+                    }}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">{row.L3Value}</StyledTableCell>
+                <StyledTableCell align="center">
+                  <Chip
+                    label={row.L3Status}
+                    color={getStatusColor(row.L3Status)[0]}
+                    size="small"
+                    icon={getStatusColor(row.L3Status)[1]}
+                    sx={{
+                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      width: "40%",
+                    }}
+                  />
+                </StyledTableCell>
+
                 <StyledTableCell align="center">
                   <IconButton onClick={() => handleThresholdClick(row)} size="small">
                     <LuMenuSquare style={{ padding: "1px" }} />
