@@ -798,7 +798,6 @@ function ThreePhaseCase() {
               <StyledTableCell align="center">
                 <Typography variant="h6">L3-STATUS</Typography>
               </StyledTableCell>
-
               <StyledTableCell align="center">
                 <Typography variant="h6">THRESHOLDS</Typography>
               </StyledTableCell>
