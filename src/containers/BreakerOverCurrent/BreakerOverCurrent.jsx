@@ -10,16 +10,97 @@ import {
   Checkbox,
   Box,
   Chip,
+  Typography,
+  ToggleButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Grid,
 } from "@mui/material";
 import NamedContainer from "../../components/common/NamedContainer";
 import { ReportingBar } from "../../components/common/ReportingBar";
+import { FaLockOpen } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
+
+function SensorDialog({ open, onClose, checked }) {
+  return (
+    <Dialog fullWidth open={open} onClose={onClose}>
+      <DialogTitle>{checked.filter((value) => value === true).length} Selected Sensors</DialogTitle>
+      <Box sx={{ p: 0.5 }} />
+      <DialogContent>
+        <Grid container rowSpacing={2} columnSpacing={2}>
+          <Grid
+            container
+            rowSpacing={2}
+            columnSpacing={2}
+            sx={{ margin: "auto", display: "flex", placeContent: "center" }}
+          >
+            <Grid item xs={12}>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <Checkbox checked />
+                <TextField fullWidth label="Lower Critical" defaultValue="0.01" type="number" />
+              </div>
+            </Grid>
+            <Grid item xs={12}>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <Checkbox />
+                <TextField fullWidth label="Lower Warning" defaultValue="0" type="number" />
+              </div>
+            </Grid>
+            <Grid item xs={12}>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <Checkbox checked />
+                <TextField fullWidth label="Upper Warning" defaultValue="13" type="number" />
+              </div>
+            </Grid>
+            <Grid item xs={12}>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <Checkbox checked />
+                <TextField fullWidth label="Upper Critical" defaultValue="16" type="number" />
+              </div>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField fullWidth label="Deassertion hysteresis" defaultValue="1" type="number" />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField fullWidth label="Assertion timeout" defaultValue="0" type="number" />
+          </Grid>
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>Save</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 
 function BreakerOverCurrent() {
   const [checked, setChecked] = useState([false, false, false]);
+  const [settingsEdit, setsettingsEdit] = useState(false);
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   const handleCheckboxChange = (position) => {
     const updatedChecked = checked.map((item, index) => (index === position ? !item : item));
     setChecked(updatedChecked);
+  };
+
+  const handleDialogOpen = () => {
+    if (checked.some((item) => item)) {
+      setsettingsEdit(!settingsEdit);
+      setDialogOpen(true);
+    } else {
+      alert("Please select a breaker to edit");
+    }
+  };
+
+  const handleDialogClose = () => {
+    setsettingsEdit(!settingsEdit);
+    setDialogOpen(false);
   };
 
   const getStatusChip = (status) => {
@@ -37,7 +118,40 @@ function BreakerOverCurrent() {
 
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
-      <NamedContainer title="Breaker Over Current">
+      <NamedContainer
+        overridetitle
+        title={
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <Typography variant="h5" fontWeight="600">
+              EDIT THRESHOLD
+            </Typography>
+            <ToggleButton
+              value="settingsEdit"
+              selected={settingsEdit}
+              onChange={handleDialogOpen}
+              sx={{
+                padding: "0px",
+                paddingRight: "5px",
+                paddingLeft: "5px",
+                borderRadius: "5px",
+                textTransform: "none",
+                border: "1px solid rgba(0, 0, 0, 0.87)",
+              }}
+              color="primary"
+            >
+              <Typography
+                variant=""
+                fontWeight="400"
+                sx={{ marginRight: "5px" }}
+                //   color={settingsEdit ? "red" : "blue"}
+              >
+                Edit Settings
+              </Typography>
+              {settingsEdit ? <FaLockOpen color="red" /> : <FaLock color="#FFD700" />}
+            </ToggleButton>
+          </div>
+        }
+      >
         <TableContainer>
           <Table aria-label="PDU table">
             <TableHead>
@@ -53,6 +167,7 @@ function BreakerOverCurrent() {
                 <TableCell align="center">PDU</TableCell>
                 <TableCell align="center">Status</TableCell>
                 <TableCell align="center">RMS Current</TableCell>
+                <TableCell align="center">Max Current</TableCell>
                 <TableCell align="center">Protected Outlets</TableCell>
                 <TableCell align="center">Lines</TableCell>
               </TableRow>
@@ -72,6 +187,7 @@ function BreakerOverCurrent() {
                       <ReportingBar value={index} />
                     </div>
                   </TableCell>
+                  <TableCell align="center">{index} A</TableCell>
                   <TableCell align="center">{[1, 2, 3].map((n) => `${n + index * 3},`).join("")}</TableCell>
                   <TableCell align="center">L{index + 1}-N</TableCell>
                 </TableRow>
@@ -80,6 +196,7 @@ function BreakerOverCurrent() {
           </Table>
         </TableContainer>
       </NamedContainer>
+      <SensorDialog open={isDialogOpen} onClose={handleDialogClose} checked={checked} />
     </Box>
   );
 }

@@ -265,13 +265,13 @@ function EditOutletGroupDialog({ open, onClose, group, groups, setGropus }) {
 
 function OutletGrouping() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(true);
   const [editGroup, setEditGroup] = useState({}); // {name: "", outlets: {}, pdus: {}}
   const [groups, setGropus] = useState([]);
 
   const handleEdit = (group) => {
-    setEditDialogOpen(true);
     setEditGroup(group);
+    setEditDialogOpen(true);
   };
 
   return (

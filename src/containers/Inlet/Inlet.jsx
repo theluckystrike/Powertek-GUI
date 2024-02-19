@@ -103,6 +103,96 @@ function ThresholdDialog({ open, onClose, onSave, defaultValues }) {
   );
 }
 
+function ThresholdDialog2({ open, onClose, onSave, defaultValues }) {
+  const [values, setValues] = useState(defaultValues);
+  const [selectedLine, setSelectedLine] = useState("L1");
+
+  useEffect(() => {
+    setValues(defaultValues); // Update local state when defaultValues change
+  }, [defaultValues]);
+
+  const handleInputChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  };
+
+  const handleSave = () => {
+    onSave(values);
+    onClose();
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>
+        <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+          <Typography variant="h6" align="center" gutterBottom>
+            Set Thresholds
+          </Typography>
+
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Choose the Input</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={selectedLine}
+              label="Choose the Input"
+              onChange={(event) => {
+                setSelectedLine(event.target.value);
+              }}
+            >
+              <MenuItem value={"Total"}>Total</MenuItem>
+              <MenuItem value={"L1"}>L1</MenuItem>
+              <MenuItem value={"L2"}>L2</MenuItem>
+              <MenuItem value={"L3"}>L3</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </DialogTitle>
+      <DialogContent>
+        <TextField
+          label="Lower Warning"
+          type="text"
+          name="lowerWarning"
+          value={values.lowerWarning}
+          onChange={handleInputChange}
+          fullWidth
+          margin="dense"
+        />
+        <TextField
+          label="Higher Warning"
+          type="text"
+          name="higherWarning"
+          value={values.higherWarning}
+          onChange={handleInputChange}
+          fullWidth
+          margin="dense"
+        />
+        <TextField
+          label="Lower Critical"
+          type="text"
+          name="lowerCritical"
+          value={values.lowerCritical}
+          onChange={handleInputChange}
+          fullWidth
+          margin="dense"
+        />
+        <TextField
+          label="Higher Critical"
+          type="text"
+          name="higherCritical"
+          value={values.higherCritical}
+          onChange={handleInputChange}
+          fullWidth
+          margin="dense"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={() => handleSave(values)}>Save</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
 function IntelHistory() {
   const downloadHistory = () => {
     console.log("download history");
@@ -750,7 +840,7 @@ function ThreePhaseCase() {
   }));
   return (
     <>
-      <ThresholdDialog
+      <ThresholdDialog2
         open={dialogOpen}
         onClose={handleDialogClose}
         onSave={handleSave}
@@ -1187,7 +1277,7 @@ function ThreePhaseCaseDelta() {
   }));
   return (
     <>
-      <ThresholdDialog
+      <ThresholdDialog2
         open={dialogOpen}
         onClose={handleDialogClose}
         onSave={handleSave}
@@ -1326,6 +1416,7 @@ function ThreePhaseCaseDelta() {
 
 function Inlet(props) {
   const [settingsEdit, setsettingsEdit] = useState(false);
+  const [selectedContainer, setSelectedContainer] = useState("SinglePhaseCase");
 
   const [stats, setStats] = useState([
     { name: "Power Factor", value: "0.45" },
@@ -1342,6 +1433,10 @@ function Inlet(props) {
     L3: 5,
     Neutral: 16,
   });
+
+  const handleRadioButtonChange = (event) => {
+    setSelectedContainer(event.target.value);
+  };
 
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
@@ -1514,28 +1609,53 @@ function Inlet(props) {
         <Grid item xs={12}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <NamedContainer title="CONFIGURATION (SinglePhaseCase)">
-                <SinglePhaseCase />
-              </NamedContainer>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Table to Show</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedContainer}
+                  label="Type of Table"
+                  onChange={handleRadioButtonChange}
+                >
+                  <MenuItem value={"SinglePhaseCase"}>Single Phase Case</MenuItem>
+                  <MenuItem value={"ThreePhaseCase"}>Three Phase Case</MenuItem>
+                  <MenuItem value={"ThreePhaseCaseDelta"}>Three Phase Case Delta</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <NamedContainer title="CONFIGURATION (ThreePhaseCase)">
-                <ThreePhaseCase />
-              </NamedContainer>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <NamedContainer title="CONFIGURATION (ThreePhaseCaseDelta)">
-                <ThreePhaseCaseDelta />
-              </NamedContainer>
-            </Grid>
+
+            {selectedContainer === "SinglePhaseCase" && (
+              <Grid item xs={12}>
+                <NamedContainer title="CONFIGURATION (SinglePhaseCase)">
+                  <SinglePhaseCase />
+                </NamedContainer>
+              </Grid>
+            )}
+
+            {selectedContainer === "ThreePhaseCase" && (
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <NamedContainer title="CONFIGURATION (ThreePhaseCase)">
+                      <ThreePhaseCase />
+                    </NamedContainer>
+                  </Grid>
+                </Grid>
+              </Grid>
+            )}
+
+            {selectedContainer === "ThreePhaseCaseDelta" && (
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <NamedContainer title="CONFIGURATION (ThreePhaseCaseDelta)">
+                      <ThreePhaseCaseDelta />
+                    </NamedContainer>
+                  </Grid>
+                </Grid>
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </Grid>
