@@ -1,5 +1,7 @@
 import * as React from "react";
 import { Box, Grid, Typography } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import Divider from "../../components/common/styled/Divider";
 import { useSpring, animated } from "@react-spring/web";
 import SvgIcon from "@mui/material/SvgIcon";
 
@@ -134,6 +136,76 @@ export default function Maintenance() {
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
       <Grid container rowSpacing={2}>
+        <Grid item xs={12}>
+          <NamedContainer title="Bulk Configuration Profile">
+            <Grid container rowSpacing={2}>
+              <Grid item xs={12}>
+                <Grid container rowSpacing={2}>
+                  <Grid item xs={5} sx={{ display: "flex" }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, margin: "auto" }}>
+                      Name
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} sx={{ display: "flex", placeContent: "center" }}>
+                    <Divider
+                      orientation="vertical"
+                      variant="middle"
+                      flexItem
+                      sx={{ display: "flex", placeContent: "center" }}
+                    />
+                  </Grid>
+                  <Grid item xs={5} sx={{ display: "flex" }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, margin: "auto" }}>
+                      XXXXXXXX
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container rowSpacing={2}>
+                  <Grid item xs={5} sx={{ display: "flex" }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, margin: "auto" }}>
+                      Description
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} sx={{ display: "flex", placeContent: "center" }}>
+                    <Divider
+                      orientation="vertical"
+                      variant="middle"
+                      flexItem
+                      sx={{ display: "flex", placeContent: "center" }}
+                    />
+                  </Grid>
+                  <Grid item xs={5} sx={{ display: "flex" }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, margin: "auto" }}>
+                      XXXXXXXX
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container rowSpacing={2}>
+                  <Grid item xs={5} sx={{ display: "flex" }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, margin: "auto" }}>
+                      Set as Default
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} sx={{ display: "flex", placeContent: "center" }}>
+                    <Divider
+                      orientation="vertical"
+                      variant="middle"
+                      flexItem
+                      sx={{ display: "flex", placeContent: "center" }}
+                    />
+                  </Grid>
+                  <Grid item xs={5} sx={{ display: "flex", placeContent: "center" }}>
+                    <Checkbox />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </NamedContainer>
+        </Grid>
         <Grid item xs={12}>
           <NamedContainer title="Settings">
             <Tree />

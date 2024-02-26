@@ -1038,22 +1038,22 @@ function ThreePhaseCaseDelta() {
       lowerCritical: "0.05%",
       higherCritical: "0.25%",
     },
-    {
-      id: 4,
-      intelMetering: "RMS Neutral Current",
-      TIvalue: "0.12A",
-      L1L2Value: "0.12A",
-      L2L3Value: "0.12A",
-      L3L1Value: "0.12A",
-      TIstatus: "normal",
-      L1L2status: "normal",
-      L2L3status: "normal",
-      L3L1status: "normal",
-      lowerWarning: "0.1A",
-      higherWarning: "0.2A",
-      lowerCritical: "0.05A",
-      higherCritical: "0.25A",
-    },
+    // {
+    //   id: 4,
+    //   intelMetering: "RMS Neutral Current",
+    //   TIvalue: "0.12A",
+    //   L1L2Value: "0.12A",
+    //   L2L3Value: "0.12A",
+    //   L3L1Value: "0.12A",
+    //   TIstatus: "normal",
+    //   L1L2status: "normal",
+    //   L2L3status: "normal",
+    //   L3L1status: "normal",
+    //   lowerWarning: "0.1A",
+    //   higherWarning: "0.2A",
+    //   lowerCritical: "0.05A",
+    //   higherCritical: "0.25A",
+    // },
     {
       id: 5,
       intelMetering: "RMS Voltage",
@@ -1435,7 +1435,22 @@ function Inlet(props) {
   });
 
   const handleRadioButtonChange = (event) => {
+    console.log("lolll");
     setSelectedContainer(event.target.value);
+    if (event.target.value === "ThreePhaseCaseDelta") {
+      setCurrentMap({
+        L1: 5,
+        L2: 6,
+        L3: 5,
+      });
+    }
+
+    if (event.target.value === "SinglePhaseCase") {
+      setCurrentMap({
+        L1: 5,
+        Neutral: 16,
+      });
+    }
   };
 
   return (
