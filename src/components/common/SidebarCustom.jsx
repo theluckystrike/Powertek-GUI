@@ -117,9 +117,16 @@ function SidebarCustom(props) {
             <MenuItem component={<Link to="/device-settings" />}>Miscellaneous</MenuItem> */}
           </SubMenu>
 
-          <MenuItem icon={<GrHostMaintenance size={23} />} component={<Link to="/maintenance" />}>
+          <SubMenu label="Maintenance" icon={<GrHostMaintenance size={23} />}>
+            <MenuItem component={<Link to="/maintenance/pdu-information" />}>PDU Information</MenuItem>
+            <MenuItem component={<Link to="/maintenance/firmware-update" />}>Firmware Update</MenuItem>
+            <MenuItem component={<Link to="/maintenance/bulk-configuration" />}>Bulk Configuration</MenuItem>
+            <MenuItem component={<Link to="/maintenance/backup" />}>Backup</MenuItem>
+            <MenuItem component={<Link to="/maintenance/reset-restore" />}>Reset/Restore</MenuItem>
+          </SubMenu>
+          {/* <MenuItem icon={<GrHostMaintenance size={23} />} component={<Link to="/maintenance" />}>
             Maintenance
-          </MenuItem>
+          </MenuItem> */}
 
           <MenuItem icon={<IoMdAnalytics size={23} />} component={<Link to="/powertek-analytics" />}>
             Powertek Analytics
