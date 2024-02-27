@@ -28,9 +28,9 @@ import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 
 const userListGlobal = [
-  { id: 1, username: "User1", fullName: "John Snow", roles: "Just a user", Enabled: false, delete: false },
+  { id: 1, username: "User1", fullName: "David", roles: "Engineer", Enabled: false, delete: false },
   { id: 2, username: "User2", fullName: "Jane Doe", roles: "Breaker", Enabled: true, delete: false },
-  { id: 3, username: "Admin", fullName: "Dr House", roles: "Maintainer", Enabled: true, isAdmin: true, delete: false },
+  { id: 3, username: "Admin", fullName: "James", roles: "Maintainer", Enabled: true, isAdmin: true, delete: false },
 ];
 
 function UserDialog(props) {
