@@ -132,7 +132,7 @@ function Tree() {
   );
 }
 
-export default function Maintenance() {
+export default function BulkConfiguration() {
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
       <Grid container rowSpacing={2}>

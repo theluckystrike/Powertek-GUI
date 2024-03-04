@@ -109,7 +109,7 @@ function SidebarCustom(props) {
             <MenuItem component={<Link to="/device-settings/security" />}>Security</MenuItem>
             <MenuItem component={<Link to="/device-settings/datetime" />}>Date/Time</MenuItem>
             <MenuItem component={<Link to="/device-settings/eventlogs" />}>Event Logs</MenuItem>
-            <MenuItem component={<Link to="/device-settings" />}>Data Logging</MenuItem>
+            <MenuItem component={<Link to="/device-settings/data-logging" />}>Data Logging</MenuItem>
             <MenuItem component={<Link to="/device-settings/usb-host-port" />}>USB Host Ports</MenuItem>
             {/* <MenuItem component={<Link to="/device-settings" />}>Server Reachability</MenuItem>
             <MenuItem component={<Link to="/device-settings" />}>Front Panel</MenuItem>

@@ -24,10 +24,13 @@ import EventLogs from "./containers/DeviceSetting/EventLogs/EventLogs";
 import OutletGrouping from "./containers/OutletGrouping/OutletGrouping";
 import PowertekAnalytics from "./containers/PowertekAnalytics/PowertekAnalytics";
 import USBHostPorts from "./containers/DeviceSetting/USBHostPorts/USBHostPorts";
-import Maintenance from "./containers/Maintenance/Maintenance";
+import BulkConfiguration from "./containers/Maintenance/BulkConfiguration";
 import UserSetting from "./containers/UserSetting/UserSetting";
 
 import "./App.css";
+import FirmwareUpdate from "./containers/Maintenance/FirmwareUpdate";
+import ReserRestore from "./containers/Maintenance/ResetRestore";
+import DataLogging from "./containers/DeviceSetting/DataLogging/DataLogging";
 
 function App() {
   const config = useContext(ConfigContext);
@@ -99,21 +102,19 @@ function App() {
             <Route path="/device-settings/security" element={<PrivateRoute Component={<Security />} />} />
             <Route path="/device-settings/datetime" element={<PrivateRoute Component={<DateTime />} />} />
             <Route path="/device-settings/eventlogs" element={<PrivateRoute Component={<EventLogs />} />} />
+            <Route path="/device-settings/data-logging" element={<PrivateRoute Component={<DataLogging />} />} />
             <Route path="/device-settings/usb-host-port" element={<PrivateRoute Component={<USBHostPorts />} />} />
             <Route
               path="/maintenance/pdu-information"
               element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />}
             />
+            <Route path="/maintenance/firmware-update" element={<PrivateRoute Component={<FirmwareUpdate />} />} />
             <Route
-              path="/maintenance/firmware-update"
-              element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />}
+              path="/maintenance/bulk-configuration"
+              element={<PrivateRoute Component={<BulkConfiguration />} />}
             />
-            <Route path="/maintenance/bulk-configuration" element={<PrivateRoute Component={<Maintenance />} />} />
             <Route path="/maintenance/backup" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
-            <Route
-              path="/maintenance/reset-restore"
-              element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />}
-            />
+            <Route path="/maintenance/reset-restore" element={<PrivateRoute Component={<ReserRestore />} />} />
             <Route path="/powertek-analytics" element={<PrivateRoute Component={<PowertekAnalytics />} />} />
             <Route path="/about" element={<h1>About</h1>} />
           </Route>
