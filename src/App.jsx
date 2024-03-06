@@ -31,6 +31,7 @@ import "./App.css";
 import FirmwareUpdate from "./containers/Maintenance/FirmwareUpdate";
 import ReserRestore from "./containers/Maintenance/ResetRestore";
 import DataLogging from "./containers/DeviceSetting/DataLogging/DataLogging";
+import PDUInformation from "./containers/Maintenance/PDUInformation";
 
 function App() {
   const config = useContext(ConfigContext);
@@ -104,10 +105,7 @@ function App() {
             <Route path="/device-settings/eventlogs" element={<PrivateRoute Component={<EventLogs />} />} />
             <Route path="/device-settings/data-logging" element={<PrivateRoute Component={<DataLogging />} />} />
             <Route path="/device-settings/usb-host-port" element={<PrivateRoute Component={<USBHostPorts />} />} />
-            <Route
-              path="/maintenance/pdu-information"
-              element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />}
-            />
+            <Route path="/maintenance/pdu-information" element={<PrivateRoute Component={<PDUInformation />} />} />
             <Route path="/maintenance/firmware-update" element={<PrivateRoute Component={<FirmwareUpdate />} />} />
             <Route
               path="/maintenance/bulk-configuration"
