@@ -13,6 +13,7 @@ import {
   TextField,
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../components/common/NamedContainer";
+import PduSelect from "../../components/common/PDUSelect";
 
 function AddOutletGroupDialog({ open, onClose, group, groups, setGropus }) {
   const [checked, setChecked] = React.useState(group.checked || {});
@@ -285,6 +286,7 @@ function OutletGrouping() {
                 <Typography variant="h5" fontWeight="600">
                   SETTINGS
                 </Typography>
+                <PduSelect />
                 <Button variant="outlined" color="primary" size="small" onClick={() => setAddDialogOpen(true)}>
                   Add Outlet Group
                 </Button>

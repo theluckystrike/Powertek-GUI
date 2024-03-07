@@ -11,6 +11,7 @@ import InletStats from "../../components/homepage/InletStats";
 import CircuitBreakerStatus from "../../components/homepage/CircuitBreakerStatus";
 
 import ConfigContext from "../../components/common/ConfigContext";
+import PDUSelect from "../../components/common/PDUSelect";
 
 function HomePage(props) {
   const config = useContext(ConfigContext);
@@ -107,7 +108,17 @@ function HomePage(props) {
         <Grid item xs={12}>
           <Grid container spacing={2}>
             <Grid item lg={circuitBreakerNumber <= 12 ? 6 : 12} md={12}>
-              <NamedContainer title="INLET">
+              <NamedContainer
+                overridetitle
+                title={
+                  <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                    <Typography variant="h5" fontWeight="600">
+                      INLET STATUS
+                    </Typography>
+                    <PDUSelect />
+                  </div>
+                }
+              >
                 <InletStats
                   maxCurrent={32}
                   minCurrent={0}

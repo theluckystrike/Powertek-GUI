@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Grid, Button, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { Box, Grid, Button, Select, MenuItem, InputLabel, FormControl, Typography } from "@mui/material";
 import { ResponsiveContainer, AreaChart, XAxis, YAxis, Area, Tooltip, CartesianGrid } from "recharts";
 import { CSVLink } from "react-csv";
 import NamedContainer, { CollapsiableNamedContainer } from "../../components/common/NamedContainer";
@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import PduSelect from "../../components/common/PDUSelect";
 
 function IntelHistory() {
   const [startDate, setStartDate] = useState(null);
@@ -364,7 +365,17 @@ function PowertekAnalytics() {
     <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
-          <NamedContainer title="Powertek Analytics">
+          <NamedContainer
+            overridetitle
+            title={
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <Typography variant="h5" fontWeight="600">
+                  POWERTEK ANALYTICS
+                </Typography>
+                <PduSelect />
+              </div>
+            }
+          >
             <Grid container rowSpacing={2}>
               <Grid item xs={12}>
                 <CollapsiableNamedContainer title="Inlet History">

@@ -28,6 +28,7 @@ import NamedContainer from "../../components/common/NamedContainer";
 import Chip from "@mui/material/Chip";
 import { ReportingBar } from "../../components/common/ReportingBar";
 import { useTheme } from "@emotion/react";
+import PDUSelect from "../../components/common/PDUSelect";
 
 function OutletDialogBox({ open, handleClose, selectedOutlet }) {
   return <h1>lolll</h1>;
@@ -229,6 +230,7 @@ function Outlet() {
             <Typography variant="h5" fontWeight="600">
               Outlet
             </Typography>
+            <PDUSelect />
             <Box sx={{ marginRight: "20px", display: checkSelected.length > 0 ? "block" : "none", gap: "2px" }}>
               <Button
                 variant="small"
