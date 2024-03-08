@@ -24,6 +24,7 @@ import NamedContainer from "../../components/common/NamedContainer";
 import { ReportingBar } from "../../components/common/ReportingBar";
 import { FaLockOpen } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
+import PduSelect from "../../components/common/PDUSelect";
 
 function SensorDialog({ open, onClose, checked }) {
   return (
@@ -125,6 +126,7 @@ function BreakerOverCurrent() {
             <Typography variant="h5" fontWeight="600">
               EDIT THRESHOLD
             </Typography>
+            <PduSelect />
             <ToggleButton
               value="settingsEdit"
               selected={settingsEdit}

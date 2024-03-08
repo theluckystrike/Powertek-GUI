@@ -37,6 +37,7 @@ import GppBadIcon from "@mui/icons-material/GppBad";
 import NamedContainer, { CollapsiableNamedContainer } from "../../components/common/NamedContainer";
 import InletStats from "../../components/homepage/InletStats";
 import Divider from "../../components/common/styled/Divider";
+import PduSelect from "../../components/common/PDUSelect";
 
 function ThresholdDialog({ open, onClose, onSave, defaultValues }) {
   const [values, setValues] = useState(defaultValues);
@@ -1459,7 +1460,17 @@ function Inlet(props) {
         <Grid item xs={12}>
           <Grid container spacing={2}>
             <Grid item lg={6} md={12}>
-              <NamedContainer title="INLET">
+              <NamedContainer
+                overridetitle
+                title={
+                  <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                    <Typography variant="h5" fontWeight="600">
+                      INLET STATUS
+                    </Typography>
+                    <PduSelect />
+                  </div>
+                }
+              >
                 <InletStats
                   maxCurrent={32}
                   minCurrent={0}
@@ -1623,7 +1634,7 @@ function Inlet(props) {
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Table to Show</InputLabel>
                 <Select
@@ -1638,7 +1649,7 @@ function Inlet(props) {
                   <MenuItem value={"ThreePhaseCaseDelta"}>Three Phase Case Delta</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
+            </Grid> */}
 
             {selectedContainer === "SinglePhaseCase" && (
               <Grid item xs={12}>

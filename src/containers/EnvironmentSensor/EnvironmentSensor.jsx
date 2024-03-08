@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import NamedContainer from "../../components/common/NamedContainer";
 import { ReportingBar } from "../../components/common/ReportingBar";
+import PduSelect from "../../components/common/PDUSelect";
 
 const data = [
   [
@@ -362,6 +363,7 @@ function EnvironmentSensor() {
                 <Typography variant="h5" fontWeight="600">
                   Environment Sensor
                 </Typography>
+                <PduSelect />
               </div>
             }
           >
