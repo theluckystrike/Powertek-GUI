@@ -8,10 +8,10 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ConfigContext.Provider value={config}>
-      <Router basename={"/Powertek-GUI/"}>
-        <App />
-      </Router>
-    </ConfigContext.Provider>
+    {/* <ConfigContext.Provider value={config}> */}
+    <Router basename={"/Powertek-GUI/"}>
+      <App />
+    </Router>
+    {/* </ConfigContext.Provider> */}
   </React.StrictMode>
 );

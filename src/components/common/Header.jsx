@@ -12,6 +12,10 @@ import LanguageIcon from "@mui/icons-material/Language";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { Tooltip, useTheme } from "@mui/material";
+import ConfigContext from "./ConfigContext";
+
+import { IoFlower } from "react-icons/io5";
+import { GiBreakingChain } from "react-icons/gi";
 
 const pageStyles = {
   appBar: {
@@ -32,6 +36,7 @@ const pageStyles = {
 
 export default function Header(props) {
   const theme = useTheme();
+  const { config, setConfig } = React.useContext(ConfigContext);
   return (
     <AppBar position="sticky" sx={pageStyles.appBar}>
       <Toolbar sx={{ flexGrow: 1 }}>
@@ -54,6 +59,21 @@ export default function Header(props) {
           <Tooltip title="Toggle Theme" placement="bottom">
             <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.toggleTheme}>
               {theme.palette.mode == "light" ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={config.daisyChain ? "Daisy Chain Enabled" : "Daisy Chain Disabled"} placement="bottom">
+            <IconButton
+              size="large"
+              edge="end"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={() => {
+                const configCopy = { ...config };
+                configCopy.daisyChain = !config.daisyChain;
+                setConfig(configCopy);
+              }}
+            >
+              {config.daisyChain ? <IoFlower /> : <GiBreakingChain />}
             </IconButton>
           </Tooltip>
         </Box>

@@ -23,7 +23,7 @@ import ConfigContext from "./ConfigContext";
 import logo from "../../assets/logo-clear.png";
 
 function SidebarCustom(props) {
-  const config = useContext(ConfigContext);
+  const { config, setConfig } = useContext(ConfigContext);
   const logoName = config[`logoName`];
   const imageurl = new URL(`../../assets/${logoName}`, import.meta.url).href;
   const { collapsed, setsideBarCollapsed } = props;

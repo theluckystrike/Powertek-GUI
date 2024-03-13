@@ -5,5 +5,6 @@
   "outletErrorThreshold": 12,
   "logoName": "logo-clear.png",
   "model": "IEXCBPOMS50",
-  "firmwareVersion": "PWT.23.0764"
+  "firmwareVersion": "PWT.23.0764",
+  "daisyChain": "true"
 }

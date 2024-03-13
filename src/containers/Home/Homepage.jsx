@@ -14,7 +14,7 @@ import ConfigContext from "../../components/common/ConfigContext";
 import PDUSelect from "../../components/common/PDUSelect";
 
 function HomePage(props) {
-  const config = useContext(ConfigContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
   const [stats, setStats] = useState([
     { name: "Power Factor", value: "0.45" },

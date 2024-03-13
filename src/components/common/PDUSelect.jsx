@@ -1,7 +1,9 @@
 import React from "react";
 import { MenuItem, FormControl, Select, InputLabel } from "@mui/material";
+import ConfigContext from "./ConfigContext";
 
 export default function PduSelect() {
+  const { config, setConfig } = React.useContext(ConfigContext);
   const [pdu, setPdu] = React.useState(1);
 
   const handleChange = (event) => {
@@ -9,7 +11,7 @@ export default function PduSelect() {
   };
 
   return (
-    <FormControl sx={{ width: "200px" }}>
+    <FormControl sx={{ width: "200px", display: config.daisyChain ? "flex" : "None" }}>
       <InputLabel id="pdu-select-label">PDU</InputLabel>
       <Select
         labelId="pdu-select-label"
