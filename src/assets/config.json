@@ -1,10 +1,54 @@
-{
-  "circuitBreakerNumber": 9,
-  "maxBreakerCurrent": 30,
-  "outletWarningThreshold": 10,
-  "outletErrorThreshold": 12,
-  "logoName": "logo-clear.png",
-  "model": "IEXCBPOMS50",
-  "firmwareVersion": "PWT.23.0764",
-  "daisyChain": "true"
-}
+[
+  {
+    "circuitBreakerNumber": 9,
+    "maxBreakerCurrent": 30,
+    "outletWarningThreshold": 10,
+    "outletErrorThreshold": 12,
+    "logoName": "logo-clear.png",
+    "model": "IEXCBPOMS50",
+    "firmwareVersion": "PWT.23.0764",
+    "daisyChain": "true",
+    "headerDisplayName": "Company 1 || IEXCBPOMS50",
+    "companyUrl": "https://www.powertekpdus.com/",
+    "circuitBreakerNames": ["Circuit 1 L1", "Circuit 2 L1", "Circuit 3 L2", "Circuit 4 L2"]
+  },
+  {
+    "circuitBreakerNumber": 9,
+    "maxBreakerCurrent": 30,
+    "outletWarningThreshold": 10,
+    "outletErrorThreshold": 12,
+    "logoName": "logo-generic.png",
+    "model": "IEXCBPOMS50",
+    "firmwareVersion": "PWT.23.0764",
+    "daisyChain": "true",
+    "headerDisplayName": "Company 2 || Something Diffrent",
+    "companyUrl": "http://www.google.com",
+    "circuitBreakerNames": [
+      "Circuit 1 L1",
+      "Circuit  2 L1",
+      "Circuit 3 L2",
+      "Circuit 4 L2",
+      "Circuit  5 L3",
+      "Circuit 6 L3",
+      "Circuit 7 L1",
+      "Circuit 8 L1",
+      "Circuit 9 L2",
+      "Circuit 10 L2",
+      "Circuit 11 L3",
+      "Circuit  12 L3"
+    ]
+  },
+  {
+    "circuitBreakerNumber": 9,
+    "maxBreakerCurrent": 30,
+    "outletWarningThreshold": 10,
+    "outletErrorThreshold": 12,
+    "logoName": "logo-generic-2.png",
+    "model": "IEXCBPOMS50",
+    "firmwareVersion": "PWT.23.0764",
+    "daisyChain": "true",
+    "headerDisplayName": "Company 3 || Something Else",
+    "companyUrl": "http://www.google.com",
+    "circuitBreakerNames": ["Circuit 1 L1", "Circuit 2 L1", "Circuit 3 L2", "Circuit 4 L2"]
+  }
+]

@@ -71,9 +71,13 @@ function SidebarCustom(props) {
               width: "100%",
               objectFit: "cover",
               overflow: "hidden",
+              cursor: "pointer",
             }}
             alt="Logo"
             src={imageurl}
+            onClick={() => {
+              window.open(config.companyUrl, "_blank");
+            }}
           />
         </div>
         <Menu menuItemStyles={menuItemStyles}>

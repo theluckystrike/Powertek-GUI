@@ -12,7 +12,7 @@ function CircuitBreakerStatus({ circuitBreakerMap = {}, maxCurrent = 16, minCurr
         <Grid item xs="auto">
           <Item color="#fff" sx={{ boxShadow: "none", width: "160px" }}>
             <Typography variant="body1" component="div" fontWeight="600" sx={{ textAlign: "center" }}>
-              Circuit Breaker {key} :{" "}
+              {key} :{" "}
             </Typography>
             <Typography variant="body1" component="div" fontWeight="600" sx={{ textAlign: "center" }}>
               {circuitBreakerMap[key]} / {maxCurrent} A

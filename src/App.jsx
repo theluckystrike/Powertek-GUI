@@ -36,8 +36,9 @@ import default_config from "./assets/config.json";
 
 function App() {
   const navigate = useNavigate();
+  const allConfig = default_config;
   const [theme, setTheme] = useState("dark");
-  const [config, setConfig] = useState(default_config); // [config, setConfig
+  const [config, setConfig] = useState(default_config[0]); // [config, setConfig
   const [sideBarCollapsed, setsideBarCollapsed] = useState(false);
 
   const toggleTheme = () => {
@@ -59,7 +60,7 @@ function App() {
   };
 
   return (
-    <ConfigContext.Provider value={{ config, setConfig }}>
+    <ConfigContext.Provider value={{ config, setConfig, allConfig }}>
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         <div style={{ display: "flex" }} className="main">
           <Routes>

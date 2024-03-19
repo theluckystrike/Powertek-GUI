@@ -12,6 +12,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { Tooltip, useTheme } from "@mui/material";
+import { MenuItem, FormControl, Select, InputLabel } from "@mui/material";
 import ConfigContext from "./ConfigContext";
 
 import { IoFlower } from "react-icons/io5";
@@ -36,13 +37,34 @@ const pageStyles = {
 
 export default function Header(props) {
   const theme = useTheme();
-  const { config, setConfig } = React.useContext(ConfigContext);
+  const { config, setConfig, allConfig } = React.useContext(ConfigContext);
+  const [value, setValue] = React.useState(0);
+
+  const handleConfigChange = (event) => {
+    setConfig(allConfig[event.target.value]);
+    setValue(event.target.value);
+  };
+
   return (
     <AppBar position="sticky" sx={pageStyles.appBar}>
       <Toolbar sx={{ flexGrow: 1 }}>
-        <Typography sx={{ marginRight: "30px" }} variant="h6">{`Powertek GUI Demo`}</Typography>
+        <Typography sx={{ marginRight: "30px" }} variant="h6">
+          {config.headerDisplayName}
+        </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Select
+            labelId="pdu-select-label"
+            id="pdu-select"
+            value={value}
+            onChange={handleConfigChange}
+            size="small"
+            sx={{ maxWidth: "200px", maxHeight: "40px", margin: "auto" }}
+          >
+            <MenuItem value={0}>Config 1 (Company 1 || Single phase 63)</MenuItem>
+            <MenuItem value={1}>Config 2 (Company 2 || three phase WYE 63)</MenuItem>
+            <MenuItem value={2}>Config 3 (Company 3 || three phase DELTA 60A)</MenuItem>
+          </Select>
           <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
             <LanguageIcon />
           </IconButton>

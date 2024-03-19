@@ -38,13 +38,13 @@ function HomePage(props) {
   // Configs
   const outletWarningThreshold = config[`outletWarningThreshold`];
   const outletErrorThreshold = config[`outletErrorThreshold`];
-  const circuitBreakerNumber = config[`circuitBreakerNumber`];
+  const circuitBreakerNumber = config[`circuitBreakerNames`].length;
   const maxCurrent = config[`maxBreakerCurrent`];
 
   useEffect(() => {
     let temp = {};
-    for (let i = 1; i <= circuitBreakerNumber; i++) {
-      temp[`L${i}`] = Math.floor(Math.random() * 16);
+    for (let name of config[`circuitBreakerNames`]) {
+      temp[name] = Math.floor(Math.random() * 16);
     }
     setCircuitBreakerMap(temp);
 
@@ -73,9 +73,10 @@ function HomePage(props) {
         L3: Math.floor(Math.random() * 16),
         Neutral: Math.floor(Math.random() * 16),
       });
+
       let temp = {};
-      for (let i = 1; i <= circuitBreakerNumber; i++) {
-        temp[`L${i}`] = Math.floor(Math.random() * 16);
+      for (let name of config[`circuitBreakerNames`]) {
+        temp[name] = Math.floor(Math.random() * 16);
       }
       setCircuitBreakerMap(temp);
 
@@ -97,7 +98,7 @@ function HomePage(props) {
       }
 
       setOutletStatus(outletStatusTemp);
-    }, 1000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [circuitBreakerNumber, outletErrorThreshold, outletWarningThreshold]);
