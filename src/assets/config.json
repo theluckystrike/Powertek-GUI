@@ -21,7 +21,7 @@
     "model": "IEXCBPOMS50",
     "firmwareVersion": "PWT.23.0764",
     "daisyChain": "true",
-    "headerDisplayName": "Company 2 || Something Diffrent",
+    "headerDisplayName": "Company 2",
     "companyUrl": "http://www.google.com",
     "circuitBreakerNames": [
       "Circuit 1 L1",
@@ -47,7 +47,7 @@
     "model": "IEXCBPOMS50",
     "firmwareVersion": "PWT.23.0764",
     "daisyChain": "true",
-    "headerDisplayName": "Company 3 || Something Else",
+    "headerDisplayName": "Company 3",
     "companyUrl": "http://www.google.com",
     "circuitBreakerNames": ["Circuit 1 L1", "Circuit 2 L1", "Circuit 3 L2", "Circuit 4 L2"]
   }
