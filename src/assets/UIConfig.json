@@ -10,14 +10,14 @@
     "logoName": "logo-generic.png",
     "model": "IEXCBPOMS50",
     "firmwareVersion": "PWT.23.0764",
-    "headerDisplayName": "Company 2 || Something Diffrent",
+    "headerDisplayName": "Company 2 || THYMELEAF",
     "companyUrl": "http://www.google.com"
   },
   {
     "logoName": "logo-generic-2.png",
     "model": "IEXCBPOMS50",
     "firmwareVersion": "PWT.23.0764",
-    "headerDisplayName": "Company 3 || Something Else",
+    "headerDisplayName": "Company 3 || BC50RTYD89",
     "companyUrl": "http://www.google.com"
   }
 ]
