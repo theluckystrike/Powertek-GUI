@@ -1,28 +1,20 @@
 [
   {
-    "circuitBreakerNumber": 9,
+    "outletNumber": 36,
     "maxBreakerCurrent": 30,
     "outletWarningThreshold": 10,
     "outletErrorThreshold": 12,
-    "logoName": "logo-clear.png",
-    "model": "IEXCBPOMS50",
-    "firmwareVersion": "PWT.23.0764",
     "daisyChain": "true",
-    "headerDisplayName": "Company 1 || IEXCBPOMS50",
-    "companyUrl": "https://www.powertekpdus.com/",
-    "circuitBreakerNames": ["Circuit 1 L1", "Circuit 2 L1", "Circuit 3 L2", "Circuit 4 L2"]
+    "circuitBreakerNames": ["Circuit 1 L1", "Circuit 2 L1"],
+    "inlets": ["L1", "Neutral"],
+    "caseType": "SinglePhaseCase"
   },
   {
-    "circuitBreakerNumber": 9,
+    "outletNumber": 42,
     "maxBreakerCurrent": 30,
     "outletWarningThreshold": 10,
     "outletErrorThreshold": 12,
-    "logoName": "logo-generic.png",
-    "model": "IEXCBPOMS50",
-    "firmwareVersion": "PWT.23.0764",
     "daisyChain": "true",
-    "headerDisplayName": "Company 2",
-    "companyUrl": "http://www.google.com",
     "circuitBreakerNames": [
       "Circuit 1 L1",
       "Circuit  2 L1",
@@ -36,19 +28,18 @@
       "Circuit 10 L2",
       "Circuit 11 L3",
       "Circuit  12 L3"
-    ]
+    ],
+    "inlets": ["L1", "L2", "L3", "Neutral"],
+    "caseType": "ThreePhaseCaseWYE"
   },
   {
-    "circuitBreakerNumber": 9,
+    "outletNumber": 36,
     "maxBreakerCurrent": 30,
     "outletWarningThreshold": 10,
     "outletErrorThreshold": 12,
-    "logoName": "logo-generic-2.png",
-    "model": "IEXCBPOMS50",
-    "firmwareVersion": "PWT.23.0764",
     "daisyChain": "true",
-    "headerDisplayName": "Company 3",
-    "companyUrl": "http://www.google.com",
-    "circuitBreakerNames": ["Circuit 1 L1", "Circuit 2 L1", "Circuit 3 L2", "Circuit 4 L2"]
+    "circuitBreakerNames": ["Circuit 1 L1/L2", "Circuit 2 L2/L3", "Circuit 3 L3/L1"],
+    "inlets": ["L1", "L2", "L3"],
+    "caseType": "ThreePhaseCaseDelta"
   }
 ]

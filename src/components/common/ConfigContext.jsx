@@ -1,5 +1,6 @@
 import { createContext } from "react";
 
 const ConfigContext = createContext();
+const UIConfigContext = createContext();
 
-export default ConfigContext;
+export { ConfigContext as default, UIConfigContext };

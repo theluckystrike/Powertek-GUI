@@ -39,7 +39,7 @@ function AddOutletGroupDialog({ open, onClose, group, groups, setGropus }) {
       pdus: pduChecked,
     };
     setGropus([...groups, newGroup]);
-    console.log(groups);
+    // console.log(groups);
     onClose();
   };
 

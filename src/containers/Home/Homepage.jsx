@@ -25,12 +25,20 @@ function HomePage(props) {
     { name: "Apparent Power", value: "65.60kVAh" },
   ]);
 
-  const [currentMap, setCurrentMap] = useState({
-    L1: 5,
-    L2: 6,
-    L3: 5,
-    Neutral: 16,
-  });
+  const [currentMap, setCurrentMap] = useState(
+    config["inlets"].reduce(
+      (acc, curr) => {
+        acc[curr] = Math.floor(Math.random() * 16);
+        return acc;
+      },
+      {
+        // L1: 0,
+        // L2: 0,
+        // L3: 0,
+        // Neutral: 0,
+      }
+    )
+  );
 
   const [circuitBreakerMap, setCircuitBreakerMap] = useState({});
   const [outletStatus, setOutletStatus] = useState([]);
@@ -49,7 +57,7 @@ function HomePage(props) {
     setCircuitBreakerMap(temp);
 
     let outletStatusTemp = [];
-    for (let i = 1; i <= 35; i++) {
+    for (let i = 1; i <= config[`outletNumber`]; i++) {
       let temp2 = {};
       temp2[`Label`] = `Outlet ${i}`;
       temp2[`Current`] = (Math.random() * 16).toFixed(2);
@@ -67,12 +75,20 @@ function HomePage(props) {
     setOutletStatus(outletStatusTemp);
 
     const interval = setInterval(() => {
-      setCurrentMap({
-        L1: Math.floor(Math.random() * 16),
-        L2: Math.floor(Math.random() * 16),
-        L3: Math.floor(Math.random() * 16),
-        Neutral: Math.floor(Math.random() * 16),
-      });
+      setCurrentMap(
+        config["inlets"].reduce(
+          (acc, curr) => {
+            acc[curr] = Math.floor(Math.random() * 16);
+            return acc;
+          },
+          {
+            // L1: 0,
+            // L2: 0,
+            // L3: 0,
+            // Neutral: 0,
+          }
+        )
+      );
 
       let temp = {};
       for (let name of config[`circuitBreakerNames`]) {
@@ -82,7 +98,7 @@ function HomePage(props) {
 
       let outletStatusTemp = [];
 
-      for (let i = 1; i <= 35; i++) {
+      for (let i = 1; i <= config[`outletNumber`]; i++) {
         let temp2 = {};
         temp2[`Label`] = `Outlet ${i}`;
         temp2[`Current`] = (Math.random() * 16).toFixed(2);
@@ -98,10 +114,10 @@ function HomePage(props) {
       }
 
       setOutletStatus(outletStatusTemp);
-    }, 2000);
+    }, 1000);
 
     return () => clearInterval(interval);
-  }, [circuitBreakerNumber, outletErrorThreshold, outletWarningThreshold]);
+  }, [config]);
 
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>

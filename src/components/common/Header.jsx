@@ -13,7 +13,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { Tooltip, useTheme } from "@mui/material";
 import { MenuItem, FormControl, Select, InputLabel } from "@mui/material";
-import ConfigContext from "./ConfigContext";
+import ConfigContext, { UIConfigContext } from "./ConfigContext";
 
 import { IoFlower } from "react-icons/io5";
 import { GiBreakingChain } from "react-icons/gi";
@@ -38,10 +38,12 @@ const pageStyles = {
 export default function Header(props) {
   const theme = useTheme();
   const { config, setConfig, allConfig } = React.useContext(ConfigContext);
+  const { UIConfig, setUIConfig, allUIConfig } = React.useContext(UIConfigContext);
   const [value, setValue] = React.useState(0);
 
   const handleConfigChange = (event) => {
     setConfig(allConfig[event.target.value]);
+    setUIConfig(allUIConfig[event.target.value]);
     setValue(event.target.value);
   };
 
@@ -49,7 +51,7 @@ export default function Header(props) {
     <AppBar position="sticky" sx={pageStyles.appBar}>
       <Toolbar sx={{ flexGrow: 1 }}>
         <Typography sx={{ marginRight: "30px" }} variant="h6">
-          {config.headerDisplayName}
+          {UIConfig.headerDisplayName}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: "none", md: "flex" } }}>

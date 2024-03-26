@@ -28,7 +28,7 @@ const ApplyButton = styled(Button)({
 function ReserRestore() {
   const handleApply = () => {
     // Implement what happens when apply is clicked
-    console.log("Apply was clicked");
+    // console.log("Apply was clicked");
   };
 
   return (

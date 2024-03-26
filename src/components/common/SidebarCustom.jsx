@@ -19,12 +19,12 @@ import { RiListSettingsLine } from "react-icons/ri";
 import { GrHostMaintenance } from "react-icons/gr";
 import { IoMdAnalytics } from "react-icons/io";
 
-import ConfigContext from "./ConfigContext";
+import ConfigContext, { UIConfigContext } from "./ConfigContext";
 import logo from "../../assets/logo-clear.png";
 
 function SidebarCustom(props) {
-  const { config, setConfig } = useContext(ConfigContext);
-  const logoName = config[`logoName`];
+  const { UIConfig, setUIConfig } = useContext(UIConfigContext);
+  const logoName = UIConfig[`logoName`];
   const imageurl = new URL(`../../assets/${logoName}`, import.meta.url).href;
   const { collapsed, setsideBarCollapsed } = props;
   const menuItemStyles = {
@@ -76,7 +76,7 @@ function SidebarCustom(props) {
             alt="Logo"
             src={imageurl}
             onClick={() => {
-              window.open(config.companyUrl, "_blank");
+              window.open(UIConfig.companyUrl, "_blank");
             }}
           />
         </div>
@@ -164,10 +164,10 @@ function SidebarCustom(props) {
           }}
         >
           <Typography variant="caption" color="#fff">
-            Model: {config[`model`]}
+            Model: {UIConfig[`model`]}
           </Typography>
           <Typography variant="caption" color="#fff">
-            Firmware version: {config[`firmwareVersion`]}
+            Firmware version: {UIConfig[`firmwareVersion`]}
           </Typography>
           <Typography variant="caption" color="#fff">
             Help:{" "}

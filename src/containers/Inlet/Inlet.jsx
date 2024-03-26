@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Container, Typography, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -38,6 +38,7 @@ import NamedContainer, { CollapsiableNamedContainer } from "../../components/com
 import InletStats from "../../components/homepage/InletStats";
 import Divider from "../../components/common/styled/Divider";
 import PduSelect from "../../components/common/PDUSelect";
+import ConfigContext from "../../components/common/ConfigContext";
 
 function ThresholdDialog({ open, onClose, onSave, defaultValues }) {
   const [values, setValues] = useState(defaultValues);
@@ -196,7 +197,7 @@ function ThresholdDialog2({ open, onClose, onSave, defaultValues }) {
 
 function IntelHistory() {
   const downloadHistory = () => {
-    console.log("download history");
+    // console.log("download history");
   };
   const sampleData = [
     { xaxis: "00:00", value: 0.07 },
@@ -270,7 +271,7 @@ function HisotryDialog({ open, onClose, onSave, data }) {
 
   const handleReset = () => {
     // Reset logic here
-    console.log("Reset min/max values");
+    // console.log("Reset min/max values");
   };
 
   return (
@@ -470,12 +471,12 @@ function SinglePhaseCase() {
       higherCritical: row.higherCritical,
     });
     setDialogOpen(true);
-    console.log("Threshold settings for:", row);
+    // console.log("Threshold settings for:", row);
   }
 
   function handleHistoryClick(row) {
     setHistoryDialogOpen(true);
-    console.log("History settings for:", row);
+    // console.log("History settings for:", row);
   }
 
   const handleDialogClose = () => {
@@ -484,7 +485,7 @@ function SinglePhaseCase() {
   };
 
   const handleSave = (newValues) => {
-    console.log("Saved Values:", newValues);
+    // console.log("Saved Values:", newValues);
     // Here you will update your row data with new threshold values
     setDialogOpen(false);
   };
@@ -574,7 +575,7 @@ function SinglePhaseCase() {
   );
 }
 
-function ThreePhaseCase() {
+function ThreePhaseCaseWYE() {
   const theme = useTheme();
   const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
   const [currentThresholds, setCurrentThresholds] = useState({
@@ -817,12 +818,12 @@ function ThreePhaseCase() {
       higherCritical: row.higherCritical,
     });
     setDialogOpen(true);
-    console.log("Threshold settings for:", row);
+    // console.log("Threshold settings for:", row);
   }
 
   function handleHistoryClick(row) {
     setHistoryDialogOpen(true);
-    console.log("History settings for:", row);
+    // console.log("History settings for:", row);
   }
 
   const handleDialogClose = () => {
@@ -831,7 +832,7 @@ function ThreePhaseCase() {
   };
 
   const handleSave = (newValues) => {
-    console.log("Saved Values:", newValues);
+    // console.log("Saved Values:", newValues);
     // Here you will update your row data with new threshold values
     setDialogOpen(false);
   };
@@ -1254,12 +1255,12 @@ function ThreePhaseCaseDelta() {
       higherCritical: row.higherCritical,
     });
     setDialogOpen(true);
-    console.log("Threshold settings for:", row);
+    // console.log("Threshold settings for:", row);
   }
 
   function handleHistoryClick(row) {
     setHistoryDialogOpen(true);
-    console.log("History settings for:", row);
+    // console.log("History settings for:", row);
   }
 
   const handleDialogClose = () => {
@@ -1268,7 +1269,7 @@ function ThreePhaseCaseDelta() {
   };
 
   const handleSave = (newValues) => {
-    console.log("Saved Values:", newValues);
+    // console.log("Saved Values:", newValues);
     // Here you will update your row data with new threshold values
     setDialogOpen(false);
   };
@@ -1416,8 +1417,10 @@ function ThreePhaseCaseDelta() {
 }
 
 function Inlet(props) {
+  const { config, setConfig } = useContext(ConfigContext);
   const [settingsEdit, setsettingsEdit] = useState(false);
   const [selectedContainer, setSelectedContainer] = useState("SinglePhaseCase");
+  const [currentMap, setCurrentMap] = useState({});
 
   const [stats, setStats] = useState([
     { name: "Power Factor", value: "0.45" },
@@ -1428,15 +1431,25 @@ function Inlet(props) {
     { name: "Apparent Power", value: "65.60kVAh" },
   ]);
 
-  const [currentMap, setCurrentMap] = useState({
-    L1: 5,
-    L2: 6,
-    L3: 5,
-    Neutral: 16,
-  });
+  useEffect(() => {
+    setCurrentMap(
+      config["inlets"].reduce(
+        (acc, curr) => {
+          acc[curr] = Math.floor(Math.random() * 16);
+          return acc;
+        },
+        {
+          // L1: 0,
+          // L2: 0,
+          // L3: 0,
+          // Neutral: 0,
+        }
+      )
+    );
+    setSelectedContainer(config["caseType"]);
+  }, [config]);
 
   const handleRadioButtonChange = (event) => {
-    console.log("lolll");
     setSelectedContainer(event.target.value);
     if (event.target.value === "ThreePhaseCaseDelta") {
       setCurrentMap({
@@ -1659,12 +1672,12 @@ function Inlet(props) {
               </Grid>
             )}
 
-            {selectedContainer === "ThreePhaseCase" && (
+            {selectedContainer === "ThreePhaseCaseWYE" && (
               <Grid item xs={12}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <NamedContainer title="CONFIGURATION (ThreePhaseCase)">
-                      <ThreePhaseCase />
+                    <NamedContainer title="CONFIGURATION (ThreePhaseCaseWYE)">
+                      <ThreePhaseCaseWYE />
                     </NamedContainer>
                   </Grid>
                 </Grid>

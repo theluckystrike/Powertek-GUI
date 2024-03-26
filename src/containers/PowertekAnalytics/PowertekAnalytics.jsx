@@ -14,7 +14,7 @@ function IntelHistory() {
   const [endDate, setEndDate] = useState(null);
 
   const downloadHistory = () => {
-    console.log("download history");
+    // console.log("download history");
   };
   const sampleData = [
     { xaxis: "00:00", value: 0.07 },
@@ -121,7 +121,7 @@ function OverCurrentBreakerHistory() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const downloadHistory = () => {
-    console.log("download history");
+    // console.log("download history");
   };
   const sampleData = [
     { xaxis: "00:00", value: 0.07 },
@@ -228,7 +228,7 @@ function OutletHistory() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const downloadHistory = () => {
-    console.log("download history");
+    // console.log("download history");
   };
   const sampleData = [
     { xaxis: "00:00", value: 0.07 },

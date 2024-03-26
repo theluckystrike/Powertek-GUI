@@ -1,0 +1,23 @@
+[
+  {
+    "logoName": "logo-clear.png",
+    "model": "IEXCBPOMS50",
+    "firmwareVersion": "PWT.23.0764",
+    "headerDisplayName": "Company 1 || IEXCBPOMS50",
+    "companyUrl": "https://www.powertekpdus.com/"
+  },
+  {
+    "logoName": "logo-generic.png",
+    "model": "IEXCBPOMS50",
+    "firmwareVersion": "PWT.23.0764",
+    "headerDisplayName": "Company 2 || Something Diffrent",
+    "companyUrl": "http://www.google.com"
+  },
+  {
+    "logoName": "logo-generic-2.png",
+    "model": "IEXCBPOMS50",
+    "firmwareVersion": "PWT.23.0764",
+    "headerDisplayName": "Company 3 || Something Else",
+    "companyUrl": "http://www.google.com"
+  }
+]

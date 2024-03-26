@@ -23,7 +23,7 @@ function FirmwareUpdate() {
 
   const handleFileUpload = () => {
     // Handle the file upload logic here
-    console.log(file);
+    // console.log(file);
     // You might want to send the file to a server or process it here
   };
 
