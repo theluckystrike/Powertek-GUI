@@ -29,116 +29,158 @@ import Chip from "@mui/material/Chip";
 import { ReportingBar } from "../../components/common/ReportingBar";
 import { useTheme } from "@emotion/react";
 import PDUSelect from "../../components/common/PDUSelect";
+import ConfigContext from "../../components/common/ConfigContext";
 
-function OutletDialogBox({ open, handleClose, selectedOutlet }) {
-  return <h1>lolll</h1>;
+const demoOutlet = {
+  id: 1,
+  name: "Outlet 01",
+  state: "ON",
+  status: "Normal",
+  powerOnDelay: "3",
+  powerOffDelay: "3",
+  rebootDuration: "5",
+  current: "0.00",
+  powerActive: "0.0",
+  powerApparent: "0.0",
+  voltage: "231.5",
+  powerFactor: "1.00",
+  energy: "0.000",
+  overCurrentAlarmCritical: "16.00",
+  overPowerAlarmCritical: "2500",
+  overCurrentAlarmWarning: "13.00",
+  overPowerAlarmWarning: "2000",
+  lines: ["L1", "L2", "L3"],
+};
+
+function findKeyContainingNumber(obj, number) {
+  for (const key in obj) {
+    if (obj[key].includes(number)) {
+      return key;
+    }
+  }
+  return null;
 }
 
 function Outlet() {
+  const { config } = React.useContext(ConfigContext);
   const theme = useTheme();
-  const outlets = [
-    {
-      id: 1,
-      name: "Outlet 01",
-      state: "ON",
-      status: "Normal",
-      powerOnDelay: "3",
-      powerOffDelay: "3",
-      rebootDuration: "5",
-      current: "0.00",
-      powerActive: "0.0",
-      powerApparent: "0.0",
-      voltage: "231.5",
-      powerFactor: "1.00",
-      energy: "0.000",
-      overCurrentAlarmCritical: "16.00",
-      overPowerAlarmCritical: "2500",
-      overCurrentAlarmWarning: "13.00",
-      overPowerAlarmWarning: "2000",
-      lines: ["L1", "L2", "L3"],
-    },
-    {
-      id: 2,
-      name: "Outlet 02",
-      state: "ON",
-      status: "Lower Critical",
-      powerOnDelay: "3",
-      powerOffDelay: "3",
-      rebootDuration: "5",
-      current: "0.00",
-      powerActive: "0.0",
-      powerApparent: "0.0",
-      voltage: "231.5",
-      powerFactor: "1.00",
-      energy: "0.000",
-      overCurrentAlarmCritical: "16.00",
-      overPowerAlarmCritical: "2500",
-      overCurrentAlarmWarning: "13.00",
-      overPowerAlarmWarning: "2000",
-      lines: ["L1", "L2", "L3"],
-    },
-    {
-      id: 3,
-      name: "Outlet 03",
-      state: "ON",
-      status: "Normal",
-      powerOnDelay: "3",
-      powerOffDelay: "3",
-      rebootDuration: "5",
-      current: "0.00",
-      powerActive: "0.0",
-      powerApparent: "0.0",
-      voltage: "231.5",
-      powerFactor: "1.00",
-      energy: "0.000",
-      overCurrentAlarmCritical: "16.00",
-      overPowerAlarmCritical: "2500",
-      overCurrentAlarmWarning: "13.00",
-      overPowerAlarmWarning: "2000",
-      lines: ["L1", "L2", "L3"],
-    },
-    {
-      id: 4,
-      name: "Outlet 04",
-      state: "ON",
-      status: "Normal",
-      powerOnDelay: "3",
-      powerOffDelay: "3",
-      rebootDuration: "5",
-      current: "0.00",
-      powerActive: "0.0",
-      powerApparent: "0.0",
-      voltage: "231.5",
-      powerFactor: "1.00",
-      energy: "0.000",
-      overCurrentAlarmCritical: "16.00",
-      overPowerAlarmCritical: "2500",
-      overCurrentAlarmWarning: "13.00",
-      overPowerAlarmWarning: "2000",
-      lines: ["L1", "L2", "L3"],
-    },
-    // ... more outlets
-    {
-      id: 14,
-      name: "Outlet 14",
-      state: "OFF",
-      status: "Lower Warning",
-      powerOnDelay: "3",
-      powerOffDelay: "3",
-      rebootDuration: "5",
-      current: "12",
-      powerActive: "0.0",
-      powerApparent: "0.0",
-      voltage: "231.5",
-      powerFactor: "1.00",
-      energy: "0.000",
-      overCurrentAlarmCritical: "16.00",
-      overPowerAlarmCritical: "2500",
-      overCurrentAlarmWarning: "13.00",
-      overPowerAlarmWarning: "2000",
-      lines: ["L1", "L2", "L3"],
-    },
-  ];
+  // const outlets = [
+  //   {
+  //     id: 1,
+  //     name: "Outlet 01",
+  //     state: "ON",
+  //     status: "Normal",
+  //     powerOnDelay: "3",
+  //     powerOffDelay: "3",
+  //     rebootDuration: "5",
+  //     current: "0.00",
+  //     powerActive: "0.0",
+  //     powerApparent: "0.0",
+  //     voltage: "231.5",
+  //     powerFactor: "1.00",
+  //     energy: "0.000",
+  //     overCurrentAlarmCritical: "16.00",
+  //     overPowerAlarmCritical: "2500",
+  //     overCurrentAlarmWarning: "13.00",
+  //     overPowerAlarmWarning: "2000",
+  //     lines: ["L1", "L2", "L3"],
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Outlet 02",
+  //     state: "ON",
+  //     status: "Lower Critical",
+  //     powerOnDelay: "3",
+  //     powerOffDelay: "3",
+  //     rebootDuration: "5",
+  //     current: "0.00",
+  //     powerActive: "0.0",
+  //     powerApparent: "0.0",
+  //     voltage: "231.5",
+  //     powerFactor: "1.00",
+  //     energy: "0.000",
+  //     overCurrentAlarmCritical: "16.00",
+  //     overPowerAlarmCritical: "2500",
+  //     overCurrentAlarmWarning: "13.00",
+  //     overPowerAlarmWarning: "2000",
+  //     lines: ["L1", "L2", "L3"],
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Outlet 03",
+  //     state: "ON",
+  //     status: "Normal",
+  //     powerOnDelay: "3",
+  //     powerOffDelay: "3",
+  //     rebootDuration: "5",
+  //     current: "0.00",
+  //     powerActive: "0.0",
+  //     powerApparent: "0.0",
+  //     voltage: "231.5",
+  //     powerFactor: "1.00",
+  //     energy: "0.000",
+  //     overCurrentAlarmCritical: "16.00",
+  //     overPowerAlarmCritical: "2500",
+  //     overCurrentAlarmWarning: "13.00",
+  //     overPowerAlarmWarning: "2000",
+  //     lines: ["L1", "L2", "L3"],
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Outlet 04",
+  //     state: "ON",
+  //     status: "Normal",
+  //     powerOnDelay: "3",
+  //     powerOffDelay: "3",
+  //     rebootDuration: "5",
+  //     current: "0.00",
+  //     powerActive: "0.0",
+  //     powerApparent: "0.0",
+  //     voltage: "231.5",
+  //     powerFactor: "1.00",
+  //     energy: "0.000",
+  //     overCurrentAlarmCritical: "16.00",
+  //     overPowerAlarmCritical: "2500",
+  //     overCurrentAlarmWarning: "13.00",
+  //     overPowerAlarmWarning: "2000",
+  //     lines: ["L1", "L2", "L3"],
+  //   },
+  //   // ... more outlets
+  //   {
+  //     id: 14,
+  //     name: "Outlet 14",
+  //     state: "OFF",
+  //     status: "Lower Warning",
+  //     powerOnDelay: "3",
+  //     powerOffDelay: "3",
+  //     rebootDuration: "5",
+  //     current: "12",
+  //     powerActive: "0.0",
+  //     powerApparent: "0.0",
+  //     voltage: "231.5",
+  //     powerFactor: "1.00",
+  //     energy: "0.000",
+  //     overCurrentAlarmCritical: "16.00",
+  //     overPowerAlarmCritical: "2500",
+  //     overCurrentAlarmWarning: "13.00",
+  //     overPowerAlarmWarning: "2000",
+  //     lines: ["L1", "L2", "L3"],
+  //   },
+  // ];
+
+  const [outlets, setOutlets] = useState([]);
+
+  useEffect(() => {
+    let temp_outlets = [];
+    for (let i = 1; i <= config["outletNumber"]; i = i + 1) {
+      const demoCopy = JSON.parse(JSON.stringify(demoOutlet));
+      demoCopy.id = i;
+      const breakername = findKeyContainingNumber(config["protectedOutlet"], i);
+      demoCopy.lines = [config["circuitBreakerLines"][`${breakername}`]];
+      temp_outlets.push(demoCopy);
+    }
+    setOutlets(temp_outlets);
+  }, [config]);
 
   const [open, setOpen] = useState(false);
   const [selectedOutlet, setSelectedOutlet] = useState({});

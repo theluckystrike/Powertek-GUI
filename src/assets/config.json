@@ -6,29 +6,62 @@
     "outletErrorThreshold": 12,
     "daisyChain": "true",
     "circuitBreakerNames": ["Circuit 1 L1", "Circuit 2 L1"],
+    "protectedOutlet": {
+      "Circuit 1 L1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+      "Circuit 2 L1": [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
+    },
+    "circuitBreakerLines": { "Circuit 1 L1": "L1-N", "Circuit 2 L1": "L1-N" },
     "inlets": ["L1", "Neutral"],
     "caseType": "SinglePhaseCase"
   },
   {
-    "outletNumber": 42,
+    "outletNumber": 48,
     "maxBreakerCurrent": 30,
     "outletWarningThreshold": 10,
     "outletErrorThreshold": 12,
     "daisyChain": "true",
     "circuitBreakerNames": [
       "Circuit 1 L1",
-      "Circuit  2 L1",
+      "Circuit 2 L1",
       "Circuit 3 L2",
       "Circuit 4 L2",
-      "Circuit  5 L3",
+      "Circuit 5 L3",
       "Circuit 6 L3",
       "Circuit 7 L1",
       "Circuit 8 L1",
       "Circuit 9 L2",
       "Circuit 10 L2",
       "Circuit 11 L3",
-      "Circuit  12 L3"
+      "Circuit 12 L3"
     ],
+    "protectedOutlet": {
+      "Circuit 1 L1": [1, 2, 3, 4],
+      "Circuit 2 L1": [5, 6, 7, 8],
+      "Circuit 3 L2": [9, 10, 11, 12],
+      "Circuit 4 L2": [13, 14, 15, 16],
+      "Circuit 5 L3": [17, 18, 19, 20],
+      "Circuit 6 L3": [21, 22, 23, 24],
+      "Circuit 7 L1": [25, 26, 27, 28],
+      "Circuit 8 L1": [29, 30, 31, 32],
+      "Circuit 9 L2": [33, 34, 35, 36],
+      "Circuit 10 L2": [37, 38, 39, 40],
+      "Circuit 11 L3": [41, 42, 43, 44],
+      "Circuit 12 L3": [45, 46, 47, 48]
+    },
+    "circuitBreakerLines": {
+      "Circuit 1 L1": "L1-N",
+      "Circuit 2 L1": "L1-N",
+      "Circuit 3 L2": "L2-N",
+      "Circuit 4 L2": "L2-N",
+      "Circuit 5 L3": "L3-N",
+      "Circuit 6 L3": "L3-N",
+      "Circuit 7 L1": "L1-N",
+      "Circuit 8 L1": "L1-N",
+      "Circuit 9 L2": "L2-N",
+      "Circuit 10 L2": "L2-N",
+      "Circuit 11 L3": "L3-N",
+      "Circuit 12 L3": "L3-N"
+    },
     "inlets": ["L1", "L2", "L3", "Neutral"],
     "caseType": "ThreePhaseCaseWYE"
   },
@@ -39,6 +72,16 @@
     "outletErrorThreshold": 12,
     "daisyChain": "true",
     "circuitBreakerNames": ["Circuit 1 L1/L2", "Circuit 2 L2/L3", "Circuit 3 L3/L1"],
+    "protectedOutlet": {
+      "Circuit 1 L1/L2": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "Circuit 2 L2/L3": [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+      "Circuit 3 L3/L1": [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
+    },
+    "circuitBreakerLines": {
+      "Circuit 1 L1/L2": "L1-L2",
+      "Circuit 2 L2/L3": "L2-L3",
+      "Circuit 3 L3/L1": "L3-L1"
+    },
     "inlets": ["L1", "L2", "L3"],
     "caseType": "ThreePhaseCaseDelta"
   }

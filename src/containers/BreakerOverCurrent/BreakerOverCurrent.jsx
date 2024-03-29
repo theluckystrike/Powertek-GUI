@@ -25,6 +25,7 @@ import { ReportingBar } from "../../components/common/ReportingBar";
 import { FaLockOpen } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import PduSelect from "../../components/common/PDUSelect";
+import ConfigContext from "../../components/common/ConfigContext";
 
 function SensorDialog({ open, onClose, checked }) {
   return (
@@ -81,6 +82,7 @@ function SensorDialog({ open, onClose, checked }) {
 }
 
 function BreakerOverCurrent() {
+  const { config, setConfig, allConfig } = React.useContext(ConfigContext);
   const [checked, setChecked] = useState([false, false, false]);
   const [settingsEdit, setsettingsEdit] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -175,12 +177,12 @@ function BreakerOverCurrent() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {[...Array(3)].map((_, index) => (
+              {config["circuitBreakerNames"].map((name, index) => (
                 <TableRow key={index}>
                   <TableCell padding="checkbox">
                     <Checkbox checked={checked[index]} onChange={() => handleCheckboxChange(index)} />
                   </TableCell>
-                  <TableCell align="center">Circuit Breaker L{index + 1}</TableCell>
+                  <TableCell align="center">{name}</TableCell>
                   <TableCell align="center">PDU name</TableCell>
                   <TableCell align="center">{getStatusChip(index % 2 === 0 ? "OPEN" : "CLOSED")}</TableCell>
                   <TableCell align="center">
@@ -190,8 +192,10 @@ function BreakerOverCurrent() {
                     </div>
                   </TableCell>
                   <TableCell align="center">{index} A</TableCell>
-                  <TableCell align="center">{[1, 2, 3].map((n) => `${n + index * 3},`).join("")}</TableCell>
-                  <TableCell align="center">L{index + 1}-N</TableCell>
+                  <TableCell align="center" sx={{ whiteSpace: "normal", wordWrap: "break-word", width: "100px" }}>
+                    {config["protectedOutlet"][`${name}`].join(", ")}
+                  </TableCell>
+                  <TableCell align="center">{config["circuitBreakerLines"][`${name}`]}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
