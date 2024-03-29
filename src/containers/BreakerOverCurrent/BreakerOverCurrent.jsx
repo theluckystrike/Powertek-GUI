@@ -28,6 +28,7 @@ import PduSelect from "../../components/common/PDUSelect";
 import ConfigContext from "../../components/common/ConfigContext";
 
 function SensorDialog({ open, onClose, checked }) {
+  const { config } = React.useContext(ConfigContext);
   return (
     <Dialog fullWidth open={open} onClose={onClose}>
       <DialogTitle>{checked.filter((value) => value === true).length} Selected Sensors</DialogTitle>

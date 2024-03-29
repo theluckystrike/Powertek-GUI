@@ -11,6 +11,7 @@
       "Circuit 2 L1": [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
     },
     "circuitBreakerLines": { "Circuit 1 L1": "L1-N", "Circuit 2 L1": "L1-N" },
+    "breakerThreholds": { "Circuit 1 L1": [0.01, 0, 13, 16, 1, 0], "Circuit 2 L1": [0.01, 0, 13, 16, 1, 0] },
     "inlets": ["L1", "Neutral"],
     "caseType": "SinglePhaseCase"
   },
@@ -62,6 +63,20 @@
       "Circuit 11 L3": "L3-N",
       "Circuit 12 L3": "L3-N"
     },
+    "breakerThreholds": {
+      "Circuit 1 L1": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 2 L1": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 3 L2": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 4 L2": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 5 L3": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 6 L3": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 7 L1": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 8 L1": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 9 L2": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 10 L2": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 11 L3": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 12 L3": [0.01, 0, 13, 16, 1, 0]
+    },
     "inlets": ["L1", "L2", "L3", "Neutral"],
     "caseType": "ThreePhaseCaseWYE"
   },
@@ -81,6 +96,11 @@
       "Circuit 1 L1/L2": "L1-L2",
       "Circuit 2 L2/L3": "L2-L3",
       "Circuit 3 L3/L1": "L3-L1"
+    },
+    "breakerThreholds": {
+      "Circuit 1 L1/L2": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 2 L2/L3": [0.01, 0, 13, 16, 1, 0],
+      "Circuit 3 L3/L1": [0.01, 0, 13, 16, 1, 0]
     },
     "inlets": ["L1", "L2", "L3"],
     "caseType": "ThreePhaseCaseDelta"
