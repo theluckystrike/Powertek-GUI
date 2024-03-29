@@ -175,6 +175,7 @@ function Outlet() {
     for (let i = 1; i <= config["outletNumber"]; i = i + 1) {
       const demoCopy = JSON.parse(JSON.stringify(demoOutlet));
       demoCopy.id = i;
+      demoCopy.name = `Outlet ${i}`;
       const breakername = findKeyContainingNumber(config["protectedOutlet"], i);
       demoCopy.lines = [config["circuitBreakerLines"][`${breakername}`]];
       temp_outlets.push(demoCopy);

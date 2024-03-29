@@ -7,7 +7,7 @@ import { ReportingBar } from "../common/ReportingBar";
 
 function CircuitBreakerStatus({ circuitBreakerMap = {}, maxCurrent = 16, minCurrent = 0 }) {
   return (
-    <Grid container spacing={2} sx={{ display: "flex", justifyContent: "space-evenly" }}>
+    <Grid container spacing={2} sx={{ display: "flex", justifyContent: "normal" }}>
       {Object.keys(circuitBreakerMap).map((key) => (
         <Grid item xs="auto">
           <Item color="#fff" sx={{ boxShadow: "none", width: "160px" }}>
