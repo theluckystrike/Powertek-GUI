@@ -231,6 +231,8 @@ function SNMPSettings() {
             value={settings.notificationType}
             onChange={handleChange}
           >
+            <MenuItem value="SNMPv1 trap">SNMPv1 trap</MenuItem>
+            <MenuItem value="SNMPv2c trap">SNMPv2c trap</MenuItem>
             <MenuItem value="SNMPv3 trap">SNMPv3 trap</MenuItem>
             {/* Add other notification types here */}
           </Select>
@@ -386,7 +388,7 @@ function SMTPSettings() {
           margin="normal"
           fullWidth
         />
-        <TextField
+        {/* <TextField
           label="Number of sending retries"
           name="retries"
           type="number"
@@ -406,7 +408,7 @@ function SMTPSettings() {
           InputProps={{
             endAdornment: <InputAdornment position="end">min</InputAdornment>,
           }}
-        />
+        /> */}
         <FormControlLabel
           control={<Switch checked={smtpSettings.requiresAuth} onChange={handleInputChange} name="requiresAuth" />}
           label="Server requires authentication"
@@ -436,7 +438,7 @@ function SMTPSettings() {
           control={<Switch checked={smtpSettings.smtpOverTls} onChange={handleInputChange} name="smtpOverTls" />}
           label="Enable SMTP over TLS (StartTLS)"
         />
-        <div style={{ display: "flex", alignItems: "center", margin: "8px 0" }}>
+        {/* <div style={{ display: "flex", alignItems: "center", margin: "8px 0" }}>
           <Button variant="contained" component="label">
             Browse...
             <input
@@ -451,7 +453,7 @@ function SMTPSettings() {
             />
           </Button>
           <Typography style={{ marginLeft: 16 }}>{smtpSettings.caCertificate || "not set"}</Typography>
-        </div>
+        </div> */}
         <FormControlLabel
           control={
             <Checkbox checked={smtpSettings.allowInvalidCerts} onChange={handleInputChange} name="allowInvalidCerts" />
@@ -545,26 +547,30 @@ function SSHSettings() {
             readOnly: true,
           }}
         />
-        <TextField
-          label="RSA Fingerprint (SHA256)"
-          name="rsaFingerprintSHA256"
-          value={sshSettings.rsaFingerprintSHA256}
-          margin="normal"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          label="RSA Fingerprint (MD5)"
-          name="rsaFingerprintMD5"
-          value={sshSettings.rsaFingerprintMD5}
-          margin="normal"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-        />
+        {sshSettings.authMethod == "publickey" || (
+          <TextField
+            label="RSA Fingerprint (SHA256)"
+            name="rsaFingerprintSHA256"
+            value={sshSettings.rsaFingerprintSHA256}
+            margin="normal"
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        )}
+        {sshSettings.authMethod == "publickey" || (
+          <TextField
+            label="RSA Fingerprint (MD5)"
+            name="rsaFingerprintMD5"
+            value={sshSettings.rsaFingerprintMD5}
+            margin="normal"
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        )}
         <TextField
           label="ECDSA Public Key"
           name="ecdsaPublicKey"
@@ -575,16 +581,18 @@ function SSHSettings() {
             readOnly: true,
           }}
         />
-        <TextField
-          label="ECDSA Fingerprint (SHA256)"
-          name="ecdsaFingerprintSHA256"
-          value={sshSettings.ecdsaFingerprintSHA256}
-          margin="normal"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-        />
+        {sshSettings.authMethod == "publickey" || (
+          <TextField
+            label="ECDSA Fingerprint (SHA256)"
+            name="ecdsaFingerprintSHA256"
+            value={sshSettings.ecdsaFingerprintSHA256}
+            margin="normal"
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        )}
         <TextField
           label="Ed25519 Public Key"
           name="ed25519PublicKey"
@@ -595,16 +603,18 @@ function SSHSettings() {
             readOnly: true,
           }}
         />
-        <TextField
-          label="Ed25519 Fingerprint (SHA256)"
-          name="ed25519FingerprintSHA256"
-          value={sshSettings.ed25519FingerprintSHA256}
-          margin="normal"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-        />
+        {sshSettings.authMethod == "publickey" || (
+          <TextField
+            label="Ed25519 Fingerprint (SHA256)"
+            name="ed25519FingerprintSHA256"
+            value={sshSettings.ed25519FingerprintSHA256}
+            margin="normal"
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        )}
 
         <Button variant="contained" color="primary" onClick={handleSave} style={{ marginTop: 16 }}>
           Save

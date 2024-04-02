@@ -76,7 +76,7 @@ function IpAccessControl4() {
         </Box>
 
         {/* Outbound Rules Section */}
-        <Box mt={4}>
+        {/* <Box mt={4}>
           <Typography variant="h6">Outbound Rules</Typography>
           <Typography variant="subtitle1">Default policy: Accept</Typography>
           <List dense>
@@ -89,8 +89,7 @@ function IpAccessControl4() {
           <Button variant="contained" color="primary" onClick={handleAddOutboundRule}>
             Append
           </Button>
-          {/* Insert Above button functionality to be implemented */}
-        </Box>
+        </Box> */}
         <Box mt={4}>
           <Button variant="contained" color="secondary" type="submit">
             Save
@@ -194,17 +193,17 @@ function TLSCertificate() {
         Active TLS Certificate
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={12}>
+          <TextField fullWidth margin="normal" label="Common Name" variant="outlined" />
           <TextField fullWidth margin="normal" label="Device Certificate" variant="outlined" />
           <TextField fullWidth margin="normal" label="Country" variant="outlined" />
           <TextField fullWidth margin="normal" label="State or Province" variant="outlined" />
           <TextField fullWidth margin="normal" label="Locality" variant="outlined" />
           <TextField fullWidth margin="normal" label="Organization" variant="outlined" />
           <TextField fullWidth margin="normal" label="Organizational Unit" variant="outlined" />
-          <TextField fullWidth margin="normal" label="Common Name" variant="outlined" />
           <TextField fullWidth margin="normal" label="Email Address" variant="outlined" />
         </Grid>
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <TextField fullWidth margin="normal" label="Issuer Country" variant="outlined" />
           <TextField fullWidth margin="normal" label="Issuer State or Province" variant="outlined" />
           <TextField fullWidth margin="normal" label="Issuer Locality" variant="outlined" />
@@ -212,7 +211,7 @@ function TLSCertificate() {
           <TextField fullWidth margin="normal" label="Issuer Organizational Unit" variant="outlined" />
           <TextField fullWidth margin="normal" label="Issuer Common Name" variant="outlined" />
           <TextField fullWidth margin="normal" label="Issuer Email Address" variant="outlined" />
-        </Grid>
+        </Grid> */}
       </Grid>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
         <Button variant="outlined" sx={{ mr: 1 }}>
@@ -276,11 +275,13 @@ function Login() {
     <Box sx={{ width: "90%", display: "flex", margin: "auto", placeContent: "center" }}>
       <FormGroup sx={{ width: "100%", display: "flex", margin: "auto", placeContent: "center" }}>
         <h2>Login Settings</h2>
+        <FormControlLabel control={<Checkbox />} label="Exclude ADMIN USER" />
         <FormControlLabel control={<Checkbox defaultChecked />} label="Block user on login failure" />
         <TextField label="Block timeout" defaultValue="10 min" margin="normal" fullWidth />
         <TextField label="Maximum number of failed logins" defaultValue="3" margin="normal" fullWidth />
         <TextField label="Timeout for failed login attempts" defaultValue="10 min" margin="normal" fullWidth />
         <h2>Login Limitations</h2>
+        <FormControlLabel control={<Checkbox />} label="Exclude ADMIN USER" />
         <TextField label="Idle timeout period" defaultValue="1 d" margin="normal" fullWidth />
         <FormControlLabel control={<Checkbox />} label="Prevent concurrent login with same username" />
         <Button variant="contained" color="primary">
@@ -298,10 +299,12 @@ function PasswordPolicy() {
         <h2>Password Policy</h2>
 
         <h3>Password Aging</h3>
+        <FormControlLabel control={<Checkbox />} label="Exclude ADMIN USER" />
         <FormControlLabel control={<Checkbox />} label="Password aging" />
         <TextField label="Password aging interval" defaultValue="60 d" margin="normal" fullWidth />
 
         <h3>Strong Passwords</h3>
+        <FormControlLabel control={<Checkbox />} label="Exclude ADMIN USER" />
         <FormControlLabel control={<Checkbox defaultChecked />} label="Strong passwords" />
         <TextField label="Minimum password length" defaultValue="8" margin="normal" fullWidth />
         <TextField label="Maximum password length" defaultValue="64" margin="normal" fullWidth />
@@ -352,8 +355,8 @@ function LDAP() {
             </TableCell>
             <TableCell>
               <Select label="LDAP Server Type" value="" onChange={() => {}} size="small">
-                <MenuItem value={10}>Type 1</MenuItem>
-                <MenuItem value={20}>Type 2</MenuItem>
+                <MenuItem value={10}>Primary</MenuItem>
+                <MenuItem value={20}>Secondary</MenuItem>
               </Select>
             </TableCell>
           </TableRow>
@@ -410,8 +413,8 @@ function Radius() {
             </TableCell>
             <TableCell>
               <Select label="LDAP Server Type" value="" onChange={() => {}} size="small">
-                <MenuItem value={10}>Type 1</MenuItem>
-                <MenuItem value={20}>Type 2</MenuItem>
+                <MenuItem value={10}>Primary</MenuItem>
+                <MenuItem value={20}>Secondary</MenuItem>
               </Select>
             </TableCell>
           </TableRow>
@@ -468,8 +471,8 @@ function TACACS() {
             </TableCell>
             <TableCell>
               <Select label="LDAP Server Type" value="" onChange={() => {}} size="small">
-                <MenuItem value={10}>Type 1</MenuItem>
-                <MenuItem value={20}>Type 2</MenuItem>
+                <MenuItem value={10}>Primary</MenuItem>
+                <MenuItem value={20}>Secondary</MenuItem>
               </Select>
             </TableCell>
           </TableRow>
