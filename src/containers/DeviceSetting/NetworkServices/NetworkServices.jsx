@@ -111,6 +111,7 @@ function SNMPSettings() {
     sysContact: "",
     sysName: "",
     sysLocation: "",
+    SNMP_Port: "",
     // SNMP Notifications
     snmpNotificationsEnabled: false,
     notificationType: "",
@@ -143,41 +144,96 @@ function SNMPSettings() {
     // Implement save logic here
   };
 
+  const renderSNMPv3ConfigFields = () => (
+    <>
+      <TextField
+        label="Username"
+        name="username"
+        value={settings.username}
+        onChange={handleChange}
+        margin="normal"
+        fullWidth
+      />
+      <FormControl fullWidth margin="normal">
+        <InputLabel id="security-level-label">Security Level</InputLabel>
+        <Select
+          labelId="security-level-label"
+          id="securityLevel"
+          name="securityLevel"
+          value={settings.securityLevel}
+          onChange={handleChange}
+        >
+          <MenuItem value="noAuthNoPriv">NoAuthNoPriv</MenuItem>
+          <MenuItem value="authNoPriv">AuthNoPriv</MenuItem>
+          <MenuItem value="authPriv">AuthPriv</MenuItem>
+        </Select>
+      </FormControl>
+      {settings.securityLevel !== "noAuthNoPriv" && (
+        <>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="auth-protocol-label">Authentication Protocol</InputLabel>
+            <Select
+              labelId="auth-protocol-label"
+              id="authProtocol"
+              name="authProtocol"
+              value={settings.authProtocol}
+              onChange={handleChange}
+            >
+              <MenuItem value="MD5">MD5</MenuItem>
+              <MenuItem value="SHA">SHA</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            label="Authentication Passphrase"
+            name="authPassphrase"
+            value={settings.authPassphrase}
+            onChange={handleChange}
+            type="password"
+            margin="normal"
+            fullWidth
+          />
+        </>
+      )}
+      {settings.securityLevel === "authPriv" && (
+        <>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="priv-protocol-label">Privacy Protocol</InputLabel>
+            <Select
+              labelId="priv-protocol-label"
+              id="privProtocol"
+              name="privProtocol"
+              value={settings.privProtocol}
+              onChange={handleChange}
+            >
+              <MenuItem value="DES">DES</MenuItem>
+              <MenuItem value="AES">AES</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            label="Privacy Passphrase"
+            name="privPassphrase"
+            value={settings.privPassphrase}
+            onChange={handleChange}
+            type="password"
+            margin="normal"
+            fullWidth
+          />
+        </>
+      )}
+    </>
+  );
+
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
         SNMP Agent
       </Typography>
       <FormGroup>
-        <FormControlLabel
-          control={<Switch checked={settings.snmpV1V2cEnabled} onChange={handleChange} name="snmpV1V2cEnabled" />}
-          label="Enable SNMP v1 / v2c"
-        />
         {settings.snmpV1V2cEnabled && <Alert severity="warning">Warning: An insecure protocol is activated.</Alert>}
-        <TextField
-          label="Read community string"
-          name="readCommunityString"
-          value={settings.readCommunityString}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField
-          label="Write community string"
-          name="writeCommunityString"
-          value={settings.writeCommunityString}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-        <FormControlLabel
-          control={<Switch checked={settings.snmpV3Enabled} onChange={handleChange} name="snmpV3Enabled" />}
-          label="Enable SNMP v3"
-        />
       </FormGroup>
       <FormGroup>
         <Typography variant="h6" gutterBottom>
-          MIB-II System Group
+          SNMP System Information
         </Typography>
         {
           <>
@@ -205,6 +261,39 @@ function SNMPSettings() {
               margin="normal"
               fullWidth
             />
+            <TextField
+              label="SNMP Port"
+              name="SNMP Port"
+              value={settings.SNMP_Port}
+              onChange={handleChange}
+              margin="normal"
+              fullWidth
+            />
+            <FormControlLabel
+              control={<Switch checked={settings.snmpV1V2cEnabled} onChange={handleChange} name="snmpV1V2cEnabled" />}
+              label="Enable SNMP v1 / v2c"
+            />
+            <TextField
+              label="Read community string"
+              name="readCommunityString"
+              value={settings.readCommunityString}
+              onChange={handleChange}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              label="Write community string"
+              name="writeCommunityString"
+              value={settings.writeCommunityString}
+              onChange={handleChange}
+              margin="normal"
+              fullWidth
+            />
+            <FormControlLabel
+              control={<Switch checked={settings.snmpV3Enabled} onChange={handleChange} name="snmpV3Enabled" />}
+              label="Enable SNMP v3"
+            />
+            {settings.snmpV3Enabled && renderSNMPv3ConfigFields()}
           </>
         }
       </FormGroup>

@@ -393,7 +393,7 @@ function Radius() {
             <TableCell>IP Address / Hostname</TableCell>
             <TableCell>Authentication Port</TableCell>
             <TableCell>Accounting Port</TableCell>
-            <TableCell>Authentication Type</TableCell>
+            <TableCell>Server Type</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -451,7 +451,7 @@ function TACACS() {
             <TableCell>IP Address / Hostname</TableCell>
             <TableCell>Authentication Port</TableCell>
             <TableCell>Accounting Port</TableCell>
-            <TableCell>Authentication Type</TableCell>
+            <TableCell>Server Type</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
