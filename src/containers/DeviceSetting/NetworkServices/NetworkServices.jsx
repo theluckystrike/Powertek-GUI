@@ -52,7 +52,7 @@ function HTTPSettingsPanel() {
             control={<Switch checked={settings.httpEnabled} onChange={handleChange} name="httpEnabled" color="primary" />}
             label="Enable HTTP access"
           />
-          {settings.httpEnabled && (0
+          {settings.httpEnabled && (
             <TextField
               label="HTTP Port"
               type="number"
