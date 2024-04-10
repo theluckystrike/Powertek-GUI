@@ -8,3 +8,12 @@ main {
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
 }
+
+
+.light [class$="MuiPaper-root"] {
+    box-shadow: 0 4px 6px -1px #e2e8f0, 0 2px 4px -2px #e2e8f0 !important;
+}
+
+.dark [class$="MuiPaper-root"] {
+  box-shadow: 0 4px 6px -1px rgba(35, 58, 87, .2), 0 2px 4px -2px rgba(35, 58, 87, .2) !important;
+}

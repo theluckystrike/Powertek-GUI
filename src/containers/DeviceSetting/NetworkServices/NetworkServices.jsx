@@ -20,6 +20,7 @@ import {
   Radio,
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
+import MuiButton from "../../../components/common/styled/Button";
 
 function HTTPSettingsPanel() {
   const [settings, setSettings] = React.useState({
@@ -44,61 +45,65 @@ function HTTPSettingsPanel() {
   };
 
   return (
-    <Box maxWidth="sm">
-      <FormGroup>
-        <FormControlLabel
-          control={<Switch checked={settings.httpEnabled} onChange={handleChange} name="httpEnabled" color="primary" />}
-          label="Enable HTTP access"
-        />
-        {settings.httpEnabled && (
-          <TextField
-            label="HTTP Port"
-            type="number"
-            name="httpPort"
-            value={settings.httpPort}
-            onChange={handleChange}
-            margin="normal"
-            fullWidth
+    <>
+      <Box maxWidth="sm">
+        <FormGroup>
+          <FormControlLabel
+            control={<Switch checked={settings.httpEnabled} onChange={handleChange} name="httpEnabled" color="primary" />}
+            label="Enable HTTP access"
           />
-        )}
-        <FormControlLabel
-          control={
-            <Switch checked={settings.enforceHttps} onChange={handleChange} name="enforceHttps" color="primary" />
-          }
-          label="Enforce use of HTTPS"
-        />
-      </FormGroup>
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch checked={settings.httpsEnabled} onChange={handleChange} name="httpsEnabled" color="primary" />
-          }
-          label="Enable HTTPS access"
-        />
-        {settings.httpsEnabled && (
-          <>
+          {settings.httpEnabled && (0
             <TextField
-              label="HTTPS Port"
+              label="HTTP Port"
               type="number"
-              name="httpsPort"
-              value={settings.httpsPort}
+              name="httpPort"
+              value={settings.httpPort}
               onChange={handleChange}
               margin="normal"
               fullWidth
             />
-            <FormControlLabel
-              control={
-                <Switch checked={settings.hstsEnabled} onChange={handleChange} name="hstsEnabled" color="primary" />
-              }
-              label="Enable HSTS"
-            />
-          </>
-        )}
-      </FormGroup>
-      <Button variant="contained" color="primary" onClick={handleSave}>
-        Save
-      </Button>
-    </Box>
+          )}
+          <FormControlLabel
+            control={
+              <Switch checked={settings.enforceHttps} onChange={handleChange} name="enforceHttps" color="primary" />
+            }
+            label="Enforce use of HTTPS"
+          />
+        </FormGroup>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch checked={settings.httpsEnabled} onChange={handleChange} name="httpsEnabled" color="primary" />
+            }
+            label="Enable HTTPS access"
+          />
+          {settings.httpsEnabled && (
+            <>
+              <TextField
+                label="HTTPS Port"
+                type="number"
+                name="httpsPort"
+                value={settings.httpsPort}
+                onChange={handleChange}
+                margin="normal"
+                fullWidth
+              />
+              <FormControlLabel
+                control={
+                  <Switch checked={settings.hstsEnabled} onChange={handleChange} name="hstsEnabled" color="primary" />
+                }
+                label="Enable HSTS"
+              />
+            </>
+          )}
+        </FormGroup>
+      </Box>
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary">
+          Save
+        </MuiButton>
+      </Box>
+    </>
   );
 }
 
@@ -224,6 +229,7 @@ function SNMPSettings() {
   );
 
   return (
+  <>
     <Box>
       <Typography variant="h6" gutterBottom>
         SNMP Agent
@@ -412,12 +418,15 @@ function SNMPSettings() {
           fullWidth
           type="password"
         />
-
-        <Button variant="contained" color="primary" onClick={handleSave}>
-          Save
-        </Button>
       </FormGroup>
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary" onClick={handleSave}>
+          Save
+        </MuiButton>
+      </Box>
     </Box>
+
+  </>
   );
 }
 
@@ -450,6 +459,7 @@ function SMTPSettings() {
   };
 
   return (
+  <>
     <Box>
       <FormGroup>
         <TextField
@@ -563,11 +573,14 @@ function SMTPSettings() {
         <Button variant="contained" color="primary" onClick={() => alert("Test email sent")}>
           Send Test Email
         </Button>
-        <Button variant="contained" color="secondary" onClick={handleSave} style={{ marginTop: 16 }}>
-          Save
-        </Button>
+        <Box display="flex" justifyContent="end" mt={2}>
+          <MuiButton variant="contained" color="primary" onClick={handleSave}>
+            Save
+          </MuiButton>
+        </Box>
       </FormGroup>
     </Box>
+    </>
   );
 }
 
@@ -704,10 +717,11 @@ function SSHSettings() {
             }}
           />
         )}
-
-        <Button variant="contained" color="primary" onClick={handleSave} style={{ marginTop: 16 }}>
-          Save
-        </Button>
+        <Box display="flex" justifyContent="end">
+          <MuiButton variant="contained" color="primary" onClick={handleSave}>
+            Save
+          </MuiButton>
+        </Box>
       </FormGroup>
     </Box>
   );
@@ -821,9 +835,11 @@ function ModbusSettings() {
           fullWidth
         />
 
-        <Button variant="contained" color="primary" onClick={handleSave} style={{ marginTop: "1em" }}>
-          Save
-        </Button>
+        <Box display="flex" justifyContent="end">
+          <MuiButton variant="contained" color="primary">
+            Save
+          </MuiButton>
+        </Box>
       </FormGroup>
     </Box>
   );

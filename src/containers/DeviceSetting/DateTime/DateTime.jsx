@@ -2,19 +2,15 @@ import React, { useState } from "react";
 import {
   Box,
   Grid,
-  Typography,
   Select,
-  MenuItem,
-  InputLabel,
   FormControl,
   FormGroup,
   Checkbox,
   FormControlLabel,
   TextField,
-  Button,
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
-import SaveIcon from "@mui/icons-material/Save";
+import MuiButton from "../../../components/common/styled/Button";
 
 function DateTime() {
   const [timezone, setTimezone] = useState("(UTC-05:00) Eastern Time (US & Canada)");
@@ -82,9 +78,9 @@ function DateTime() {
                       onChange={handleNtpServer2Change}
                       margin="normal"
                     />
-                    <Button variant="contained" color="primary">
+                    <MuiButton variant="contained">
                       Save
-                    </Button>
+                    </MuiButton>
                   </FormGroup>
                 </form>
               </Grid>

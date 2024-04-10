@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Box, Grid, FormControlLabel, Checkbox, TextField, Button } from "@mui/material";
+import { Box, Grid, FormControlLabel, Checkbox, TextField } from "@mui/material";
 import NamedContainer from "../../../components/common/NamedContainer";
-import SaveIcon from "@mui/icons-material/Save";
+import MuiButton from "../../../components/common/styled/Button";
 
 function DataLogging() {
   const [isLoggingEnabled, setIsLoggingEnabled] = useState(false);
@@ -59,9 +59,9 @@ function DataLogging() {
               label="Enable data log backup"
             />
             <Box textAlign="right" mt={2}>
-              <Button variant="contained" color="primary" startIcon={<SaveIcon />} onClick={handleSave}>
+              <MuiButton onClick={handleSave}>
                 Save
-              </Button>
+              </MuiButton>
             </Box>
           </NamedContainer>
         </Grid>

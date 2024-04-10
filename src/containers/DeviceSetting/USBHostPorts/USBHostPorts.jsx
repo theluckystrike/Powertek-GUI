@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
-import { Box, Grid, Checkbox, FormControlLabel, Button, FormGroup, Typography } from "@mui/material";
+import { Box, Grid, Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
 
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
+import MuiButton from "../../../components/common/styled/Button";
 
 function USBHostPorts() {
   const [isUSBEnabled, setIsUSBEnabled] = useState(true);
@@ -44,9 +45,11 @@ function USBHostPorts() {
                     </Typography>
                   ))}
                 </ul>
-                <Button variant="contained" color="primary" type="submit">
-                  Save
-                </Button>
+                <Box display="flex" justifyContent="end">
+                  <MuiButton variant="contained" color="primary">
+                    Save
+                  </MuiButton>
+                </Box>
               </FormGroup>
             </form>
           </NamedContainer>

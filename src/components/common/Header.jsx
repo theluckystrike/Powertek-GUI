@@ -11,6 +11,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import LanguageIcon from "@mui/icons-material/Language";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import MenuIcon from '@mui/icons-material/Menu';
 import { Tooltip, useTheme } from "@mui/material";
 import { MenuItem, FormControl, Select, InputLabel } from "@mui/material";
 import ConfigContext, { UIConfigContext } from "./ConfigContext";
@@ -37,6 +38,7 @@ const pageStyles = {
 
 export default function Header(props) {
   const theme = useTheme();
+  const { sideBarToggle , setsideBarToggle} = props;
   const { config, setConfig, allConfig } = React.useContext(ConfigContext);
   const { UIConfig, setUIConfig, allUIConfig } = React.useContext(UIConfigContext);
   const [value, setValue] = React.useState(0);
@@ -51,6 +53,18 @@ export default function Header(props) {
     <AppBar position="sticky" sx={pageStyles.appBar}>
       <Toolbar sx={{ flexGrow: 1 }}>
         <Typography sx={{ marginRight: "30px" }} variant="h6">
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2, display: { md: "none" } }}
+            onClick={() => {
+              setsideBarToggle(!sideBarToggle)
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
           {UIConfig.headerDisplayName}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />

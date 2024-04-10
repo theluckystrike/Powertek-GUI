@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../components/common/NamedContainer";
 import PduSelect from "../../components/common/PDUSelect";
+import MuiButton from "../../components/common/styled/Button";
 
 function AddOutletGroupDialog({ open, onClose, group, groups, setGropus }) {
   const [checked, setChecked] = React.useState(group.checked || {});
@@ -123,12 +124,12 @@ function AddOutletGroupDialog({ open, onClose, group, groups, setGropus }) {
                   ))}
                 </Grid>
                 <Grid item container justifyContent="center" xs={12} sx={{ marginTop: "20px" }}>
-                  <Button variant="contained" color="primary" onClick={handleSave}>
+                  <MuiButton variant="contained" color="primary" onClick={handleSave} sx={{ marginRight : "4px"}}>
                     Save
-                  </Button>
-                  <Button variant="contained" color="secondary" style={{ marginLeft: 8 }} onClick={onClose}>
+                  </MuiButton>
+                  <MuiButton variant="contained" color="secondary" style={{ marginLeft: 8 }} onClick={onClose}>
                     Cancel
-                  </Button>
+                  </MuiButton>
                 </Grid>
               </Grid>
             </Box>
