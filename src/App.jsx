@@ -43,6 +43,7 @@ function App() {
   const [config, setConfig] = useState(default_config[0]); // [config, setConfig
   const [UIConfig, setUIConfig] = useState(UI_Config[0]);
   const [sideBarCollapsed, setsideBarCollapsed] = useState(false);
+  const [sideBarToggle, setsideBarToggle] = useState(false);
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -66,25 +67,30 @@ function App() {
     <ConfigContext.Provider value={{ config, setConfig, allConfig }}>
       <UIConfigContext.Provider value={{ UIConfig, setUIConfig, allUIConfig }}>
         <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-          <div style={{ display: "flex" }} className="main">
+          <div style={{ display: "flex" }} className={theme === "light" ? "main light" : "main dark"}>
             <Routes>
               <Route path="/login" element={<Login toggleTheme={toggleTheme} />} />
               <Route
                 element={
                   <>
-                    <SidebarCustom collapsed={sideBarCollapsed} setsideBarCollapsed={setsideBarCollapsed} />
+                    <SidebarCustom
+                      sideBarToggle={sideBarToggle}
+                      setsideBarToggle={setsideBarToggle}
+                      collapsed={sideBarCollapsed}
+                      setsideBarCollapsed={setsideBarCollapsed} />
                     <Box
                       component={"main"}
                       style={{
                         display: "flex",
                         flexGrow: "1",
-                        backgroundColor: theme === "light" ? "white" : "#444444",
+                        backgroundColor: theme === "light" ? "#f1f5f9" : "#0f1824",
                       }}
                     >
                       <Header
                         toggleTheme={toggleTheme}
                         logout={logout}
-                        setsideBarCollapsed={setsideBarCollapsed}
+                        sideBarToggle={sideBarToggle}
+                        setsideBarToggle={setsideBarToggle}
                         isAuthenticated={isAuthenticated()}
                       />
                       <Outlet />

@@ -14,7 +14,7 @@ import {
   Button,
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
-import SaveIcon from "@mui/icons-material/Save";
+import MuiButton from "../../../components/common/styled/Button";
 
 function NetworkSettingsForm() {
   const ipv4Routes = [];
@@ -69,10 +69,10 @@ function NetworkSettingsForm() {
       <Button variant="contained" sx={{ my: 2 }}>
         Add IPv6 Route
       </Button>
-      <Box display="flex" justifyContent="center" mt={2}>
-        <Button variant="contained" color="primary">
-          Save Settings
-        </Button>
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary">
+          Save
+        </MuiButton>
       </Box>
     </Box>
   );
@@ -109,14 +109,14 @@ function IPConfiguration() {
           margin="normal"
           label="IP address/prefix length"
           value="192.168.33.130/24"
-          // onChange handler would update state here
+        // onChange handler would update state here
         />
         <TextField
           fullWidth
           margin="normal"
           label="Default gateway"
           value="192.168.33.126"
-          // onChange handler would update state here
+        // onChange handler would update state here
         />
       </FormGroup>
 
@@ -141,14 +141,14 @@ function IPConfiguration() {
           fullWidth
           margin="normal"
           label="Preferred hostname"
-          // value would be bound to state
-          // onChange handler would update state here
+        // value would be bound to state
+        // onChange handler would update state here
         />
       </FormGroup>
-      <Box display="flex" justifyContent="center" mt={2}>
-        <Button variant="contained" color="primary">
-          Save Settings
-        </Button>
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary">
+          Save
+        </MuiButton>
       </Box>
     </Box>
   );
@@ -296,10 +296,10 @@ function InterfaceSettings() {
         )}
 
         {/* Save button */}
-        <Box display="flex" justifyContent="center" mt={2}>
-          <Button variant="contained" color="primary">
-            Save Settings
-          </Button>
+        <Box display="flex" justifyContent="end">
+          <MuiButton variant="contained" color="primary">
+            Save
+          </MuiButton>
         </Box>
       </FormGroup>
     </Box>
@@ -310,37 +310,41 @@ function Wireless() {
   const [interfaceEnabled, setInterfaceEnabled] = useState(false);
 
   return (
-    <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }} p={3}>
-      <div>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={interfaceEnabled}
-              onChange={(e) => setInterfaceEnabled(e.target.checked)}
-              color="primary"
-            />
-          }
-          label="Enable interface"
-        />
-        <Typography variant="body1">Hardware state</Typography>
-        <Typography variant="body2" color="textSecondary">
-          not detected
-        </Typography>
-      </div>
+    <>
+      <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }} p={3}>
+        <div>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={interfaceEnabled}
+                onChange={(e) => setInterfaceEnabled(e.target.checked)}
+                color="primary"
+              />
+            }
+            label="Enable interface"
+          />
+          <Typography variant="body1">Hardware state</Typography>
+          <Typography variant="body2" color="textSecondary">
+            not detected
+          </Typography>
+        </div>
 
-      <div style={{ textAlign: "right" }}>
-        <Typography variant="body1" color="error">
-          Interface cannot be enabled with selected cascading mode
-        </Typography>
-        <Button variant="text" color="primary">
-          Show WLAN Diagnostic Log
-        </Button>
-      </div>
+        <div style={{ textAlign: "right" }}>
+          <Typography variant="body1" color="error">
+            Interface cannot be enabled with selected cascading mode
+          </Typography>
+          <Button variant="text" color="primary">
+            Show WLAN Diagnostic Log
+          </Button>
+        </div>
 
-      <Button variant="contained" color="primary" startIcon={<SaveIcon />} style={{ marginLeft: 16 }}>
-        Save
-      </Button>
-    </Box>
+      </Box>
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary">
+          Save
+        </MuiButton>
+      </Box>
+    </>
   );
 }
 

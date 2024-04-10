@@ -9,7 +9,7 @@ function CircuitBreakerStatus({ circuitBreakerMap = {}, maxCurrent = 16, minCurr
   return (
     <Grid container spacing={2} sx={{ display: "flex", justifyContent: "normal" }}>
       {Object.keys(circuitBreakerMap).map((key) => (
-        <Grid item xs="auto">
+        <Grid item xs="auto" key={key}>
           <Item color="#fff" sx={{ boxShadow: "none", width: "160px" }}>
             <Typography variant="body1" component="div" fontWeight="600" sx={{ textAlign: "center" }}>
               {key} :{" "}

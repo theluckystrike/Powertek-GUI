@@ -1472,7 +1472,7 @@ function Inlet(props) {
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item lg={6} md={12}>
+            <Grid item lg={6} md={12} xs={12}>
               <NamedContainer
                 overridetitle
                 title={
@@ -1494,7 +1494,7 @@ function Inlet(props) {
                 />
               </NamedContainer>
             </Grid>
-            <Grid item lg={6} md={12}>
+            <Grid item lg={6} md={12} xs={12}>
               <NamedContainer
                 overridetitle
                 title={

@@ -33,7 +33,7 @@ function InletStats({ minCurrent = 0, maxCurrent = 16, currentMap, stats, realPo
           sx={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "auto", width: "100%" }}
         >
           {Object.keys(currentMap).map((key) => (
-            <Grid item xs={10}>
+            <Grid item xs={10} key={key}>
               {/* <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
                 <div style={{ display: "flex", flexDirection: "row", width: "85%", margin: "auto" }}>
                   <Typography variant="body1" component="div" fontWeight="600" sx={{ textAlign: "end", width: "25%" }}>
@@ -106,8 +106,8 @@ function InletStats({ minCurrent = 0, maxCurrent = 16, currentMap, stats, realPo
           padding: "4",
         }}
       >
-        {stats.map((stat) => (
-          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+        {stats.map((stat, key) => (
+          <div key={key} style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <Typography fontSize="1rem" fontWeight="600" component="div" sx={{ width: "50%", textAlign: "end" }}>
               {stat.name} :
             </Typography>

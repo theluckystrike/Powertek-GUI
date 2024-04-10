@@ -26,7 +26,7 @@ function SidebarCustom(props) {
   const { UIConfig, setUIConfig } = useContext(UIConfigContext);
   const logoName = UIConfig[`logoName`];
   const imageurl = new URL(`../../assets/${logoName}`, import.meta.url).href;
-  const { collapsed, setsideBarCollapsed } = props;
+  const { collapsed, setsideBarCollapsed, sideBarToggle, setsideBarToggle } = props;
   const menuItemStyles = {
     button: {
       "&:hover": {
@@ -45,10 +45,11 @@ function SidebarCustom(props) {
   return (
     <Sidebar
       collapsed={collapsed}
-      toggled={collapsed}
-      onBackdropClick={() => setToggled(!collapsed)}
+      toggled={sideBarToggle}
+      onBackdropClick={() => setsideBarToggle(!sideBarToggle)}
       backgroundColor="#203246"
       iconColor="#e3e3e3"
+      style = {{zIndex: 1111}}
       rootStyles={{
         color: "#e3e3e3",
         borderRight: "0px",

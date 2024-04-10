@@ -124,7 +124,7 @@ function HomePage(props) {
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item lg={circuitBreakerNumber <= 12 ? 6 : 12} md={12}>
+            <Grid item lg={circuitBreakerNumber <= 12 ? 8 : 12} md={12} xs={12}>
               <NamedContainer
                 overridetitle
                 title={
@@ -146,7 +146,7 @@ function HomePage(props) {
                 />
               </NamedContainer>
             </Grid>
-            <Grid item lg={circuitBreakerNumber <= 12 ? 6 : 12} md={12}>
+            <Grid item lg={circuitBreakerNumber <= 12 ? 4 : 12} md={12} xs={12}>
               <NamedContainer title="CIRCUIT BREAKER STATUS">
                 <CircuitBreakerStatus circuitBreakerMap={circuitBreakerMap} minCurrent={0} maxCurrent={maxCurrent} />
               </NamedContainer>
@@ -160,8 +160,9 @@ function HomePage(props) {
               spacing={1}
               sx={{ display: "flex", alignContent: "center", justifyContent: "space-between", alignItems: "center" }}
             >
-              {outletStatus.map((outlet) => (
+              {outletStatus.map((outlet, key) => (
                 <Grid
+                  key={key}
                   item
                   lg={1.5}
                   sx={{

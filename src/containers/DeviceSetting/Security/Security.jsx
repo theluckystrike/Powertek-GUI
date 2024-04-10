@@ -27,6 +27,7 @@ import {
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import SaveIcon from "@mui/icons-material/Save";
+import MuiButton from "../../../components/common/styled/Button";
 
 function IpAccessControl4() {
   const [ipv4Enabled, setIpv4Enabled] = useState(false);
@@ -261,10 +262,10 @@ function Authentication() {
           </FormControl>
         </Grid>
       </Grid>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-        <Button variant="outlined" sx={{ mr: 1 }}>
+      <Box display="flex" justifyContent="end" mt={2}>
+        <MuiButton variant="contained" color="primary">
           Save
-        </Button>
+        </MuiButton>
       </Box>
     </Box>
   );
@@ -284,9 +285,11 @@ function Login() {
         <FormControlLabel control={<Checkbox />} label="Exclude ADMIN USER" />
         <TextField label="Idle timeout period" defaultValue="1 d" margin="normal" fullWidth />
         <FormControlLabel control={<Checkbox />} label="Prevent concurrent login with same username" />
-        <Button variant="contained" color="primary">
-          Save
-        </Button>
+        <Box display="flex" justifyContent="end" mt={2}>
+          <MuiButton variant="contained" color="primary">
+            Save
+          </MuiButton>
+        </Box>
       </FormGroup>
     </Box>
   );
@@ -314,9 +317,11 @@ function PasswordPolicy() {
         <FormControlLabel control={<Checkbox defaultChecked />} label="Enforce at least one special character" />
         <TextField label="Password history size" defaultValue="5" margin="normal" fullWidth />
 
-        <Button variant="contained" color="primary" style={{ marginTop: "20px" }}>
-          Save
-        </Button>
+        <Box display="flex" justifyContent="end" mt={2}>
+          <MuiButton variant="contained" color="primary">
+            Save
+          </MuiButton>
+        </Box>
       </FormGroup>
     </Box>
   );
@@ -345,7 +350,7 @@ function LDAP() {
               <TextField fullWidth label="IP Address / Hostname" variant="outlined" size="small" />
             </TableCell>
             <TableCell>
-              <Select label="Security" value="" onChange={() => {}} size="small">
+              <Select label="Security" value="" onChange={() => { }} size="small">
                 <MenuItem value={10}>Option 1</MenuItem>
                 <MenuItem value={20}>Option 2</MenuItem>
               </Select>
@@ -354,7 +359,7 @@ function LDAP() {
               <TextField label="Port" variant="outlined" size="small" />
             </TableCell>
             <TableCell>
-              <Select label="LDAP Server Type" value="" onChange={() => {}} size="small">
+              <Select label="LDAP Server Type" value="" onChange={() => { }} size="small">
                 <MenuItem value={10}>Primary</MenuItem>
                 <MenuItem value={20}>Secondary</MenuItem>
               </Select>
@@ -364,20 +369,20 @@ function LDAP() {
       </Table>
       <div style={{ display: "flex", justifyContent: "space-between", margin: "10px" }}>
         <div>
-          <Button variant="contained">New</Button>
-          <Button variant="contained" color="primary">
+          <Button style={{ marginRight: "4px" }} variant="contained">New</Button>
+          <Button style={{ marginRight: "4px" }} variant="contained" color="primary">
             Edit
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button style={{ marginRight: "4px" }} variant="contained" color="secondary">
             Delete
           </Button>
-          <Button variant="contained" color="warning">
+          <Button style={{ marginRight: "4px" }} variant="contained" color="warning">
             Test Connection
           </Button>
         </div>
-        <Button variant="contained" color="success">
+        <MuiButton variant="contained" color="primary">
           Save
-        </Button>
+        </MuiButton>
       </div>
     </TableContainer>
   );
@@ -412,7 +417,7 @@ function Radius() {
               <TextField label="Port" variant="outlined" size="small" />
             </TableCell>
             <TableCell>
-              <Select label="LDAP Server Type" value="" onChange={() => {}} size="small">
+              <Select label="LDAP Server Type" value="" onChange={() => { }} size="small">
                 <MenuItem value={10}>Primary</MenuItem>
                 <MenuItem value={20}>Secondary</MenuItem>
               </Select>
@@ -422,20 +427,20 @@ function Radius() {
       </Table>
       <div style={{ display: "flex", justifyContent: "space-between", margin: "10px" }}>
         <div>
-          <Button variant="contained">New</Button>
-          <Button variant="contained" color="primary">
+          <Button style={{ marginRight: "4px" }} variant="contained">New</Button>
+          <Button style={{ marginRight: "4px" }} variant="contained" color="primary">
             Edit
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button style={{ marginRight: "4px" }} variant="contained" color="secondary">
             Delete
           </Button>
-          <Button variant="contained" color="warning">
+          <Button style={{ marginRight: "4px" }} variant="contained" color="warning">
             Test Connection
           </Button>
         </div>
-        <Button variant="contained" color="success">
+        <MuiButton variant="contained" color="primary">
           Save
-        </Button>
+        </MuiButton>
       </div>
     </TableContainer>
   );
@@ -470,7 +475,7 @@ function TACACS() {
               <TextField label="Port" variant="outlined" size="small" />
             </TableCell>
             <TableCell>
-              <Select label="LDAP Server Type" value="" onChange={() => {}} size="small">
+              <Select label="LDAP Server Type" value="" onChange={() => { }} size="small">
                 <MenuItem value={10}>Primary</MenuItem>
                 <MenuItem value={20}>Secondary</MenuItem>
               </Select>
@@ -480,20 +485,20 @@ function TACACS() {
       </Table>
       <div style={{ display: "flex", justifyContent: "space-between", margin: "10px" }}>
         <div>
-          <Button variant="contained">New</Button>
-          <Button variant="contained" color="primary">
+          <Button style={{ marginRight: "4px" }} variant="contained">New</Button>
+          <Button style={{ marginRight: "4px" }} variant="contained" color="primary">
             Edit
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button style={{ marginRight: "4px" }} variant="contained" color="secondary">
             Delete
           </Button>
-          <Button variant="contained" color="warning">
+          <Button style={{ marginRight: "4px" }} variant="contained" color="warning">
             Test Connection
           </Button>
         </div>
-        <Button variant="contained" color="success">
+        <MuiButton variant="contained" color="primary">
           Save
-        </Button>
+        </MuiButton>
       </div>
     </TableContainer>
   );
