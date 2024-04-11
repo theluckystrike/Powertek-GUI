@@ -39,6 +39,7 @@ import InletStats from "../../components/homepage/InletStats";
 import Divider from "../../components/common/styled/Divider";
 import PduSelect from "../../components/common/PDUSelect";
 import ConfigContext from "../../components/common/ConfigContext";
+import MuiButton from "../../components/common/styled/Button";
 
 function ThresholdDialog({ open, onClose, onSave, defaultValues }) {
   const [values, setValues] = useState(defaultValues);
@@ -125,7 +126,7 @@ function ThresholdDialog2({ open, onClose, onSave, defaultValues }) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+        <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
           <Typography variant="h6" align="center" gutterBottom>
             Set Thresholds
           </Typography>
@@ -293,9 +294,9 @@ function HisotryDialog({ open, onClose, onSave, data }) {
           </Table>
           <Box sx={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}>
             <Box sx={{ flexGrow: 1 }} />
-            <Button onClick={handleReset} variant="contained" color="primary" style={{ margin: "16px" }}>
+            <MuiButton onClick={handleReset} variant="contained" color="error" style={{ margin: "16px" }}>
               Reset
-            </Button>
+            </MuiButton>
           </Box>
         </TableContainer>
         <CollapsiableNamedContainer title="History">
@@ -492,6 +493,7 @@ function SinglePhaseCase() {
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     padding: "4px", // Set the padding to a low value, adjust as needed
+    borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
   }));
   return (
     <>
@@ -536,7 +538,7 @@ function SinglePhaseCase() {
                 key={row.id}
                 sx={{
                   backgroundColor:
-                    index % 2 === 0 ? (theme.palette.mode === "dark" ? "#3C3C3C" : "#E0E0E0") : "inherit", // Alternating color
+                    index % 2 === 0 ? (theme.palette.mode === "dark" ? "#1c2e45" : "#f1f5f9") : "inherit", // Alternating color
                 }}
               >
                 <StyledTableCell
@@ -1468,7 +1470,7 @@ function Inlet(props) {
   };
 
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={2}>
@@ -1522,7 +1524,7 @@ function Inlet(props) {
                         variant=""
                         fontWeight="400"
                         sx={{ marginRight: "5px" }}
-                        //   color={settingsEdit ? "red" : "blue"}
+                      //   color={settingsEdit ? "red" : "blue"}
                       >
                         Edit Settings
                       </Typography>

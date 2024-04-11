@@ -159,35 +159,33 @@ function SNMPSettings() {
         margin="normal"
         fullWidth
       />
-      <FormControl fullWidth margin="normal">
-        <InputLabel id="security-level-label">Security Level</InputLabel>
-        <Select
-          labelId="security-level-label"
-          id="securityLevel"
-          name="securityLevel"
-          value={settings.securityLevel}
-          onChange={handleChange}
-        >
-          <MenuItem value="noAuthNoPriv">NoAuthNoPriv</MenuItem>
-          <MenuItem value="authNoPriv">AuthNoPriv</MenuItem>
-          <MenuItem value="authPriv">AuthPriv</MenuItem>
-        </Select>
-      </FormControl>
+      <TextField
+        margin="normal"
+        id="securityLevel"
+        name="securityLevel"
+        value={settings.securityLevel}
+        onChange={handleChange}
+        select // tell TextField to render select
+        label="Security Level"
+      >
+        <MenuItem value="noAuthNoPriv">NoAuthNoPriv</MenuItem>
+        <MenuItem value="authNoPriv">AuthNoPriv</MenuItem>
+        <MenuItem value="authPriv">AuthPriv</MenuItem>
+      </TextField>
       {settings.securityLevel !== "noAuthNoPriv" && (
         <>
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="auth-protocol-label">Authentication Protocol</InputLabel>
-            <Select
-              labelId="auth-protocol-label"
-              id="authProtocol"
-              name="authProtocol"
-              value={settings.authProtocol}
-              onChange={handleChange}
-            >
-              <MenuItem value="MD5">MD5</MenuItem>
-              <MenuItem value="SHA">SHA</MenuItem>
-            </Select>
-          </FormControl>
+          <TextField
+            margin="normal"
+            id="authProtocol"
+            name="authProtocol"
+            value={settings.authProtocol}
+            onChange={handleChange}
+            select // tell TextField to render select
+            label="Authentication Protocol"
+          >
+            <MenuItem value="MD5">MD5</MenuItem>
+            <MenuItem value="SHA">SHA</MenuItem>
+          </TextField>
           <TextField
             label="Authentication Passphrase"
             name="authPassphrase"
@@ -279,6 +277,8 @@ function SNMPSettings() {
               control={<Switch checked={settings.snmpV1V2cEnabled} onChange={handleChange} name="snmpV1V2cEnabled" />}
               label="Enable SNMP v1 / v2c"
             />
+        {settings.snmpV1V2cEnabled && (
+          <>
             <TextField
               label="Read community string"
               name="readCommunityString"
@@ -295,6 +295,8 @@ function SNMPSettings() {
               margin="normal"
               fullWidth
             />
+          </>
+        )}
             <FormControlLabel
               control={<Switch checked={settings.snmpV3Enabled} onChange={handleChange} name="snmpV3Enabled" />}
               label="Enable SNMP v3"
@@ -317,6 +319,7 @@ function SNMPSettings() {
           }
           label="Enable SNMP notifications"
         />
+      {settings.snmpNotificationsEnabled && (
         <FormControl fullWidth margin="normal">
           <InputLabel id="notification-type-label">Notification type</InputLabel>
           <Select
@@ -332,6 +335,7 @@ function SNMPSettings() {
             {/* Add other notification types here */}
           </Select>
         </FormControl>
+      )}
         <TextField
           label="Engine ID"
           name="engineID"
@@ -847,7 +851,7 @@ function ModbusSettings() {
 
 function NetworkServices() {
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <NamedContainer title="Network Services">

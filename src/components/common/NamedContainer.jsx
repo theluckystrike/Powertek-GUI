@@ -46,7 +46,7 @@ function CollapsiableNamedContainer({ title, children }) {
       overridetitle
       noDivider
       paperSx={{
-        backgroundColor: theme.palette.mode === "dark" ? "#2f3135" : "#dadde2",
+        backgroundColor: theme.palette.mode === "dark" ? "#1c2e45" : "#f1f5f9",
       }}
       title={
         <Box sx={{ display: "flex", flexDirection: "row" }} onClick={toggleIsExpanded}>

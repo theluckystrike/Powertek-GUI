@@ -32,7 +32,7 @@ function ReserRestore() {
   };
 
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <NamedContainer title="Reset/Restore">

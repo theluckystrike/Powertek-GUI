@@ -22,6 +22,12 @@ import NamedContainer from "../../components/common/NamedContainer";
 import { ReportingBar } from "../../components/common/ReportingBar";
 import PduSelect from "../../components/common/PDUSelect";
 import MuiButton from "../../components/common/styled/Button";
+import styled from "@emotion/styled";
+import { useTheme } from "@emotion/react";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
+}));
 
 const data = [
   [
@@ -103,15 +109,15 @@ function EMDTable({ data }) {
         <TableBody>
           {data.map((row) => (
             <TableRow key={row.label} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-              <TableCell align="center" component="th" scope="row">
+              <StyledTableCell align="center" component="th" scope="row">
                 {row.label}
-              </TableCell>
-              <TableCell align="center">
+              </StyledTableCell>
+              <StyledTableCell align="center">
                 <Typography component="span" variant="body2" sx={{ fontWeight: "medium" }}>
                   {typeof row.value === "number" ? <ReportingBar value={row.value} max={100} min={0} /> : row.value}
                 </Typography>
-              </TableCell>
-              <TableCell align="center">
+              </StyledTableCell>
+              <StyledTableCell align="center">
                 {row.status && (
                   <Typography
                     component="span"
@@ -127,7 +133,7 @@ function EMDTable({ data }) {
                     {row.status}
                   </Typography>
                 )}
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -137,6 +143,7 @@ function EMDTable({ data }) {
 }
 
 const ThresholdTable = () => {
+  const theme = useTheme();
   // Data structure for table rows
   const [sensor, setSensor] = useState({
     name: "",
@@ -157,20 +164,20 @@ const ThresholdTable = () => {
 
   return (
     <TableContainer>
-      <Table aria-label="sensor table" sx={{ border: "1px dashed" }}>
+      <Table aria-label="sensor table" sx={{ border: '1px dashed', borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5" }}>
         <TableHead>
           <TableRow>
-            <TableCell>Sensor</TableCell>
-            <TableCell align="center">Temperature (°C)</TableCell>
-            <TableCell align="center">Humidity (%)</TableCell>
+            <StyledTableCell>Sensor</StyledTableCell>
+            <StyledTableCell align="center">Temperature (°C)</StyledTableCell>
+            <StyledTableCell align="center">Humidity (%)</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell component="th" scope="row">
+            <StyledTableCell component="th" scope="row">
               Sensor Name
-            </TableCell>
-            <TableCell align="center">
+            </StyledTableCell>
+            <StyledTableCell align="center">
               <TextField
                 value={sensor.name}
                 onChange={handleSensorChange}
@@ -178,8 +185,8 @@ const ThresholdTable = () => {
                 variant="outlined"
                 size="small"
               />
-            </TableCell>
-            <TableCell align="center">
+            </StyledTableCell>
+            <StyledTableCell align="center">
               <TextField
                 value={sensor.name}
                 onChange={handleSensorChange}
@@ -187,14 +194,14 @@ const ThresholdTable = () => {
                 variant="outlined"
                 size="small"
               />
-            </TableCell>
+            </StyledTableCell>
           </TableRow>
 
           {["critical", "warning"].map((level) =>
             ["High", "Low"].map((threshold) => (
               <TableRow key={`${level}-${threshold}`} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                <TableCell component="th" scope="row">{`${level} ${threshold}`}</TableCell>
-                <TableCell align="center">
+                <StyledTableCell component="th" scope="row">{`${level} ${threshold}`}</StyledTableCell>
+                <StyledTableCell align="center">
                   <TextField
                     value={sensor[`${level}${threshold}Temperature`]}
                     onChange={handleSensorChange}
@@ -203,8 +210,8 @@ const ThresholdTable = () => {
                     variant="outlined"
                     size="small"
                   />
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   <TextField
                     value={sensor[`${level}${threshold}Humidity`]}
                     onChange={handleSensorChange}
@@ -213,19 +220,19 @@ const ThresholdTable = () => {
                     variant="outlined"
                     size="small"
                   />
-                </TableCell>
+                </StyledTableCell>
               </TableRow>
             ))
           )}
 
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            <TableCell>Calibration Offset</TableCell>
-            <TableCell align="center">
+            <StyledTableCell>Calibration Offset</StyledTableCell>
+            <StyledTableCell align="center">
               <TextField defaultValue="+0" type="number" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell align="center">
+            </StyledTableCell>
+            <StyledTableCell align="center">
               <TextField defaultValue="+0" type="number" variant="outlined" size="small" />
-            </TableCell>
+            </StyledTableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -234,6 +241,7 @@ const ThresholdTable = () => {
 };
 
 const SensorSettings = ({ add }) => {
+  const theme = useTheme();
   const [settings, setSettings] = React.useState({
     emdAddress: add,
     firmwareVersion: "01.00.0005",
@@ -249,7 +257,7 @@ const SensorSettings = ({ add }) => {
     });
   };
   return (
-    <Box sx={{ border: "1px dashed", padding: 2 }}>
+    <Box sx={{ border: "1px dashed", padding: 2, borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5" }}>
       <Grid container alignItems="flex-start" spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -346,6 +354,7 @@ function CustomTabPanel(props) {
 }
 
 function EnvironmentSensor() {
+  const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -353,7 +362,7 @@ function EnvironmentSensor() {
   };
 
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <NamedContainer
@@ -374,7 +383,7 @@ function EnvironmentSensor() {
                     <NamedContainer
                       noDivider
                       overridetitle
-                      paperSx={{ border: "1px dashed" }}
+                      paperSx={{ border: "1px dashed", borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5" }}
                       title={
                         <Chip
                           sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px", marginBottom: "5px" }}
