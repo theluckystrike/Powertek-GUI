@@ -1,5 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Typography } from "@mui/material";
+import {
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
@@ -12,6 +21,7 @@ import CircuitBreakerStatus from "../../components/homepage/CircuitBreakerStatus
 
 import ConfigContext from "../../components/common/ConfigContext";
 import PDUSelect from "../../components/common/PDUSelect";
+import MuiButton from "../../components/common/styled/Button";
 
 function HomePage(props) {
   const { config, setConfig } = useContext(ConfigContext);
@@ -120,7 +130,7 @@ function HomePage(props) {
   }, [config]);
 
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={2}>
@@ -207,6 +217,68 @@ function HomePage(props) {
               <NamedContainer title="PlaceHolder"></NamedContainer>
             </Grid>
           </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+          <NamedContainer title="Residual Current Monitoring Option">
+
+            <TableContainer sx={{ width: "30%" }}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Power</TableCell>
+                    <TableCell align="right">4.4W</TableCell>
+                    <TableCell rowSpan={2} align="right" sx={{ color: "green" }}>Normal</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Phase 2 Energy</TableCell>
+                    <TableCell align="right">localhost:5173/Powertek-GUI/</TableCell>
+                    <TableCell align="right">Test</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <TableContainer sx={{ marginTop: "24px" }} mt={4}>
+              <Table aria-label="simple table">
+                <TableHead sx={{ backgroundColor: "gray" }}>
+                  <TableRow>
+                    <TableCell>Phase</TableCell>
+                    <TableCell align="right">Current(A)</TableCell>
+                    <TableCell align="right">Voltage(V)</TableCell>
+                    <TableCell align="right">Frequency</TableCell>
+                    <TableCell align="right">Frequency</TableCell>
+                    <TableCell align="right">Power</TableCell>
+                    <TableCell align="right">Frequency</TableCell>
+                    <TableCell align="right">Status</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>1</TableCell>
+                    <TableCell align="right">0.02.00.002</TableCell>
+                    <TableCell align="right">228.5</TableCell>
+                    <TableCell align="right">49.51</TableCell>
+                    <TableCell align="right">1.00/1.00</TableCell>
+                    <TableCell align="right">4.4/4.4</TableCell>
+                    <TableCell align="right">0/0</TableCell>
+                    <TableCell align="right" sx={{ color: "green" }}>Normal</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <Box mt={3}>
+              <Button variant="contained">
+                Residual Current
+              </Button>
+              <Button variant="contained" sx={{ marginLeft: "10px" }}>
+                Critical
+              </Button>
+            </Box>
+          </NamedContainer>
         </Grid>
       </Grid>
     </Box>

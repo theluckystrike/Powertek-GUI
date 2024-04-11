@@ -21,8 +21,10 @@ import { IoMdAnalytics } from "react-icons/io";
 
 import ConfigContext, { UIConfigContext } from "./ConfigContext";
 import logo from "../../assets/logo-clear.png";
+import { useTheme } from "@emotion/react";
 
 function SidebarCustom(props) {
+  const theme = useTheme();
   const { UIConfig, setUIConfig } = useContext(UIConfigContext);
   const logoName = UIConfig[`logoName`];
   const imageurl = new URL(`../../assets/${logoName}`, import.meta.url).href;
@@ -35,7 +37,7 @@ function SidebarCustom(props) {
       },
     },
     subMenuContent: ({ level }) => ({
-      backgroundColor: level === 0 ? "#3D545F" : "transparent",
+      backgroundColor: level === 0 ? "#203246" : "transparent",
     }),
     label: ({ open }) => ({
       fontWeight: open ? 600 : undefined,
@@ -108,26 +110,26 @@ function SidebarCustom(props) {
             User Settings
           </MenuItem>
 
-          <SubMenu label="Device Settings" icon={<RiListSettingsLine size={23} />}>
-            <MenuItem component={<Link to="/device-settings/network" />}>Network</MenuItem>
-            <MenuItem component={<Link to="/device-settings/networkServices" />}>Network Services</MenuItem>
-            <MenuItem component={<Link to="/device-settings/security" />}>Security</MenuItem>
-            <MenuItem component={<Link to="/device-settings/datetime" />}>Date/Time</MenuItem>
-            <MenuItem component={<Link to="/device-settings/eventlogs" />}>Event Logs</MenuItem>
-            <MenuItem component={<Link to="/device-settings/data-logging" />}>Data Logging</MenuItem>
-            <MenuItem component={<Link to="/device-settings/usb-host-port" />}>USB Host Ports</MenuItem>
-            {/* <MenuItem component={<Link to="/device-settings" />}>Server Reachability</MenuItem>
-            <MenuItem component={<Link to="/device-settings" />}>Front Panel</MenuItem>
-            <MenuItem component={<Link to="/device-settings" />}>Lua Scripts</MenuItem>
-            <MenuItem component={<Link to="/device-settings" />}>Miscellaneous</MenuItem> */}
+          <SubMenu label="Device Settings" icon={<RiListSettingsLine size={23}/>}>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/network" />}>Network</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/networkServices" />}>Network Services</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/security" />}>Security</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/datetime" />}>Date/Time</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/eventlogs" />}>Event Logs</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/data-logging" />}>Data Logging</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/usb-host-port" />}>USB Host Ports</MenuItem>
+            {/* <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Server Reachability</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Front Panel</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Lua Scripts</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Miscellaneous</MenuItem> */}
           </SubMenu>
 
           <SubMenu label="Maintenance" icon={<GrHostMaintenance size={23} />}>
-            <MenuItem component={<Link to="/maintenance/pdu-information" />}>PDU Information</MenuItem>
-            <MenuItem component={<Link to="/maintenance/firmware-update" />}>Firmware Update</MenuItem>
-            <MenuItem component={<Link to="/maintenance/bulk-configuration" />}>Bulk Configuration</MenuItem>
-            <MenuItem component={<Link to="/maintenance/backup" />}>Backup</MenuItem>
-            <MenuItem component={<Link to="/maintenance/reset-restore" />}>Reset/Restore</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/pdu-information" />}>PDU Information</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/firmware-update" />}>Firmware Update</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/bulk-configuration" />}>Bulk Configuration</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/backup" />}>Backup</MenuItem>
+            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/reset-restore" />}>Reset/Restore</MenuItem>
           </SubMenu>
           {/* <MenuItem icon={<GrHostMaintenance size={23} />} component={<Link to="/maintenance" />}>
             Maintenance

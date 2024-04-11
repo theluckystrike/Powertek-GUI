@@ -26,6 +26,7 @@ import { FaLock } from "react-icons/fa";
 import { HiUserAdd } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
+import styled from "@emotion/styled";
 
 const userListGlobal = [
   { id: 1, username: "User1", fullName: "David", roles: "Engineer", Enabled: false, delete: false },
@@ -203,8 +204,12 @@ function UserSetting() {
     }
   };
 
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
+  }));
+
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <NamedContainer
         overridetitle
         title={
@@ -241,11 +246,11 @@ function UserSetting() {
           <Table aria-label="PDU table">
             <TableHead>
               <TableRow>
-                <TableCell align="center">Select</TableCell>
-                <TableCell align="center">Username</TableCell>
-                <TableCell align="center">Full Name</TableCell>
-                <TableCell align="center">Roles</TableCell>
-                <TableCell align="center">Enabled</TableCell>
+                <StyledTableCell align="center">Select</StyledTableCell>
+                <StyledTableCell align="center">Username</StyledTableCell>
+                <StyledTableCell align="center">Full Name</StyledTableCell>
+                <StyledTableCell align="center">Roles</StyledTableCell>
+                <StyledTableCell align="center">Enabled</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -253,7 +258,7 @@ function UserSetting() {
                 .filter((user) => !user.delete)
                 .map((_, index) => (
                   <TableRow key={index}>
-                    <TableCell padding="checkbox" align="center">
+                    <StyledTableCell padding="checkbox" align="center">
                       {!_.isAdmin ? (
                         <Checkbox checked={checked && checked.id == _.id} onChange={() => handleCheckboxChange(_.id)} />
                       ) : settingsEdit ? (
@@ -261,13 +266,13 @@ function UserSetting() {
                       ) : (
                         <FaLock />
                       )}
-                    </TableCell>
-                    <TableCell align="center">{_.username}</TableCell>
-                    <TableCell align="center">{_.fullName}</TableCell>
-                    <TableCell align="center">{_.roles}</TableCell>
-                    <TableCell padding="checkbox" align="center">
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{_.username}</StyledTableCell>
+                    <StyledTableCell align="center">{_.fullName}</StyledTableCell>
+                    <StyledTableCell align="center">{_.roles}</StyledTableCell>
+                    <StyledTableCell padding="checkbox" align="center">
                       <Checkbox checked={_.Enabled} onChange={() => toggleUser(_.id)} />
-                    </TableCell>
+                    </StyledTableCell>
                   </TableRow>
                 ))}
             </TableBody>

@@ -28,6 +28,11 @@ import {
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import SaveIcon from "@mui/icons-material/Save";
 import MuiButton from "../../../components/common/styled/Button";
+import styled from "@emotion/styled";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
+}));
 
 function IpAccessControl4() {
   const [ipv4Enabled, setIpv4Enabled] = useState(false);
@@ -148,30 +153,30 @@ function RoleACL({ title }) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>#</TableCell>
-              <TableCell>Start IP</TableCell>
-              <TableCell>End IP</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Policy</TableCell>
+              <StyledTableCell>#</StyledTableCell>
+              <StyledTableCell>Start IP</StyledTableCell>
+              <StyledTableCell>End IP</StyledTableCell>
+              <StyledTableCell>Role</StyledTableCell>
+              <StyledTableCell>Policy</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rules.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} align="center">
+                <StyledTableCell colSpan={5} align="center">
                   No rules defined
-                </TableCell>
+                </StyledTableCell>
               </TableRow>
             )}
             {rules.map((rule, index) => (
               <TableRow key={index}>
-                <TableCell component="th" scope="row">
+                <StyledTableCell component="th" scope="row">
                   {index + 1}
-                </TableCell>
-                <TableCell>{rule.startIP}</TableCell>
-                <TableCell>{rule.endIP}</TableCell>
-                <TableCell>{rule.role}</TableCell>
-                <TableCell>{rule.policy}</TableCell>
+                </StyledTableCell>
+                <StyledTableCell>{rule.startIP}</StyledTableCell>
+                <StyledTableCell>{rule.endIP}</StyledTableCell>
+                <StyledTableCell>{rule.role}</StyledTableCell>
+                <StyledTableCell>{rule.policy}</StyledTableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -333,37 +338,37 @@ function LDAP() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Access Order</TableCell>
-            <TableCell>IP Address / Hostname</TableCell>
-            <TableCell>Security</TableCell>
-            <TableCell>Port</TableCell>
-            <TableCell>LDAP Server Type</TableCell>
+            <StyledTableCell>Access Order</StyledTableCell>
+            <StyledTableCell>IP Address / Hostname</StyledTableCell>
+            <StyledTableCell>Security</StyledTableCell>
+            <StyledTableCell>Port</StyledTableCell>
+            <StyledTableCell>LDAP Server Type</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
             {/* Replace these TextFields with your form controls as necessary */}
-            <TableCell component="th" scope="row">
+            <StyledTableCell component="th" scope="row">
               <TextField label="Order" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <TextField fullWidth label="IP Address / Hostname" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <Select label="Security" value="" onChange={() => { }} size="small">
                 <MenuItem value={10}>Option 1</MenuItem>
                 <MenuItem value={20}>Option 2</MenuItem>
               </Select>
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <TextField label="Port" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <Select label="LDAP Server Type" value="" onChange={() => { }} size="small">
                 <MenuItem value={10}>Primary</MenuItem>
                 <MenuItem value={20}>Secondary</MenuItem>
               </Select>
-            </TableCell>
+            </StyledTableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -394,34 +399,34 @@ function Radius() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Access Order</TableCell>
-            <TableCell>IP Address / Hostname</TableCell>
-            <TableCell>Authentication Port</TableCell>
-            <TableCell>Accounting Port</TableCell>
-            <TableCell>Server Type</TableCell>
+            <StyledTableCell>Access Order</StyledTableCell>
+            <StyledTableCell>IP Address / Hostname</StyledTableCell>
+            <StyledTableCell>Authentication Port</StyledTableCell>
+            <StyledTableCell>Accounting Port</StyledTableCell>
+            <StyledTableCell>Server Type</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
             {/* Replace these TextFields with your form controls as necessary */}
-            <TableCell component="th" scope="row">
+            <StyledTableCell component="th" scope="row">
               <TextField label="Order" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <TextField fullWidth label="IP Address / Hostname" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <TextField label="Auth Port" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <TextField label="Port" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <Select label="LDAP Server Type" value="" onChange={() => { }} size="small">
                 <MenuItem value={10}>Primary</MenuItem>
                 <MenuItem value={20}>Secondary</MenuItem>
               </Select>
-            </TableCell>
+            </StyledTableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -452,34 +457,34 @@ function TACACS() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Access Order</TableCell>
-            <TableCell>IP Address / Hostname</TableCell>
-            <TableCell>Authentication Port</TableCell>
-            <TableCell>Accounting Port</TableCell>
-            <TableCell>Server Type</TableCell>
+            <StyledTableCell>Access Order</StyledTableCell>
+            <StyledTableCell>IP Address / Hostname</StyledTableCell>
+            <StyledTableCell>Authentication Port</StyledTableCell>
+            <StyledTableCell>Accounting Port</StyledTableCell>
+            <StyledTableCell>Server Type</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
             {/* Replace these TextFields with your form controls as necessary */}
-            <TableCell component="th" scope="row">
+            <StyledTableCell component="th" scope="row">
               <TextField label="Order" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <TextField fullWidth label="IP Address / Hostname" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <TextField label="Auth Port" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <TextField label="Port" variant="outlined" size="small" />
-            </TableCell>
-            <TableCell>
+            </StyledTableCell>
+            <StyledTableCell>
               <Select label="LDAP Server Type" value="" onChange={() => { }} size="small">
                 <MenuItem value={10}>Primary</MenuItem>
                 <MenuItem value={20}>Secondary</MenuItem>
               </Select>
-            </TableCell>
+            </StyledTableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -506,7 +511,7 @@ function TACACS() {
 
 function Security() {
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <NamedContainer title="Security">

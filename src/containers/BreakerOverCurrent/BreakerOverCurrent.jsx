@@ -26,6 +26,7 @@ import { FaLockOpen } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import PduSelect from "../../components/common/PDUSelect";
 import ConfigContext from "../../components/common/ConfigContext";
+import styled from "@emotion/styled";
 
 function SensorDialog({ open, onClose, checked }) {
   const { config } = React.useContext(ConfigContext);
@@ -107,6 +108,10 @@ function BreakerOverCurrent() {
     setDialogOpen(false);
   };
 
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
+  }));
+
   const getStatusChip = (status) => {
     return (
       <Chip
@@ -121,7 +126,7 @@ function BreakerOverCurrent() {
   };
 
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <NamedContainer
         overridetitle
         title={
@@ -161,42 +166,42 @@ function BreakerOverCurrent() {
           <Table aria-label="PDU table">
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
+                <StyledTableCell padding="checkbox">
                   <Checkbox
                     indeterminate={checked.some((item) => item) && !checked.every((item) => item)}
                     checked={checked.every((item) => item)}
                     onChange={() => setChecked(checked.map(() => true))}
                   />
-                </TableCell>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">PDU</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell align="center">RMS Current</TableCell>
-                <TableCell align="center">Max Current</TableCell>
-                <TableCell align="center">Protected Outlets</TableCell>
-                <TableCell align="center">Lines</TableCell>
+                </StyledTableCell>
+                <StyledTableCell align="center">Name</StyledTableCell>
+                <StyledTableCell align="center">PDU</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
+                <StyledTableCell align="center">RMS Current</StyledTableCell>
+                <StyledTableCell align="center">Max Current</StyledTableCell>
+                <StyledTableCell align="center">Protected Outlets</StyledTableCell>
+                <StyledTableCell align="center">Lines</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {config["circuitBreakerNames"].map((name, index) => (
                 <TableRow key={index}>
-                  <TableCell padding="checkbox">
+                  <StyledTableCell padding="checkbox">
                     <Checkbox checked={checked[index]} onChange={() => handleCheckboxChange(index)} />
-                  </TableCell>
-                  <TableCell align="center">{name}</TableCell>
-                  <TableCell align="center">PDU name</TableCell>
-                  <TableCell align="center">{getStatusChip(index % 2 === 0 ? "OPEN" : "CLOSED")}</TableCell>
-                  <TableCell align="center">
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{name}</StyledTableCell>
+                  <StyledTableCell align="center">PDU name</StyledTableCell>
+                  <StyledTableCell align="center">{getStatusChip(index % 2 === 0 ? "OPEN" : "CLOSED")}</StyledTableCell>
+                  <StyledTableCell align="center">
                     <div>
                       <div>{index}/ 16 A</div>
                       <ReportingBar value={index} />
                     </div>
-                  </TableCell>
-                  <TableCell align="center">{index} A</TableCell>
-                  <TableCell align="center" sx={{ whiteSpace: "normal", wordWrap: "break-word", width: "100px" }}>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{index} A</StyledTableCell>
+                  <StyledTableCell align="center" sx={{ whiteSpace: "normal", wordWrap: "break-word", width: "100px" }}>
                     {config["protectedOutlet"][`${name}`].join(", ")}
-                  </TableCell>
-                  <TableCell align="center">{config["circuitBreakerLines"][`${name}`]}</TableCell>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{config["circuitBreakerLines"][`${name}`]}</StyledTableCell>
                 </TableRow>
               ))}
             </TableBody>

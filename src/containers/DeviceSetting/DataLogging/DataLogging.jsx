@@ -28,7 +28,7 @@ function DataLogging() {
   };
 
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2} sx={{ maxWidth: "90%", m: "auto" }}>
         <Grid item xs={12}>
           <NamedContainer title="Data Logging">

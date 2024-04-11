@@ -1,6 +1,11 @@
 import React from "react";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import styled from "@emotion/styled";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
+}));
 
 const logsData = [
   {
@@ -30,19 +35,19 @@ function LogViewer({ logs }) {
       <Table aria-label="log table">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Time</TableCell>
-            <TableCell>Severity</TableCell>
-            <TableCell>Event</TableCell>
+            <StyledTableCell>Date</StyledTableCell>
+            <StyledTableCell>Time</StyledTableCell>
+            <StyledTableCell>Severity</StyledTableCell>
+            <StyledTableCell>Event</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {logs.map((log, index) => (
             <TableRow key={index}>
-              <TableCell>{log.date}</TableCell>
-              <TableCell>{log.time}</TableCell>
-              <TableCell>{log.severity}</TableCell>
-              <TableCell>{log.event}</TableCell>
+              <StyledTableCell>{log.date}</StyledTableCell>
+              <StyledTableCell>{log.time}</StyledTableCell>
+              <StyledTableCell>{log.severity}</StyledTableCell>
+              <StyledTableCell>{log.event}</StyledTableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -53,7 +58,7 @@ function LogViewer({ logs }) {
 
 function EventLogs() {
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <NamedContainer title="Event Logs">

@@ -30,6 +30,7 @@ import { ReportingBar } from "../../components/common/ReportingBar";
 import { useTheme } from "@emotion/react";
 import PDUSelect from "../../components/common/PDUSelect";
 import ConfigContext from "../../components/common/ConfigContext";
+import styled from "@emotion/styled";
 
 const demoOutlet = {
   id: 1,
@@ -231,6 +232,10 @@ function Outlet() {
     // setActionDialogOpen(false);
   };
 
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
+  }));
+
   const getStateChip = (state) => {
     return (
       <Chip
@@ -265,7 +270,7 @@ function Outlet() {
   };
 
   return (
-    <Box sx={{ p: 4, height: "100%", overflow: "scroll" }}>
+    <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <NamedContainer
         overridetitle
         title={
@@ -305,19 +310,19 @@ function Outlet() {
           <Table size="medium" sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
+                <StyledTableCell padding="checkbox">
                   <Checkbox
                     indeterminate={checkSelected.length > 0 && checkSelected.length < outlets.length}
                     checked={checkSelected.length === outlets.length}
                     onChange={handleSelectAllClick}
                   />
-                </TableCell>
-                <TableCell align="center">#</TableCell>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Current (A)</TableCell>
-                <TableCell align="center">State</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell align="center">Lines</TableCell>
+                </StyledTableCell>
+                <StyledTableCell align="center">#</StyledTableCell>
+                <StyledTableCell align="center">Name</StyledTableCell>
+                <StyledTableCell align="center">Current (A)</StyledTableCell>
+                <StyledTableCell align="center">State</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
+                <StyledTableCell align="center">Lines</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -326,23 +331,23 @@ function Outlet() {
                   key={outlet.id}
                   sx={{
                     backgroundColor:
-                      index % 2 === 0 ? (theme.palette.mode === "dark" ? "#3C3C3C" : "#E0E0E0") : "inherit", // Alternating color
+                      index % 2 === 0 ? (theme.palette.mode === "dark" ? "#1c2e45" : "#f1f5f9") : "inherit", // Alternating color
                   }}
                 >
-                  <TableCell padding="checkbox">
+                  <StyledTableCell padding="checkbox">
                     <Checkbox
                       checked={checkSelected.indexOf(outlet.id) !== -1}
                       onChange={() => handleCheckboxClick(outlet.id)}
                     />
-                  </TableCell>
-                  <TableCell align="center">{index + 1}</TableCell>
-                  <TableCell hover sx={{ cursor: "pointer" }} onClick={() => handleClickOpen(outlet)} align="center">
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{index + 1}</StyledTableCell>
+                  <StyledTableCell hover sx={{ cursor: "pointer" }} onClick={() => handleClickOpen(outlet)} align="center">
                     {outlet.name}
-                  </TableCell>
-                  <TableCell align="center">{outlet.current}</TableCell>
-                  <TableCell align="center">{getStateChip(outlet.state)}</TableCell>
-                  <TableCell align="center">{getStatusChip(outlet.status)}</TableCell>
-                  <TableCell align="center">{outlet.lines.join(", ")}</TableCell>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{outlet.current}</StyledTableCell>
+                  <StyledTableCell align="center">{getStateChip(outlet.state)}</StyledTableCell>
+                  <StyledTableCell align="center">{getStatusChip(outlet.status)}</StyledTableCell>
+                  <StyledTableCell sx={{ minWidth : "50px"}} align="center">{outlet.lines.join(", ")}</StyledTableCell>
                 </TableRow>
               ))}
             </TableBody>
