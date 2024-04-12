@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Container, Typography, useTheme } from "@mui/material";
+import { Button, Container, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -454,11 +454,11 @@ function SinglePhaseCase() {
   function getStatusColor(status) {
     switch (status) {
       case "normal":
-        return ["success", <ThumbUpAltIcon />];
+        return ["success", <ThumbUpAltIcon style={{marginLeft: "-3px"}} />];
       case "warning":
-        return ["warning", <WarningIcon />];
+        return ["warning", <WarningIcon style={{marginLeft: "-3px"}}/>];
       case "error":
-        return ["error", <GppBadIcon />];
+        return ["error", <GppBadIcon style={{marginLeft: "-3px"}}/>];
       default:
         return "default";
     }
@@ -495,6 +495,9 @@ function SinglePhaseCase() {
     padding: "4px", // Set the padding to a low value, adjust as needed
     borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
   }));
+
+  // for use to hide icons text of status columns
+  const isMdScreen = useMediaQuery('(min-width:1450px)');
   return (
     <>
       <ThresholdDialog
@@ -558,7 +561,11 @@ function SinglePhaseCase() {
                     size="small"
                     icon={getStatusColor(row.status)[1]}
                     sx={{
-                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      "& .MuiChip-label": {
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        display: !isMdScreen ? "none" : "inline-block"
+                      },
                       width: "40%",
                     }}
                   />
@@ -925,6 +932,7 @@ function ThreePhaseCaseWYE() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
+                      minWidth: "100px"
                     }}
                   />
                 </StyledTableCell>
@@ -938,6 +946,7 @@ function ThreePhaseCaseWYE() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
+                      minWidth: "100px"
                     }}
                   />
                 </StyledTableCell>
@@ -951,6 +960,7 @@ function ThreePhaseCaseWYE() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
+                      minWidth: "100px"
                     }}
                   />
                 </StyledTableCell>
@@ -964,6 +974,7 @@ function ThreePhaseCaseWYE() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
+                      minWidth: "100px"
                     }}
                   />
                 </StyledTableCell>
@@ -1362,6 +1373,7 @@ function ThreePhaseCaseDelta() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
+                      minWidth: "100px"
                     }}
                   />
                 </StyledTableCell>
@@ -1375,6 +1387,7 @@ function ThreePhaseCaseDelta() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
+                      minWidth: "100px"
                     }}
                   />
                 </StyledTableCell>
@@ -1388,6 +1401,7 @@ function ThreePhaseCaseDelta() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
+                      minWidth: "100px"
                     }}
                   />
                 </StyledTableCell>
@@ -1401,6 +1415,7 @@ function ThreePhaseCaseDelta() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
+                      minWidth: "100px"
                     }}
                   />
                 </StyledTableCell>
