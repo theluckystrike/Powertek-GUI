@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -18,6 +18,7 @@ import ConfigContext, { UIConfigContext } from "./ConfigContext";
 
 import { IoFlower } from "react-icons/io5";
 import { GiBreakingChain } from "react-icons/gi";
+import styled from "@emotion/styled";
 
 const pageStyles = {
   appBar: {
@@ -36,9 +37,15 @@ const pageStyles = {
   },
 };
 
+const StyledSelect = styled(Select)(({ theme }) => ({
+  'fieldset': {
+    borderColor: theme.palette.mode === "dark" ? "#233a57 !important" : "#233a57 !important",
+  }
+}));
+
 export default function Header(props) {
   const theme = useTheme();
-  const { sideBarToggle , setsideBarToggle} = props;
+  const { sideBarToggle, setsideBarToggle } = props;
   const { config, setConfig, allConfig } = React.useContext(ConfigContext);
   const { UIConfig, setUIConfig, allUIConfig } = React.useContext(UIConfigContext);
   const [value, setValue] = React.useState(0);
@@ -49,38 +56,55 @@ export default function Header(props) {
     setValue(event.target.value);
   };
 
+  const [displayStyle, setDisplayStyle] = useState(window.innerWidth < 769 ? "block" : "none");
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDisplayStyle(window.innerWidth < 769 ? "block" : "none");
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <AppBar position="sticky" sx={pageStyles.appBar}>
       <Toolbar sx={{ flexGrow: 1 }}>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          style = {{lineHeight:"0.7"}}
+          sx={{ mr: 2, display: displayStyle }}
+          onClick={() => {
+            setsideBarToggle(!sideBarToggle)
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
         <Typography sx={{ marginRight: "30px" }} variant="h6">
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2, display: { md: "none" } }}
-            onClick={() => {
-              setsideBarToggle(!sideBarToggle)
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
           {UIConfig.headerDisplayName}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <Select
+          <StyledSelect
             labelId="pdu-select-label"
             id="pdu-select"
             value={value}
             onChange={handleConfigChange}
             size="small"
-            sx={{ maxWidth: "200px", maxHeight: "40px", margin: "auto" }}
+            sx={{ maxWidth: "200px", maxHeight: "40px", margin: "auto",
+              color: theme.palette.mode === "dark" ? "#fff !important" : "#fff !important",
+          }}
           >
             <MenuItem value={0}>Config 1 (Company 1 || Single phase 63)</MenuItem>
             <MenuItem value={1}>Config 2 (Company 2 || three phase WYE 63)</MenuItem>
             <MenuItem value={2}>Config 3 (Company 3 || three phase DELTA 60A)</MenuItem>
-          </Select>
+          </StyledSelect>
           <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
             <LanguageIcon />
           </IconButton>

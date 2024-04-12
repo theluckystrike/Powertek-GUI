@@ -71,10 +71,11 @@ function SidebarCustom(props) {
           <Box
             component="img"
             sx={{
-              width: "100%",
+              width: "auto",
               objectFit: "cover",
               overflow: "hidden",
               cursor: "pointer",
+              maxHeight: "60px"
             }}
             alt="Logo"
             src={imageurl}
@@ -154,9 +155,9 @@ function SidebarCustom(props) {
           </Typography>
         </div>
 
-        <Button size="large" color="inherit" onClick={() => setsideBarCollapsed(!collapsed)}>
+        {/* <Button size="large" color="inherit" onClick={() => setsideBarCollapsed(!collapsed)}>
           <MenuIcon />
-        </Button>
+        </Button> */}
         <div
           style={{
             display: "flex",

@@ -246,6 +246,7 @@ function Outlet() {
         sx={{
           "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
           width: "40%",
+          minWidth: "40px"
         }}
       />
     );
@@ -264,6 +265,7 @@ function Outlet() {
             textTransform: "uppercase",
           },
           width: "40%",
+          minWidth: "80px"
         }}
       />
     );
@@ -278,7 +280,7 @@ function Outlet() {
             <Typography variant="h5" fontWeight="600">
               Outlet
             </Typography>
-            <PDUSelect />
+
             <Box sx={{ marginRight: "20px", display: checkSelected.length > 0 ? "block" : "none", gap: "2px" }}>
               <Button
                 variant="small"
@@ -303,6 +305,7 @@ function Outlet() {
                 Cycle
               </Button>
             </Box>
+            <PDUSelect />
           </Box>
         }
       >
@@ -341,7 +344,7 @@ function Outlet() {
                     />
                   </StyledTableCell>
                   <StyledTableCell align="center">{index + 1}</StyledTableCell>
-                  <StyledTableCell hover sx={{ cursor: "pointer" }} onClick={() => handleClickOpen(outlet)} align="center">
+                  <StyledTableCell hover={outlet.name} sx={{ cursor: "pointer" }} onClick={() => handleClickOpen(outlet)} align="center">
                     {outlet.name}
                   </StyledTableCell>
                   <StyledTableCell align="center">{outlet.current}</StyledTableCell>
