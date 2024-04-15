@@ -77,7 +77,8 @@ function App() {
                       sideBarToggle={sideBarToggle}
                       setsideBarToggle={setsideBarToggle}
                       collapsed={sideBarCollapsed}
-                      setsideBarCollapsed={setsideBarCollapsed} />
+                      setsideBarCollapsed={setsideBarCollapsed}
+                    />
                     <Box
                       component={"main"}
                       style={{
