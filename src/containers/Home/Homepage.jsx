@@ -7,7 +7,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Button
+  Button,
+  Tabs,
+  Tab,
+  Stack,
+  Avatar,
+  Card,
+  CardContent,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -21,8 +27,29 @@ import CircuitBreakerStatus from "../../components/homepage/CircuitBreakerStatus
 
 import ConfigContext from "../../components/common/ConfigContext";
 import PDUSelect from "../../components/common/PDUSelect";
-import MuiButton from "../../components/common/styled/Button";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
+import { useTheme } from "@emotion/react";
+import { ReportingBar } from "../../components/common/ReportingBar";
+import EventLogtab from "./EventLogtab";
+import AlarmListTab from "./AlarmListTab";
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </Typography>
+  );
+}
 function HomePage(props) {
   const { config, setConfig } = useContext(ConfigContext);
 
@@ -128,6 +155,16 @@ function HomePage(props) {
 
     return () => clearInterval(interval);
   }, [config]);
+
+  // tabs
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const theme = useTheme();
+
 
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
@@ -277,6 +314,161 @@ function HomePage(props) {
               <Button variant="contained" sx={{ marginLeft: "10px" }}>
                 Critical
               </Button>
+            </Box>
+          </NamedContainer>
+
+        </Grid>
+        {/*  */}
+        <Grid item xs={12}>
+          <NamedContainer title="Power Share">
+            <Box sx={{ width: "100%" }}>
+              <Card style={{ marginTop: "20px" }}>
+                <Typography align="center" paddingY={1} sx={{ backgroundColor: "#499DFD" }}>
+                  Status
+                </Typography>
+                <CardContent>
+                  <Button variant="contained" style={{ marginTop: "20px" }}>PDU</Button>
+                  <TableContainer sx={{ marginTop: "24px" }} mt={4}>
+                    <Table aria-label="simple table">
+                      <TableHead sx={{ backgroundColor: "#499DFD" }}>
+                        <TableRow>
+                          <TableCell>Phase</TableCell>
+                          <TableCell align="right">Current(A)</TableCell>
+                          <TableCell align="right">Voltage(V)</TableCell>
+                          <TableCell align="right">Frequency</TableCell>
+                          <TableCell align="right">Circuit breaker 1</TableCell>
+                          <TableCell align="right">Circuit breaker 1</TableCell>
+                          <TableCell align="right">Total</TableCell>
+                          <TableCell align="right">Status</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>1.1</TableCell>
+                          <TableCell align="right">118.3</TableCell>
+                          <TableCell align="right">28.5</TableCell>
+                          <TableCell align="right">49.51</TableCell>
+                          <TableCell align="right">
+                            <ReportingBar value={46.3} max={100} min={0} />
+                          </TableCell>
+                          <TableCell align="right">
+                            <ReportingBar value={20} max={100} min={0} />
+                          </TableCell>
+                          <TableCell align="right">
+                            <ReportingBar value={30.55} max={100} min={0} />
+                          </TableCell>
+                          <TableCell align="right" sx={{ color: "red" }}>Critical</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <Box sx={{ marginTop: "15px" }}>
+                    <Button variant="contained" color="primary" style={{ marginRight: "10px" }}>Share</Button>
+                    <Button style={{ color: "green", backgroundColor: "lightgray" }} variant="contained">Active / Main Power</Button>
+                  </Box>
+                </CardContent>
+              </Card>
+              <Card style={{ marginTop: "20px" }}>
+                <Typography align="center" paddingY={1} sx={{ backgroundColor: theme.palette.mode === "dark" ? "#499DFD" : "#499DFD", }}>
+                  Outlet Status
+                </Typography>
+                <CardContent>
+                  <Box>
+                    <Stack direction="row" spacing={5}>
+                      <Chip
+                        avatar={
+                          <Avatar sx={{ bgcolor: "#2e7d32" }}><AddCircleOutlineIcon /></Avatar>}
+                        label="activeOn circuit (VA)"
+                        variant="outlined"
+                        color="success"
+                      />
+                      <Chip
+                        avatar={
+                          <Avatar sx={{ bgcolor: "#2e7d32" }}><AddCircleOutlineIcon /></Avatar>}
+                        label="activeOn circuit (VA)"
+                        variant="outlined"
+                        color="success"
+                      />
+                      <Chip
+                        avatar={
+                          <Avatar><AddCircleOutlineIcon /></Avatar>}
+                        label="activeOn circuit (VA)"
+                        variant="outlined"
+                      />
+                      <Chip
+                        avatar={
+                          <Avatar><AddCircleOutlineIcon /></Avatar>}
+                        label="activeOn circuit (VA)"
+                        variant="outlined"
+                      />
+                      <Chip
+                        avatar={
+                          <Avatar sx={{ bgcolor: "#2e7d32" }}><AddCircleOutlineIcon /></Avatar>}
+                        label="activeOn circuit (VA)"
+                        variant="outlined"
+                        color="success"
+                      />
+                      <Chip
+                        avatar={
+                          <Avatar><AddCircleOutlineIcon /></Avatar>}
+                        label="liveOn circuit (VA)"
+                        variant="outlined"
+                      />
+                      <Chip
+                        avatar={
+                          <Avatar sx={{ bgcolor: "#2e7d32" }}><AddCircleOutlineIcon /></Avatar>}
+                        label="actived circuit (VA)"
+                        variant="outlined"
+                        color="success"
+                      />
+                      <Chip
+                        avatar={
+                          <Avatar><AddCircleOutlineIcon /></Avatar>}
+                        label="active circuit (VA)"
+                        variant="outlined"
+                      />
+                    </Stack>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Box>
+          </NamedContainer>
+
+        </Grid>
+
+        {/* tabs */}
+        <Grid item xs={12}>
+          <NamedContainer title="Alarm and Event Overview">
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
+                <Tab
+
+                  icon={
+                    <Chip
+                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
+                      label="Alarm List"
+                      clickable={true}
+                    />
+                  }
+                />
+                <Tab
+
+                  icon={
+                    <Chip
+                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
+                      label="Event Log"
+                      clickable={true}
+                    />
+                  }
+                />
+
+              </Tabs>
+              <TabPanel role="tabpanel" value={value} index={0}>
+                <AlarmListTab />
+              </TabPanel>
+              <TabPanel role="tabpanel" value={value} index={1}>
+                <EventLogtab />
+              </TabPanel>
             </Box>
           </NamedContainer>
         </Grid>
