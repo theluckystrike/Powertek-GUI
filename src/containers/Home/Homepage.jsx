@@ -230,6 +230,76 @@ function HomePage(props) {
             </Grid>
           </NamedContainer>
         </Grid>
+
+        <Grid item xs={12}>
+          <NamedContainer title="Residual Current Monitoring">
+            <Box sx={{ display: "flex", flexDirection: "row" }} gap={2}>
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                sx={{ width: "30%", margin: "auto", display: "flex", placeContent: "center" }}
+              >
+                Residual Current : 0.0 mA
+                <Chip sx={{ marginLeft: "10px" }} label="Error" color="error" />
+                /
+                <Chip label="Normal" color="success" />
+              </Typography>
+
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                sx={{ width: "30%", margin: "auto", display: "flex", placeContent: "center" }}
+              >
+                Power Share :
+                <Chip sx={{ marginLeft: "10px" }} label="Inactive" color="primary" />
+                /
+                <Chip label="Active/Backup Power" color="error" />
+              </Typography>
+
+              <Typography variant="h5" fontWeight="600" sx={{ width: "30%", margin: "auto" }}>
+                Over Voltage Protection :
+                <Chip sx={{ marginLeft: "10px" }} label="Activated" color="error" />
+                /
+                <Chip label="Normal" color="success" />
+              </Typography>
+            </Box>
+          </NamedContainer>
+        </Grid>
+
+        {/* tabs */}
+        <Grid item xs={12}>
+          <NamedContainer title="Alarms">
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
+                <Tab
+                  icon={
+                    <Chip
+                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
+                      label="Alarm List"
+                      clickable={true}
+                    />
+                  }
+                />
+                {/* <Tab
+                  icon={
+                    <Chip
+                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
+                      label="Event Log"
+                      clickable={true}
+                    />
+                  }
+                /> */}
+              </Tabs>
+              <TabPanel role="tabpanel" value={value} index={0}>
+                <AlarmListTab />
+              </TabPanel>
+              {/* <TabPanel role="tabpanel" value={value} index={1}>
+                <EventLogtab />
+              </TabPanel> */}
+            </Box>
+          </NamedContainer>
+        </Grid>
+
         <Grid item xs={12}>
           <Grid container spacing={2}>
             <Grid item lg={4} md={12} sx={{ width: "100%" }}>
@@ -253,275 +323,6 @@ function HomePage(props) {
               <NamedContainer title="PlaceHolder"></NamedContainer>
             </Grid>
           </Grid>
-        </Grid>
-
-        <Grid item xs={12}>
-          <NamedContainer title="Residual Current Monitoring Option">
-            <Box sx={{ display: "flex", flexDirection: "row" }} gap={2}>
-              <TableContainer sx={{ width: "30%" }}>
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Power</TableCell>
-                      <TableCell align="right">4.4W</TableCell>
-                      <TableCell rowSpan={2} align="right" sx={{ color: "green" }}>
-                        Normal
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>Phase 2 Energy</TableCell>
-                      <TableCell align="right">localhost:5173/Powertek-GUI/</TableCell>
-                      <TableCell align="right">Test</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                sx={{ width: "30%", margin: "auto", display: "flex", placeContent: "center" }}
-              >
-                Power Share :
-                <Chip sx={{ marginLeft: "10px" }} label="Inactive" color="error" />
-                /
-                <Chip label="Active/Main Power" color="success" />
-              </Typography>
-
-              <Typography variant="h5" fontWeight="600" sx={{ width: "30%", margin: "auto" }}>
-                Over Voltage Protection :
-                <Chip sx={{ marginLeft: "10px" }} label="Activated" color="error" />
-                /
-                <Chip label="Normal" color="success" />
-              </Typography>
-            </Box>
-
-            <TableContainer sx={{ marginTop: "24px" }} mt={4}>
-              <Table aria-label="simple table">
-                <TableHead sx={{ backgroundColor: "gray" }}>
-                  <TableRow>
-                    <TableCell>Phase</TableCell>
-                    <TableCell align="right">Current(A)</TableCell>
-                    <TableCell align="right">Voltage(V)</TableCell>
-                    <TableCell align="right">Frequency</TableCell>
-                    <TableCell align="right">Frequency</TableCell>
-                    <TableCell align="right">Power</TableCell>
-                    <TableCell align="right">Frequency</TableCell>
-                    <TableCell align="right">Status</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>1</TableCell>
-                    <TableCell align="right">0.02.00.002</TableCell>
-                    <TableCell align="right">228.5</TableCell>
-                    <TableCell align="right">49.51</TableCell>
-                    <TableCell align="right">1.00/1.00</TableCell>
-                    <TableCell align="right">4.4/4.4</TableCell>
-                    <TableCell align="right">0/0</TableCell>
-                    <TableCell align="right" sx={{ color: "green" }}>
-                      Normal
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-
-            <Box mt={3}>
-              <Button variant="contained">Residual Current</Button>
-              <Button variant="contained" sx={{ marginLeft: "10px" }}>
-                Critical
-              </Button>
-            </Box>
-          </NamedContainer>
-        </Grid>
-        {/*  */}
-        <Grid item xs={12}>
-          <NamedContainer title="Power Share">
-            <Box sx={{ width: "100%" }}>
-              <Card style={{ marginTop: "20px" }}>
-                <Typography align="center" paddingY={1} sx={{ backgroundColor: "#499DFD" }}>
-                  Status
-                </Typography>
-                <CardContent>
-                  <Button variant="contained" style={{ marginTop: "20px" }}>
-                    PDU
-                  </Button>
-                  <TableContainer sx={{ marginTop: "24px" }} mt={4}>
-                    <Table aria-label="simple table">
-                      <TableHead sx={{ backgroundColor: "#499DFD" }}>
-                        <TableRow>
-                          <TableCell>Phase</TableCell>
-                          <TableCell align="right">Current(A)</TableCell>
-                          <TableCell align="right">Voltage(V)</TableCell>
-                          <TableCell align="right">Frequency</TableCell>
-                          <TableCell align="right">Circuit breaker 1</TableCell>
-                          <TableCell align="right">Circuit breaker 1</TableCell>
-                          <TableCell align="right">Total</TableCell>
-                          <TableCell align="right">Status</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell>1.1</TableCell>
-                          <TableCell align="right">118.3</TableCell>
-                          <TableCell align="right">28.5</TableCell>
-                          <TableCell align="right">49.51</TableCell>
-                          <TableCell align="right">
-                            <ReportingBar value={46.3} max={100} min={0} />
-                          </TableCell>
-                          <TableCell align="right">
-                            <ReportingBar value={20} max={100} min={0} />
-                          </TableCell>
-                          <TableCell align="right">
-                            <ReportingBar value={30.55} max={100} min={0} />
-                          </TableCell>
-                          <TableCell align="right" sx={{ color: "red" }}>
-                            Critical
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <Box sx={{ marginTop: "15px" }}>
-                    <Button variant="contained" color="primary" style={{ marginRight: "10px" }}>
-                      Share
-                    </Button>
-                    <Button style={{ color: "green", backgroundColor: "lightgray" }} variant="contained">
-                      Active / Main Power
-                    </Button>
-                  </Box>
-                </CardContent>
-              </Card>
-              <Card style={{ marginTop: "20px" }}>
-                <Typography
-                  align="center"
-                  paddingY={1}
-                  sx={{ backgroundColor: theme.palette.mode === "dark" ? "#499DFD" : "#499DFD" }}
-                >
-                  Outlet Status
-                </Typography>
-                <CardContent>
-                  <Box>
-                    <Stack direction="row" spacing={5}>
-                      <Chip
-                        avatar={
-                          <Avatar sx={{ bgcolor: "#2e7d32" }}>
-                            <AddCircleOutlineIcon />
-                          </Avatar>
-                        }
-                        label="activeOn circuit (VA)"
-                        variant="outlined"
-                        color="success"
-                      />
-                      <Chip
-                        avatar={
-                          <Avatar sx={{ bgcolor: "#2e7d32" }}>
-                            <AddCircleOutlineIcon />
-                          </Avatar>
-                        }
-                        label="activeOn circuit (VA)"
-                        variant="outlined"
-                        color="success"
-                      />
-                      <Chip
-                        avatar={
-                          <Avatar>
-                            <AddCircleOutlineIcon />
-                          </Avatar>
-                        }
-                        label="activeOn circuit (VA)"
-                        variant="outlined"
-                      />
-                      <Chip
-                        avatar={
-                          <Avatar>
-                            <AddCircleOutlineIcon />
-                          </Avatar>
-                        }
-                        label="activeOn circuit (VA)"
-                        variant="outlined"
-                      />
-                      <Chip
-                        avatar={
-                          <Avatar sx={{ bgcolor: "#2e7d32" }}>
-                            <AddCircleOutlineIcon />
-                          </Avatar>
-                        }
-                        label="activeOn circuit (VA)"
-                        variant="outlined"
-                        color="success"
-                      />
-                      <Chip
-                        avatar={
-                          <Avatar>
-                            <AddCircleOutlineIcon />
-                          </Avatar>
-                        }
-                        label="liveOn circuit (VA)"
-                        variant="outlined"
-                      />
-                      <Chip
-                        avatar={
-                          <Avatar sx={{ bgcolor: "#2e7d32" }}>
-                            <AddCircleOutlineIcon />
-                          </Avatar>
-                        }
-                        label="actived circuit (VA)"
-                        variant="outlined"
-                        color="success"
-                      />
-                      <Chip
-                        avatar={
-                          <Avatar>
-                            <AddCircleOutlineIcon />
-                          </Avatar>
-                        }
-                        label="active circuit (VA)"
-                        variant="outlined"
-                      />
-                    </Stack>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Box>
-          </NamedContainer>
-        </Grid>
-
-        {/* tabs */}
-        <Grid item xs={12}>
-          <NamedContainer title="Alarm and Event Overview">
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-                <Tab
-                  icon={
-                    <Chip
-                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
-                      label="Alarm List"
-                      clickable={true}
-                    />
-                  }
-                />
-                <Tab
-                  icon={
-                    <Chip
-                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
-                      label="Event Log"
-                      clickable={true}
-                    />
-                  }
-                />
-              </Tabs>
-              <TabPanel role="tabpanel" value={value} index={0}>
-                <AlarmListTab />
-              </TabPanel>
-              <TabPanel role="tabpanel" value={value} index={1}>
-                <EventLogtab />
-              </TabPanel>
-            </Box>
-          </NamedContainer>
         </Grid>
       </Grid>
     </Box>

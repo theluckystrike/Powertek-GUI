@@ -270,6 +270,12 @@ function HisotryDialog({ open, onClose, onSave, data }) {
     backgroundColor: theme.palette.action.hover,
   }));
 
+  const [currentData, setCurrentData] = useState(data);
+
+  useEffect(() => {
+    setCurrentData(data); // Update local state when data change
+  }, [data]);
+
   const handleReset = () => {
     // Reset logic here
     // console.log("Reset min/max values");
@@ -281,7 +287,7 @@ function HisotryDialog({ open, onClose, onSave, data }) {
         <TableContainer>
           <Table aria-label="Sensor table">
             <TableBody>
-              {Object.entries(data).map(([key, { value, lastChanged }]) => (
+              {Object.entries(currentData).map(([key, { value, lastChanged }]) => (
                 <TableRow key={key}>
                   <TableCell component="th" scope="row">
                     {key.charAt(0).toUpperCase() + key.slice(1)}
@@ -316,6 +322,12 @@ function SinglePhaseCase() {
     lowerCritical: "",
     higherCritical: "",
   });
+  const [currentHistory, setCurrentHistory] = useState({
+    actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+    state: { value: "normal", lastChanged: "State hasn’t been reset" },
+    minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+    maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const rows = [
@@ -328,6 +340,12 @@ function SinglePhaseCase() {
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
       higherCritical: "0.25A",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 2,
@@ -338,6 +356,12 @@ function SinglePhaseCase() {
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
       higherCritical: "0.25A",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 3,
@@ -348,6 +372,12 @@ function SinglePhaseCase() {
       higherWarning: "0.2%",
       lowerCritical: "0.05%",
       higherCritical: "0.25%",
+      history: {
+        actual: { value: "0.2%", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.02%", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.3%", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 4,
@@ -358,6 +388,12 @@ function SinglePhaseCase() {
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
       higherCritical: "0.25A",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 5,
@@ -368,6 +404,12 @@ function SinglePhaseCase() {
       higherWarning: "0.2V",
       lowerCritical: "0.05V",
       higherCritical: "0.25V",
+      history: {
+        actual: { value: "0.073 V", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 V", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 V", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 6,
@@ -378,6 +420,12 @@ function SinglePhaseCase() {
       higherWarning: "50.5Hz",
       lowerCritical: "49.0Hz",
       higherCritical: "51.0Hz",
+      history: {
+        actual: { value: "50.0 Hz", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "49.5 Hz", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "50.5 Hz", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 7,
@@ -388,26 +436,44 @@ function SinglePhaseCase() {
       higherWarning: "1.0",
       lowerCritical: "0.8",
       higherCritical: "1.1",
+      history: {
+        actual: { value: "0.98", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.9", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "1.0", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 8,
       intelMetering: "Active Power",
-      value: "66",
+      value: "66 kWh",
       status: "normal",
-      lowerWarning: "60",
-      higherWarning: "70",
-      lowerCritical: "50",
-      higherCritical: "80",
+      lowerWarning: "60 kWh",
+      higherWarning: "70 kWh",
+      lowerCritical: "50 kWh",
+      higherCritical: "80 kWh",
+      history: {
+        actual: { value: "66 kWh", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "60 kWh", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "70 kWh", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 9,
       intelMetering: "Active Energy",
-      value: "25748Wh",
+      value: "25748 Wh",
       status: "normal",
-      lowerWarning: "20000",
-      higherWarning: "40000",
-      lowerCritical: "100000",
-      higherCritical: "120000",
+      lowerWarning: "20000 Wh",
+      higherWarning: "40000 Wh",
+      lowerCritical: "100000 Wh",
+      higherCritical: "120000 Wh",
+      history: {
+        actual: { value: "25748 Wh", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "20000 Wh", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "40000 Wh", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 10,
@@ -418,47 +484,71 @@ function SinglePhaseCase() {
       higherWarning: "20VA",
       lowerCritical: "5VA",
       higherCritical: "25VA",
+      history: {
+        actual: { value: "15 VA", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "10 VA", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "20 VA", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 11,
       intelMetering: "Apparent Energy",
       value: "65874 Vah",
       status: "normal",
-      lowerWarning: "",
-      higherWarning: "",
-      lowerCritical: "",
-      higherCritical: "",
+      lowerWarning: "532 Vah",
+      higherWarning: "352 Vah",
+      lowerCritical: "3245 Vah",
+      higherCritical: "76889 Vah",
+      history: {
+        actual: { value: "65874 Vah", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "532 Vah", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "352 Vah", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 12,
       intelMetering: "Reactive Power",
-      value: "0.15A",
+      value: "0.15 A",
       status: "error",
-      lowerWarning: "",
-      higherWarning: "",
-      lowerCritical: "",
-      higherCritical: "",
+      lowerWarning: "0.2 A",
+      higherWarning: "0.4 A",
+      lowerCritical: "0.5A",
+      higherCritical: "0.9 A",
+      history: {
+        actual: { value: "0.15 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "error", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.2 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.4 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 13,
       intelMetering: "Phase Angle",
       value: "20º",
       status: "normal",
-      lowerWarning: "",
-      higherWarning: "",
-      lowerCritical: "",
-      higherCritical: "",
+      lowerWarning: "23º",
+      higherWarning: "25º",
+      lowerCritical: "27º",
+      higherCritical: "22º",
+      history: {
+        actual: { value: "20º", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "23º", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "25º", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
   ];
 
   function getStatusColor(status) {
     switch (status) {
       case "normal":
-        return ["success", <ThumbUpAltIcon style={{marginLeft: "-3px"}} />];
+        return ["success", <ThumbUpAltIcon style={{ marginLeft: "-3px" }} />];
       case "warning":
-        return ["warning", <WarningIcon style={{marginLeft: "-3px"}}/>];
+        return ["warning", <WarningIcon style={{ marginLeft: "-3px" }} />];
       case "error":
-        return ["error", <GppBadIcon style={{marginLeft: "-3px"}}/>];
+        return ["error", <GppBadIcon style={{ marginLeft: "-3px" }} />];
       default:
         return "default";
     }
@@ -476,6 +566,7 @@ function SinglePhaseCase() {
   }
 
   function handleHistoryClick(row) {
+    setCurrentHistory(row.history);
     setHistoryDialogOpen(true);
     // console.log("History settings for:", row);
   }
@@ -497,7 +588,7 @@ function SinglePhaseCase() {
   }));
 
   // for use to hide icons text of status columns
-  const isMdScreen = useMediaQuery('(min-width:1450px)');
+  const isMdScreen = useMediaQuery("(min-width:1450px)");
   return (
     <>
       <ThresholdDialog
@@ -506,17 +597,7 @@ function SinglePhaseCase() {
         onSave={handleSave}
         defaultValues={currentThresholds}
       />
-      <HisotryDialog
-        open={historyDialogOpen}
-        onClose={handleDialogClose}
-        onSave={handleSave}
-        data={{
-          actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
-          state: { value: "normal", lastChanged: "State hasn’t been reset" },
-          minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
-          maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
-        }}
-      />
+      <HisotryDialog open={historyDialogOpen} onClose={handleDialogClose} onSave={handleSave} data={currentHistory} />
       <TableContainer>
         <Table size="small">
           <TableHead>
@@ -564,7 +645,7 @@ function SinglePhaseCase() {
                       "& .MuiChip-label": {
                         fontWeight: 600,
                         textTransform: "uppercase",
-                        display: !isMdScreen ? "none" : "inline-block"
+                        display: !isMdScreen ? "none" : "inline-block",
                       },
                       width: "40%",
                     }}
@@ -593,6 +674,12 @@ function ThreePhaseCaseWYE() {
     lowerCritical: "",
     higherCritical: "",
   });
+  const [currentHistory, setCurrentHistory] = useState({
+    actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+    state: { value: "normal", lastChanged: "State hasn’t been reset" },
+    minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+    maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const rows = [
@@ -611,6 +698,12 @@ function ThreePhaseCaseWYE() {
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
       higherCritical: "0.25A",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 2,
@@ -627,6 +720,12 @@ function ThreePhaseCaseWYE() {
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
       higherCritical: "0.25A",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 3,
@@ -643,6 +742,12 @@ function ThreePhaseCaseWYE() {
       higherWarning: "0.2%",
       lowerCritical: "0.05%",
       higherCritical: "0.25%",
+      history: {
+        actual: { value: "0.2%", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.02%", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.3%", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 4,
@@ -659,6 +764,12 @@ function ThreePhaseCaseWYE() {
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
       higherCritical: "0.25A",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 5,
@@ -675,6 +786,12 @@ function ThreePhaseCaseWYE() {
       higherWarning: "0.2V",
       lowerCritical: "0.05V",
       higherCritical: "0.25V",
+      history: {
+        actual: { value: "0.073 V", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 V", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 V", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 6,
@@ -691,6 +808,12 @@ function ThreePhaseCaseWYE() {
       higherWarning: "50.5Hz",
       lowerCritical: "49.0Hz",
       higherCritical: "51.0Hz",
+      history: {
+        actual: { value: "50.0 Hz", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "49.5 Hz", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "50.5 Hz", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 7,
@@ -707,38 +830,56 @@ function ThreePhaseCaseWYE() {
       higherWarning: "1.0",
       lowerCritical: "0.8",
       higherCritical: "1.1",
+      history: {
+        actual: { value: "0.98", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.9", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "1.0", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 8,
       intelMetering: "Active Power",
-      TIValue: "66",
-      L1Value: "66",
-      L2Value: "66",
-      L3Value: "66",
+      TIValue: "66 kWh",
+      L1Value: "66 kWh",
+      L2Value: "66 kWh",
+      L3Value: "66 kWh",
       TIStatus: "normal",
       L1Status: "normal",
       L2Status: "normal",
       L3Status: "normal",
-      lowerWarning: "60",
-      higherWarning: "70",
-      lowerCritical: "50",
-      higherCritical: "80",
+      lowerWarning: "60 kWh",
+      higherWarning: "70 kWh",
+      lowerCritical: "50 kWh",
+      higherCritical: "80 kWh",
+      history: {
+        actual: { value: "66 kWh", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "60 kWh", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "70 kWh", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 9,
       intelMetering: "Active Energy",
-      TIValue: "25748Wh",
-      L1Value: "25748Wh",
-      L2Value: "25748Wh",
-      L3Value: "25748Wh",
+      TIValue: "25748 Wh",
+      L1Value: "25748 Wh",
+      L2Value: "25748 Wh",
+      L3Value: "25748 Wh",
       TIStatus: "normal",
       L1Status: "normal",
       L2Status: "normal",
       L3Status: "normal",
-      lowerWarning: "20000",
-      higherWarning: "40000",
-      lowerCritical: "100000",
-      higherCritical: "120000",
+      lowerWarning: "20000 Wh",
+      higherWarning: "40000 Wh",
+      lowerCritical: "100000 Wh",
+      higherCritical: "120000 Wh",
+      history: {
+        actual: { value: "25748 Wh", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "20000 Wh", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "40000 Wh", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 10,
@@ -755,6 +896,12 @@ function ThreePhaseCaseWYE() {
       higherWarning: "20VA",
       lowerCritical: "5VA",
       higherCritical: "25VA",
+      history: {
+        actual: { value: "15 VA", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "10 VA", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "20 VA", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 11,
@@ -771,6 +918,12 @@ function ThreePhaseCaseWYE() {
       higherWarning: "",
       lowerCritical: "",
       higherCritical: "",
+      history: {
+        actual: { value: "65874 Vah", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "532 Vah", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "352 Vah", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 12,
@@ -787,15 +940,21 @@ function ThreePhaseCaseWYE() {
       higherWarning: "",
       lowerCritical: "",
       higherCritical: "",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 13,
-      intelMetering: "Phase Usage",
-      TIValue: "18%",
-      L1Value: "18%",
-      L2Value: "18%",
-      L3Value: "18%",
-      TIStatus: "normal",
+      intelMetering: "Phase Angle",
+      TIValue: "",
+      L1Value: "18º",
+      L2Value: "18º",
+      L3Value: "18º",
+      TIStatus: "",
       L1Status: "normal",
       L2Status: "normal",
       L3Status: "normal",
@@ -803,6 +962,34 @@ function ThreePhaseCaseWYE() {
       higherWarning: "",
       lowerCritical: "",
       higherCritical: "",
+      history: {
+        actual: { value: "18º", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "23º", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "25º", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
+    },
+    {
+      id: 14,
+      intelMetering: "Phase Usage",
+      TIValue: "",
+      L1Value: "18%",
+      L2Value: "18%",
+      L3Value: "18%",
+      TIStatus: "",
+      L1Status: "normal",
+      L2Status: "normal",
+      L3Status: "normal",
+      lowerWarning: "",
+      higherWarning: "",
+      lowerCritical: "",
+      higherCritical: "",
+      history: {
+        actual: { value: "18%", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "23%", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "25%", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
   ];
 
@@ -831,6 +1018,7 @@ function ThreePhaseCaseWYE() {
   }
 
   function handleHistoryClick(row) {
+    setCurrentHistory(row.history);
     setHistoryDialogOpen(true);
     // console.log("History settings for:", row);
   }
@@ -857,17 +1045,7 @@ function ThreePhaseCaseWYE() {
         onSave={handleSave}
         defaultValues={currentThresholds}
       />
-      <HisotryDialog
-        open={historyDialogOpen}
-        onClose={handleDialogClose}
-        onSave={handleSave}
-        data={{
-          actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
-          state: { value: "normal", lastChanged: "State hasn’t been reset" },
-          minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
-          maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
-        }}
-      />
+      <HisotryDialog open={historyDialogOpen} onClose={handleDialogClose} onSave={handleSave} data={currentHistory} />
       <TableContainer>
         <Table size="small">
           <TableHead>
@@ -924,17 +1102,19 @@ function ThreePhaseCaseWYE() {
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.TIValue}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Chip
-                    label={row.TIStatus}
-                    color={getStatusColor(row.TIStatus)[0]}
-                    size="small"
-                    icon={getStatusColor(row.TIStatus)[1]}
-                    sx={{
-                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
-                      width: "40%",
-                      minWidth: "100px"
-                    }}
-                  />
+                  {row.TIStatus !== "" ? (
+                    <Chip
+                      label={row.TIStatus}
+                      color={getStatusColor(row.TIStatus)[0]}
+                      size="small"
+                      icon={getStatusColor(row.TIStatus)[1]}
+                      sx={{
+                        "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                        width: "40%",
+                        minWidth: "100px",
+                      }}
+                    />
+                  ) : null}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.L1Value}</StyledTableCell>
                 <StyledTableCell align="center">
@@ -946,7 +1126,7 @@ function ThreePhaseCaseWYE() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
-                      minWidth: "100px"
+                      minWidth: "100px",
                     }}
                   />
                 </StyledTableCell>
@@ -960,7 +1140,7 @@ function ThreePhaseCaseWYE() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
-                      minWidth: "100px"
+                      minWidth: "100px",
                     }}
                   />
                 </StyledTableCell>
@@ -974,7 +1154,7 @@ function ThreePhaseCaseWYE() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
-                      minWidth: "100px"
+                      minWidth: "100px",
                     }}
                   />
                 </StyledTableCell>
@@ -1002,6 +1182,12 @@ function ThreePhaseCaseDelta() {
     lowerCritical: "",
     higherCritical: "",
   });
+  const [currentHistory, setCurrentHistory] = useState({
+    actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+    state: { value: "normal", lastChanged: "State hasn’t been reset" },
+    minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+    maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const rows = [
@@ -1020,6 +1206,12 @@ function ThreePhaseCaseDelta() {
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
       higherCritical: "0.25A",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 2,
@@ -1036,6 +1228,12 @@ function ThreePhaseCaseDelta() {
       higherWarning: "0.2A",
       lowerCritical: "0.05A",
       higherCritical: "0.25A",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 3,
@@ -1052,6 +1250,12 @@ function ThreePhaseCaseDelta() {
       higherWarning: "0.2%",
       lowerCritical: "0.05%",
       higherCritical: "0.25%",
+      history: {
+        actual: { value: "0.2%", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.02%", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.3%", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     // {
     //   id: 4,
@@ -1084,6 +1288,12 @@ function ThreePhaseCaseDelta() {
       higherWarning: "0.2V",
       lowerCritical: "0.05V",
       higherCritical: "0.25V",
+      history: {
+        actual: { value: "0.073 V", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 V", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 V", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 6,
@@ -1100,6 +1310,12 @@ function ThreePhaseCaseDelta() {
       higherWarning: "50.5Hz",
       lowerCritical: "49.0Hz",
       higherCritical: "51.0Hz",
+      history: {
+        actual: { value: "50.0 Hz", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "49.5 Hz", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "50.5 Hz", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 7,
@@ -1116,54 +1332,78 @@ function ThreePhaseCaseDelta() {
       higherWarning: "1.0",
       lowerCritical: "0.8",
       higherCritical: "1.1",
+      history: {
+        actual: { value: "0.98", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.9", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "1.0", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 8,
       intelMetering: "Active Power",
-      TIvalue: "66",
-      L1L2Value: "66",
-      L2L3Value: "66",
-      L3L1Value: "66",
+      TIvalue: "66 kWh",
+      L1L2Value: "66 kWh",
+      L2L3Value: "66 kWh",
+      L3L1Value: "66 kWh",
       TIstatus: "normal",
       L1L2status: "normal",
       L2L3status: "normal",
       L3L1status: "normal",
-      lowerWarning: "60",
-      higherWarning: "70",
-      lowerCritical: "50",
-      higherCritical: "80",
+      lowerWarning: "60 kWh",
+      higherWarning: "70 kWh",
+      lowerCritical: "50 kWh",
+      higherCritical: "80 kWh",
+      history: {
+        actual: { value: "66 kWh", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "60 kWh", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "70 kWh", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 9,
       intelMetering: "Active Energy",
-      TIvalue: "25748Wh",
-      L1L2Value: "25748Wh",
-      L2L3Value: "25748Wh",
-      L3L1Value: "25748Wh",
+      TIvalue: "25748 Wh",
+      L1L2Value: "25748 Wh",
+      L2L3Value: "25748 Wh",
+      L3L1Value: "25748 Wh",
       TIstatus: "normal",
       L1L2status: "normal",
       L2L3status: "normal",
       L3L1status: "normal",
-      lowerWarning: "20000",
-      higherWarning: "40000",
-      lowerCritical: "100000",
-      higherCritical: "120000",
+      lowerWarning: "20000 Wh",
+      higherWarning: "40000 Wh",
+      lowerCritical: "100000 Wh",
+      higherCritical: "120000 Wh",
+      history: {
+        actual: { value: "25748 Wh", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "20000 Wh", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "40000 Wh", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 10,
       intelMetering: "Apparent Power",
-      TIvalue: "15VA",
-      L1L2Value: "15VA",
-      L2L3Value: "15VA",
-      L3L1Value: "15VA",
+      TIvalue: "15 VA",
+      L1L2Value: "15 VA",
+      L2L3Value: "15 VA",
+      L3L1Value: "15 VA",
       TIstatus: "normal",
       L1L2status: "normal",
       L2L3status: "normal",
       L3L1status: "normal",
-      lowerWarning: "10VA",
-      higherWarning: "20VA",
-      lowerCritical: "5VA",
-      higherCritical: "25VA",
+      lowerWarning: "10 VA",
+      higherWarning: "20 VA",
+      lowerCritical: "5 VA",
+      higherCritical: "25 VA",
+      history: {
+        actual: { value: "15 VA", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "10 VA", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "20 VA", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 11,
@@ -1180,6 +1420,12 @@ function ThreePhaseCaseDelta() {
       higherWarning: "",
       lowerCritical: "",
       higherCritical: "",
+      history: {
+        actual: { value: "65874 Vah", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "532 Vah", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "352 Vah", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 12,
@@ -1196,15 +1442,21 @@ function ThreePhaseCaseDelta() {
       higherWarning: "",
       lowerCritical: "",
       higherCritical: "",
+      history: {
+        actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
     {
       id: 13,
       intelMetering: "Phase Angle",
-      TIvalue: "20º",
+      TIvalue: "",
       L1L2Value: "20º",
       L2L3Value: "20º",
       L3L1Value: "20º",
-      TIstatus: "normal",
+      TIstatus: "",
       L1L2status: "normal",
       L2L3status: "normal",
       L3L1status: "normal",
@@ -1212,31 +1464,37 @@ function ThreePhaseCaseDelta() {
       higherWarning: "",
       lowerCritical: "",
       higherCritical: "",
+      history: {
+        actual: { value: "20º", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "23º", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "25º", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
-    {
-      id: 14,
-      intelMetering: "Unbalanced Current",
-      TIvalue: "33%",
-      L1L2Value: "33%",
-      L2L3Value: "33%",
-      L3L1Value: "33%",
-      TIstatus: "normal",
-      L1L2status: "normal",
-      L2L3status: "normal",
-      L3L1status: "normal",
-      lowerWarning: "",
-      higherWarning: "",
-      lowerCritical: "",
-      higherCritical: "",
-    },
+    // {
+    //   id: 14,
+    //   intelMetering: "Unbalanced Current",
+    //   TIvalue: "33%",
+    //   L1L2Value: "33%",
+    //   L2L3Value: "33%",
+    //   L3L1Value: "33%",
+    //   TIstatus: "normal",
+    //   L1L2status: "normal",
+    //   L2L3status: "normal",
+    //   L3L1status: "normal",
+    //   lowerWarning: "",
+    //   higherWarning: "",
+    //   lowerCritical: "",
+    //   higherCritical: "",
+    // },
     {
       id: 15,
-      intelMetering: "Phase Current",
+      intelMetering: "Phase Usage",
       TIvalue: "",
       L1L2Value: "33%",
       L2L3Value: "33%",
       L3L1Value: "33%",
-      TIstatus: "normal",
+      TIstatus: "",
       L1L2status: "normal",
       L2L3status: "normal",
       L3L1status: "normal",
@@ -1244,6 +1502,12 @@ function ThreePhaseCaseDelta() {
       higherWarning: "",
       lowerCritical: "",
       higherCritical: "",
+      history: {
+        actual: { value: "33%", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+        state: { value: "normal", lastChanged: "State hasn’t been reset" },
+        minimum: { value: "23%", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
+        maximum: { value: "25%", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+      },
     },
   ];
 
@@ -1272,6 +1536,7 @@ function ThreePhaseCaseDelta() {
   }
 
   function handleHistoryClick(row) {
+    setCurrentHistory(row.history);
     setHistoryDialogOpen(true);
     // console.log("History settings for:", row);
   }
@@ -1298,17 +1563,7 @@ function ThreePhaseCaseDelta() {
         onSave={handleSave}
         defaultValues={currentThresholds}
       />
-      <HisotryDialog
-        open={historyDialogOpen}
-        onClose={handleDialogClose}
-        onSave={handleSave}
-        data={{
-          actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
-          state: { value: "normal", lastChanged: "State hasn’t been reset" },
-          minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
-          maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
-        }}
-      />
+      <HisotryDialog open={historyDialogOpen} onClose={handleDialogClose} onSave={handleSave} data={currentHistory} />
       <TableContainer>
         <Table size="small">
           <TableHead>
@@ -1365,17 +1620,19 @@ function ThreePhaseCaseDelta() {
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.TIvalue}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Chip
-                    label={row.TIstatus}
-                    color={getStatusColor(row.TIstatus)[0]}
-                    size="small"
-                    icon={getStatusColor(row.TIstatus)[1]}
-                    sx={{
-                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
-                      width: "40%",
-                      minWidth: "100px"
-                    }}
-                  />
+                  {row.TIstatus !== "" ? (
+                    <Chip
+                      label={row.TIstatus}
+                      color={getStatusColor(row.TIstatus)[0]}
+                      size="small"
+                      icon={getStatusColor(row.TIstatus)[1]}
+                      sx={{
+                        "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                        width: "40%",
+                        minWidth: "100px",
+                      }}
+                    />
+                  ) : null}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.L1L2Value}</StyledTableCell>
                 <StyledTableCell align="center">
@@ -1387,7 +1644,7 @@ function ThreePhaseCaseDelta() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
-                      minWidth: "100px"
+                      minWidth: "100px",
                     }}
                   />
                 </StyledTableCell>
@@ -1401,7 +1658,7 @@ function ThreePhaseCaseDelta() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
-                      minWidth: "100px"
+                      minWidth: "100px",
                     }}
                   />
                 </StyledTableCell>
@@ -1415,7 +1672,7 @@ function ThreePhaseCaseDelta() {
                     sx={{
                       "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
                       width: "40%",
-                      minWidth: "100px"
+                      minWidth: "100px",
                     }}
                   />
                 </StyledTableCell>
@@ -1539,7 +1796,7 @@ function Inlet(props) {
                         variant=""
                         fontWeight="400"
                         sx={{ marginRight: "5px" }}
-                      //   color={settingsEdit ? "red" : "blue"}
+                        //   color={settingsEdit ? "red" : "blue"}
                       >
                         Edit Settings
                       </Typography>
