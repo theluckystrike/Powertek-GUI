@@ -248,12 +248,14 @@ function HomePage(props) {
               <Typography
                 variant="h5"
                 fontWeight="600"
-                sx={{ width: "30%", margin: "auto", display: "flex", placeContent: "center" }}
+                sx={{ width: "39%", margin: "auto", display: "flex", placeContent: "center" }}
               >
                 Power Share :
                 <Chip sx={{ marginLeft: "10px" }} label="Inactive" color="primary" />
                 /
                 <Chip label="Active/Backup Power" color="error" />
+                /
+                <Chip label="Active/Main Power" color="success" />
               </Typography>
 
               <Typography variant="h5" fontWeight="600" sx={{ width: "30%", margin: "auto" }}>
@@ -264,6 +266,31 @@ function HomePage(props) {
               </Typography>
             </Box>
           </NamedContainer>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Grid container spacing={2}>
+            <Grid item lg={4} md={12} sx={{ width: "100%" }}>
+              <NamedContainer
+                overridetitle
+                title={
+                  <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                    <Typography variant="h5" fontWeight="600">
+                      EMD Information
+                    </Typography>
+                    <Chip
+                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
+                      label={`EMD 1`}
+                      clickable={true}
+                    />
+                  </div>
+                }
+              ></NamedContainer>
+            </Grid>
+            <Grid item lg={8} md={12} sx={{ width: "100%" }}>
+              <NamedContainer title="PlaceHolder"></NamedContainer>
+            </Grid>
+          </Grid>
         </Grid>
 
         {/* tabs */}
@@ -298,31 +325,6 @@ function HomePage(props) {
               </TabPanel> */}
             </Box>
           </NamedContainer>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item lg={4} md={12} sx={{ width: "100%" }}>
-              <NamedContainer
-                overridetitle
-                title={
-                  <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                    <Typography variant="h5" fontWeight="600">
-                      EMD Information
-                    </Typography>
-                    <Chip
-                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
-                      label={`EMD 1`}
-                      clickable={true}
-                    />
-                  </div>
-                }
-              ></NamedContainer>
-            </Grid>
-            <Grid item lg={8} md={12} sx={{ width: "100%" }}>
-              <NamedContainer title="PlaceHolder"></NamedContainer>
-            </Grid>
-          </Grid>
         </Grid>
       </Grid>
     </Box>
