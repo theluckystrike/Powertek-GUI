@@ -24,6 +24,13 @@ import {
   InputLabel,
   FormGroup,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormLabel,
+  RadioGroup,
+  Radio,
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import SaveIcon from "@mui/icons-material/Save";
@@ -193,6 +200,17 @@ function RoleACL({ title }) {
 }
 
 function TLSCertificate() {
+  const [certificate, setCertificate] = useState(null);
+  const [privateKey, setPrivateKey] = useState(null);
+
+  const handleCertificateUpload = (event) => {
+    setCertificate(event.target.files[0]);
+  };
+
+  const handlePrivateKeyUpload = (event) => {
+    setPrivateKey(event.target.files[0]);
+  };
+
   return (
     <Box elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
       <Typography variant="h6" component="h2" gutterBottom>
@@ -209,22 +227,36 @@ function TLSCertificate() {
           <TextField fullWidth margin="normal" label="Organizational Unit" variant="outlined" />
           <TextField fullWidth margin="normal" label="Email Address" variant="outlined" />
         </Grid>
-        {/* <Grid item xs={12} md={6}>
-          <TextField fullWidth margin="normal" label="Issuer Country" variant="outlined" />
-          <TextField fullWidth margin="normal" label="Issuer State or Province" variant="outlined" />
-          <TextField fullWidth margin="normal" label="Issuer Locality" variant="outlined" />
-          <TextField fullWidth margin="normal" label="Issuer Organization" variant="outlined" />
-          <TextField fullWidth margin="normal" label="Issuer Organizational Unit" variant="outlined" />
-          <TextField fullWidth margin="normal" label="Issuer Common Name" variant="outlined" />
-          <TextField fullWidth margin="normal" label="Issuer Email Address" variant="outlined" />
-        </Grid> */}
       </Grid>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-        <Button variant="outlined" sx={{ mr: 1 }}>
-          Download Key
+        <Button variant="outlined" sx={{ mr: 1 }} onClick={() => console.log("Create self-signed certificate")}>
+          Create Self-Signed Certificate
         </Button>
-        <Button variant="outlined" color="primary">
-          Download Certificate
+        <Button variant="outlined" color="primary" sx={{ mr: 1 }} onClick={() => console.log("Download CRS")}>
+          Create certificate
+        </Button>
+        <label htmlFor="upload-certificate">
+          <input
+            style={{ display: "none" }}
+            id="upload-certificate"
+            type="file"
+            accept=".crt"
+            onChange={handleCertificateUpload}
+          />
+          <Button variant="outlined" component="span">
+            Upload Certificate
+          </Button>
+        </label>
+        {certificate && (
+          <label htmlFor="upload-key">
+            <input style={{ display: "none" }} id="upload-key" type="file" onChange={handlePrivateKeyUpload} />
+            <Button variant="outlined" component="span">
+              Upload Key
+            </Button>
+          </label>
+        )}
+        <Button variant="outlined" sx={{ ml: 1 }} onClick={() => console.log("Download Key & CRT")}>
+          Download Key & CRT
         </Button>
       </Box>
     </Box>
@@ -333,6 +365,33 @@ function PasswordPolicy() {
 }
 
 function LDAP() {
+  // Assuming there's a state to manage LDAP entries
+  const [ldapEntries, setLdapEntries] = useState([]);
+  const [selectedEntry, setSelectedEntry] = useState(null);
+
+  const handleSelectEntry = (entry) => {
+    setSelectedEntry(entry);
+  };
+
+  const handleDeleteEntry = () => {
+    setLdapEntries(ldapEntries.filter((entry) => entry !== selectedEntry));
+    setSelectedEntry(null);
+  };
+
+  const handleTestConnection = () => {
+    console.log("Testing connection for:", selectedEntry);
+    // Placeholder for connection test logic
+  };
+
+  const handleSave = () => {
+    console.log("Saving LDAP settings:", ldapEntries);
+    // Placeholder for save logic
+  };
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    backgroundColor: theme.palette.action.hover,
+  }));
+
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -343,51 +402,80 @@ function LDAP() {
             <StyledTableCell>Security</StyledTableCell>
             <StyledTableCell>Port</StyledTableCell>
             <StyledTableCell>LDAP Server Type</StyledTableCell>
+            <StyledTableCell>Users OU</StyledTableCell>
+            <StyledTableCell>Groups OU</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            {/* Replace these TextFields with your form controls as necessary */}
-            <StyledTableCell component="th" scope="row">
-              <TextField label="Order" variant="outlined" size="small" />
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField fullWidth label="IP Address / Hostname" variant="outlined" size="small" />
-            </StyledTableCell>
-            <StyledTableCell>
-              <Select label="Security" value="" onChange={() => { }} size="small">
-                <MenuItem value={10}>Option 1</MenuItem>
-                <MenuItem value={20}>Option 2</MenuItem>
-              </Select>
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField label="Port" variant="outlined" size="small" />
-            </StyledTableCell>
-            <StyledTableCell>
-              <Select label="LDAP Server Type" value="" onChange={() => { }} size="small">
-                <MenuItem value={10}>Primary</MenuItem>
-                <MenuItem value={20}>Secondary</MenuItem>
-              </Select>
-            </StyledTableCell>
-          </TableRow>
+          {ldapEntries.map((entry, index) => (
+            <TableRow
+              key={index}
+              onClick={() => handleSelectEntry(entry)}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <StyledTableCell component="th" scope="row">
+                <TextField defaultValue={entry.order} label="Order" variant="outlined" size="small" />
+              </StyledTableCell>
+              <StyledTableCell>
+                <TextField
+                  defaultValue={entry.ip}
+                  fullWidth
+                  label="IP Address / Hostname"
+                  variant="outlined"
+                  size="small"
+                />
+              </StyledTableCell>
+              <StyledTableCell>
+                <Select defaultValue={entry.security} label="Security" onChange={() => {}} size="small">
+                  <MenuItem value="None">None</MenuItem>
+                  <MenuItem value="SSL">SSL</MenuItem>
+                </Select>
+              </StyledTableCell>
+              <StyledTableCell>
+                <TextField defaultValue={entry.port} label="Port" variant="outlined" size="small" />
+              </StyledTableCell>
+              <StyledTableCell>
+                <Select defaultValue={entry.type} label="LDAP Server Type" onChange={() => {}} size="small">
+                  <MenuItem value="Primary">Primary</MenuItem>
+                  <MenuItem value="Secondary">Secondary</MenuItem>
+                </Select>
+              </StyledTableCell>
+              <StyledTableCell>
+                <TextField defaultValue={entry.usersOU} fullWidth label="Users OU" variant="outlined" size="small" />
+              </StyledTableCell>
+              <StyledTableCell>
+                <TextField defaultValue={entry.groupsOU} fullWidth label="Groups OU" variant="outlined" size="small" />
+              </StyledTableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <div style={{ display: "flex", justifyContent: "space-between", margin: "10px" }}>
         <div>
-          <Button style={{ marginRight: "4px" }} variant="contained">New</Button>
-          <Button style={{ marginRight: "4px" }} variant="contained" color="primary">
+          <Button
+            variant="contained"
+            onClick={() =>
+              setLdapEntries([
+                ...ldapEntries,
+                { order: ldapEntries.length + 1, ip: "", port: "", security: "", type: "", usersOU: "", groupsOU: "" },
+              ])
+            }
+          >
+            New
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => console.log("Edit")}>
             Edit
           </Button>
-          <Button style={{ marginRight: "4px" }} variant="contained" color="secondary">
+          <Button variant="contained" color="secondary" onClick={handleDeleteEntry}>
             Delete
           </Button>
-          <Button style={{ marginRight: "4px" }} variant="contained" color="warning">
+          <Button variant="contained" color="warning" onClick={handleTestConnection}>
             Test Connection
           </Button>
         </div>
-        <MuiButton variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={handleSave}>
           Save
-        </MuiButton>
+        </Button>
       </div>
     </TableContainer>
   );
@@ -422,7 +510,7 @@ function Radius() {
               <TextField label="Port" variant="outlined" size="small" />
             </StyledTableCell>
             <StyledTableCell>
-              <Select label="LDAP Server Type" value="" onChange={() => { }} size="small">
+              <Select label="LDAP Server Type" value="" onChange={() => {}} size="small">
                 <MenuItem value={10}>Primary</MenuItem>
                 <MenuItem value={20}>Secondary</MenuItem>
               </Select>
@@ -432,7 +520,9 @@ function Radius() {
       </Table>
       <div style={{ display: "flex", justifyContent: "space-between", margin: "10px" }}>
         <div>
-          <Button style={{ marginRight: "4px" }} variant="contained">New</Button>
+          <Button style={{ marginRight: "4px" }} variant="contained">
+            New
+          </Button>
           <Button style={{ marginRight: "4px" }} variant="contained" color="primary">
             Edit
           </Button>
@@ -480,7 +570,7 @@ function TACACS() {
               <TextField label="Port" variant="outlined" size="small" />
             </StyledTableCell>
             <StyledTableCell>
-              <Select label="LDAP Server Type" value="" onChange={() => { }} size="small">
+              <Select label="LDAP Server Type" value="" onChange={() => {}} size="small">
                 <MenuItem value={10}>Primary</MenuItem>
                 <MenuItem value={20}>Secondary</MenuItem>
               </Select>
@@ -490,7 +580,9 @@ function TACACS() {
       </Table>
       <div style={{ display: "flex", justifyContent: "space-between", margin: "10px" }}>
         <div>
-          <Button style={{ marginRight: "4px" }} variant="contained">New</Button>
+          <Button style={{ marginRight: "4px" }} variant="contained">
+            New
+          </Button>
           <Button style={{ marginRight: "4px" }} variant="contained" color="primary">
             Edit
           </Button>
@@ -506,6 +598,165 @@ function TACACS() {
         </MuiButton>
       </div>
     </TableContainer>
+  );
+}
+
+function ManagePDUs() {
+  const [pdus, setPdus] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [addMethod, setAddMethod] = useState("manual"); // 'automatic' or 'manual'
+  const [currentPdu, setCurrentPdu] = useState({
+    name: "",
+    model: "",
+    sn: "",
+    status: "Connect",
+    user: "",
+    password: "",
+  });
+
+  const handleOpenDialog = (
+    pdu = { name: "", model: "", sn: "", status: "Connect", user: "", password: "" },
+    edit = false
+  ) => {
+    setCurrentPdu(pdu);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setAddMethod("manual"); // Reset to default
+  };
+
+  const handleSavePdu = () => {
+    if (currentPdu.sn) {
+      // Assuming SN must be unique or a valid identifier
+      const index = pdus.findIndex((p) => p.sn === currentPdu.sn);
+      if (index >= 0) {
+        pdus[index] = { ...currentPdu };
+      } else {
+        setPdus([...pdus, { ...currentPdu, status: "provisioning..." }]);
+      }
+    }
+    handleCloseDialog();
+  };
+
+  const handleDeletePdu = (sn) => {
+    setPdus(pdus.filter((pdu) => pdu.sn !== sn));
+  };
+
+  return (
+    <>
+      <Button variant="contained" onClick={() => handleOpenDialog()} color="primary" sx={{ marginBottom: "12px" }}>
+        Add PDU
+      </Button>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Model</TableCell>
+              <TableCell>S/N</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {pdus.map((pdu) => (
+              <TableRow key={pdu.sn}>
+                <TableCell>{pdu.name}</TableCell>
+                <TableCell>{pdu.model}</TableCell>
+                <TableCell>{pdu.sn}</TableCell>
+                <TableCell>{pdu.status}</TableCell>
+                <TableCell>
+                  <Button onClick={() => handleOpenDialog(pdu, true)} color="primary">
+                    Modify
+                  </Button>
+                  <Button onClick={() => handleDeletePdu(pdu.sn)} color="secondary">
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>{currentPdu.sn ? "Modify PDU" : "Add PDU"}</DialogTitle>
+        <DialogContent>
+          {!currentPdu.sn && (
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Add Method</FormLabel>
+              <RadioGroup row name="addMethod" value={addMethod} onChange={(e) => setAddMethod(e.target.value)}>
+                <FormControlLabel value="automatic" control={<Radio />} label="Automatic Discovery" />
+                <FormControlLabel value="manual" control={<Radio />} label="Manual" />
+              </RadioGroup>
+            </FormControl>
+          )}
+          {addMethod === "manual" && (
+            <>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="IP or Serial Number"
+                type="text"
+                fullWidth
+                value={currentPdu.sn}
+                onChange={(e) => setCurrentPdu({ ...currentPdu, sn: e.target.value })}
+              />
+              <TextField
+                margin="dense"
+                label="Name"
+                type="text"
+                fullWidth
+                value={currentPdu.name}
+                onChange={(e) => setCurrentPdu({ ...currentPdu, name: e.target.value })}
+              />
+            </>
+          )}
+          {addMethod === "automatic" && (
+            <>
+              {/* Automatic discovery functionality to be implemented here */}
+              {/* Placeholder for automatic discovery component or logic */}
+              <div>Automatic Discovery Logic Placeholder</div>
+              <div>SCANNING...</div>
+            </>
+          )}
+          {currentPdu.sn && (
+            <>
+              <TextField
+                margin="dense"
+                label="Administrator Username"
+                type="text"
+                fullWidth
+                value={currentPdu.user}
+                onChange={(e) => setCurrentPdu({ ...currentPdu, user: e.target.value })}
+              />
+              <TextField
+                margin="dense"
+                label="Administrator Password"
+                type="password"
+                fullWidth
+                value={currentPdu.password}
+                onChange={(e) => setCurrentPdu({ ...currentPdu, password: e.target.value })}
+              />
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSavePdu} color="primary">
+            {currentPdu.sn ? "Update" : "Save"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Box display="flex" justifyContent="end" mt={2} sx={{ marginTop: "12px" }}>
+        <MuiButton variant="contained" color="primary">
+          Save
+        </MuiButton>
+      </Box>
+    </>
   );
 }
 
@@ -547,7 +798,7 @@ function Security() {
                 </CollapsiableNamedContainer>
               </Grid>
               <Grid item xs={12}>
-                <CollapsiableNamedContainer title="LDAP">
+                <CollapsiableNamedContainer title="LDAP / Active Directory">
                   <LDAP />
                 </CollapsiableNamedContainer>
               </Grid>
@@ -569,6 +820,11 @@ function Security() {
               <Grid item xs={12}>
                 <CollapsiableNamedContainer title="Password Policy">
                   <PasswordPolicy />
+                </CollapsiableNamedContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <CollapsiableNamedContainer title="Manage PDU">
+                  <ManagePDUs />
                 </CollapsiableNamedContainer>
               </Grid>
             </Grid>

@@ -18,9 +18,23 @@ import {
   FormLabel,
   RadioGroup,
   Radio,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import MuiButton from "../../../components/common/styled/Button";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function HTTPSettingsPanel() {
   const [settings, setSettings] = React.useState({
@@ -49,7 +63,9 @@ function HTTPSettingsPanel() {
       <Box maxWidth="sm">
         <FormGroup>
           <FormControlLabel
-            control={<Switch checked={settings.httpEnabled} onChange={handleChange} name="httpEnabled" color="primary" />}
+            control={
+              <Switch checked={settings.httpEnabled} onChange={handleChange} name="httpEnabled" color="primary" />
+            }
             label="Enable HTTP access"
           />
           {settings.httpEnabled && (
@@ -107,6 +123,251 @@ function HTTPSettingsPanel() {
   );
 }
 
+function SNMPSettingsNotification() {
+  const [settings, setSettings] = useState({
+    snmpV1V2cEnabled: false,
+    snmpV3Enabled: false,
+    snmpServers: [
+      { id: 1, ipAddress: "192.168.1.15", port: "162", version: "SNMPv1", community: "public" },
+      {
+        id: 2,
+        ipAddress: "FF80::48",
+        port: "162",
+        version: "SNMPv3",
+        username: "user1",
+        password: "pass1",
+        securityLevel: "authPriv",
+        authProtocol: "SHA",
+        authPassphrase: "authpass",
+      },
+    ],
+    snmpNotificationsEnabled: false,
+    newServer: {
+      ipAddress: "",
+      port: "162",
+      version: "",
+      community: "",
+      username: "",
+      password: "",
+      securityLevel: "",
+      authProtocol: "",
+      authPassphrase: "",
+    },
+    editMode: false,
+  });
+
+  const handleInputChange = (event) => {
+    setSettings({
+      ...settings,
+      newServer: {
+        ...settings.newServer,
+        [event.target.name]: event.target.value,
+      },
+    });
+  };
+
+  const openEditDialog = (server) => {
+    setSettings({ ...settings, newServer: server, editMode: true });
+  };
+
+  const closeDialog = () => {
+    setSettings({ ...settings, newServer: {}, editMode: false });
+  };
+
+  const saveServer = () => {
+    if (settings.editMode) {
+      const updatedServers = settings.snmpServers.map((s) => (s.id === settings.newServer.id ? settings.newServer : s));
+      setSettings({ ...settings, snmpServers: updatedServers, editMode: false, newServer: {} });
+    } else {
+      const newId = settings.snmpServers.reduce((acc, curr) => (acc > curr.id ? acc : curr.id), 0) + 1;
+      const newServer = { ...settings.newServer, id: newId };
+      setSettings({ ...settings, snmpServers: [...settings.snmpServers, newServer], newServer: {}, editMode: false });
+    }
+  };
+
+  const deleteServer = (id) => {
+    const updatedServers = settings.snmpServers.filter((s) => s.id !== id);
+    setSettings({ ...settings, snmpServers: updatedServers });
+  };
+
+  const renderSNMPv3Fields = () => (
+    <>
+      <TextField
+        label="Username"
+        name="username"
+        value={settings.newServer.username}
+        onChange={handleInputChange}
+        fullWidth
+        margin="normal"
+      />
+      <TextField
+        label="Password"
+        name="password"
+        value={settings.newServer.password}
+        onChange={handleInputChange}
+        type="password"
+        fullWidth
+        margin="normal"
+      />
+      <FormControl fullWidth margin="normal">
+        <InputLabel id="securityLevel-label">Security Level</InputLabel>
+        <Select
+          labelId="securityLevel-label"
+          name="securityLevel"
+          value={settings.newServer.securityLevel}
+          onChange={handleInputChange}
+          label="Security Level"
+        >
+          <MenuItem value="noAuthNoPriv">NoAuthNoPriv</MenuItem>
+          <MenuItem value="authNoPriv">AuthNoPriv</MenuItem>
+          <MenuItem value="authPriv">AuthPriv</MenuItem>
+        </Select>
+      </FormControl>
+      {settings.newServer.securityLevel !== "noAuthNoPriv" && (
+        <>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="authProtocol-label">Authentication Protocol</InputLabel>
+            <Select
+              labelId="authProtocol-label"
+              name="authProtocol"
+              value={settings.newServer.authProtocol}
+              onChange={handleInputChange}
+              label="Authentication Protocol"
+            >
+              <MenuItem value="MD5">MD5</MenuItem>
+              <MenuItem value="SHA">SHA</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            label="Authentication Passphrase"
+            name="authPassphrase"
+            value={settings.newServer.authPassphrase}
+            onChange={handleInputChange}
+            type="password"
+            fullWidth
+            margin="normal"
+          />
+        </>
+      )}
+    </>
+  );
+
+  return (
+    <>
+      <>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>IP Address</TableCell>
+                <TableCell>Port</TableCell>
+                <TableCell>SNMP Version</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {settings.snmpServers.map((server) => (
+                <TableRow key={server.id}>
+                  <TableCell>{server.ipAddress}</TableCell>
+                  <TableCell>{server.port}</TableCell>
+                  <TableCell>{server.version}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => openEditDialog(server)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => deleteServer(server.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Button
+          onClick={() =>
+            setSettings({
+              ...settings,
+              newServer: {
+                ipAddress: "",
+                port: "162",
+                version: "",
+                community: "",
+                username: "",
+                password: "",
+                securityLevel: "",
+                authProtocol: "",
+                authPassphrase: "",
+              },
+              editMode: false,
+            })
+          }
+          variant="contained"
+          color="primary"
+          style={{ marginTop: "20px" }}
+        >
+          Add SNMP Server
+        </Button>
+        <Dialog open={settings.editMode || Object.keys(settings.newServer).length > 0} onClose={closeDialog}>
+          <DialogTitle>{settings.editMode ? "Edit SNMP Server" : "Add SNMP Server"}</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="IP Address"
+              name="ipAddress"
+              value={settings.newServer.ipAddress}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Port"
+              name="port"
+              value={settings.newServer.port}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="version-label">SNMP Version</InputLabel>
+              <Select
+                labelId="version-label"
+                name="version"
+                value={settings.newServer.version}
+                onChange={handleInputChange}
+                label="SNMP Version"
+              >
+                <MenuItem value="SNMPv1">SNMPv1</MenuItem>
+                <MenuItem value="SNMPv2">SNMPv2</MenuItem>
+                <MenuItem value="SNMPv3">SNMPv3</MenuItem>
+              </Select>
+            </FormControl>
+            {settings.newServer.version === "SNMPv3" ? (
+              renderSNMPv3Fields()
+            ) : (
+              <TextField
+                label="Community"
+                name="community"
+                value={settings.newServer.community}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeDialog} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={saveServer} color="primary">
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    </>
+  );
+}
+
 function SNMPSettings() {
   const [settings, setSettings] = React.useState({
     snmpV1V2cEnabled: false,
@@ -151,14 +412,14 @@ function SNMPSettings() {
 
   const renderSNMPv3ConfigFields = () => (
     <>
-      <TextField
+      {/* <TextField
         label="Username"
         name="username"
         value={settings.username}
         onChange={handleChange}
         margin="normal"
         fullWidth
-      />
+      /> */}
       <TextField
         margin="normal"
         id="securityLevel"
@@ -186,7 +447,7 @@ function SNMPSettings() {
             <MenuItem value="MD5">MD5</MenuItem>
             <MenuItem value="SHA">SHA</MenuItem>
           </TextField>
-          <TextField
+          {/* <TextField
             label="Authentication Passphrase"
             name="authPassphrase"
             value={settings.authPassphrase}
@@ -194,7 +455,7 @@ function SNMPSettings() {
             type="password"
             margin="normal"
             fullWidth
-          />
+          /> */}
         </>
       )}
       {settings.securityLevel === "authPriv" && (
@@ -227,210 +488,109 @@ function SNMPSettings() {
   );
 
   return (
-  <>
-    <Box>
-      <Typography variant="h6" gutterBottom>
+    <>
+      <Box>
+        {/* <Typography variant="h6" gutterBottom>
         SNMP Agent
-      </Typography>
-      <FormGroup>
-        {settings.snmpV1V2cEnabled && <Alert severity="warning">Warning: An insecure protocol is activated.</Alert>}
-      </FormGroup>
-      <FormGroup>
-        <Typography variant="h6" gutterBottom>
-          SNMP System Information
-        </Typography>
-        {
-          <>
-            <TextField
-              label="sysContact"
-              name="sysContact"
-              value={settings.sysContact}
-              onChange={handleChange}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              label="sysName"
-              name="sysName"
-              value={settings.sysName}
-              onChange={handleChange}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              label="sysLocation"
-              name="sysLocation"
-              value={settings.sysLocation}
-              onChange={handleChange}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              label="SNMP Port"
-              name="SNMP Port"
-              value={settings.SNMP_Port}
-              onChange={handleChange}
-              margin="normal"
-              fullWidth
-            />
-            <FormControlLabel
-              control={<Switch checked={settings.snmpV1V2cEnabled} onChange={handleChange} name="snmpV1V2cEnabled" />}
-              label="Enable SNMP v1 / v2c"
-            />
-        {settings.snmpV1V2cEnabled && (
-          <>
-            <TextField
-              label="Read community string"
-              name="readCommunityString"
-              value={settings.readCommunityString}
-              onChange={handleChange}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              label="Write community string"
-              name="writeCommunityString"
-              value={settings.writeCommunityString}
-              onChange={handleChange}
-              margin="normal"
-              fullWidth
-            />
-          </>
-        )}
-            <FormControlLabel
-              control={<Switch checked={settings.snmpV3Enabled} onChange={handleChange} name="snmpV3Enabled" />}
-              label="Enable SNMP v3"
-            />
-            {settings.snmpV3Enabled && renderSNMPv3ConfigFields()}
-          </>
-        }
-      </FormGroup>
-      <FormGroup>
-        <Typography variant="subtitle1" gutterBottom>
-          SNMP Notifications
-        </Typography>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={settings.snmpNotificationsEnabled}
-              onChange={handleSwitchChange}
-              name="snmpNotificationsEnabled"
-            />
+      </Typography> */}
+        <FormGroup>
+          <Typography variant="h6" gutterBottom>
+            SNMP System Information
+          </Typography>
+          {
+            <>
+              <TextField
+                label="sysContact"
+                name="sysContact"
+                value={settings.sysContact}
+                onChange={handleChange}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                label="sysName"
+                name="sysName"
+                value={settings.sysName}
+                onChange={handleChange}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                label="sysLocation"
+                name="sysLocation"
+                value={settings.sysLocation}
+                onChange={handleChange}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                label="SNMP Port"
+                name="SNMP Port"
+                value={settings.SNMP_Port}
+                onChange={handleChange}
+                margin="normal"
+                fullWidth
+              />
+              <FormControlLabel
+                control={<Switch checked={settings.snmpV1V2cEnabled} onChange={handleChange} name="snmpV1V2cEnabled" />}
+                label="Enable SNMP v1 / v2c"
+              />
+              <FormGroup>
+                {settings.snmpV1V2cEnabled && (
+                  <Alert severity="warning">Warning: An insecure protocol is activated.</Alert>
+                )}
+              </FormGroup>
+              {settings.snmpV1V2cEnabled && (
+                <>
+                  <TextField
+                    label="Read community string"
+                    name="readCommunityString"
+                    value={settings.readCommunityString}
+                    onChange={handleChange}
+                    margin="normal"
+                    fullWidth
+                  />
+                  <TextField
+                    label="Write community string"
+                    name="writeCommunityString"
+                    value={settings.writeCommunityString}
+                    onChange={handleChange}
+                    margin="normal"
+                    fullWidth
+                  />
+                </>
+              )}
+              <FormControlLabel
+                control={<Switch checked={settings.snmpV3Enabled} onChange={handleChange} name="snmpV3Enabled" />}
+                label="Enable SNMP v3"
+              />
+              {settings.snmpV3Enabled && renderSNMPv3ConfigFields()}
+            </>
           }
-          label="Enable SNMP notifications"
-        />
-      {settings.snmpNotificationsEnabled && (
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="notification-type-label">Notification type</InputLabel>
-          <Select
-            labelId="notification-type-label"
-            label="Notification type"
-            name="notificationType"
-            value={settings.notificationType}
-            onChange={handleChange}
-          >
-            <MenuItem value="SNMPv1 trap">SNMPv1 trap</MenuItem>
-            <MenuItem value="SNMPv2c trap">SNMPv2c trap</MenuItem>
-            <MenuItem value="SNMPv3 trap">SNMPv3 trap</MenuItem>
-            {/* Add other notification types here */}
-          </Select>
-        </FormControl>
-      )}
-        <TextField
-          label="Engine ID"
-          name="engineID"
-          value={settings.engineID}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField label="Host" name="host" value={settings.host} onChange={handleChange} margin="normal" fullWidth />
-        <TextField
-          label="Port"
-          name="port"
-          type="number"
-          value={settings.port}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField
-          label="User ID"
-          name="userID"
-          value={settings.userID}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField
-          label="Security Level"
-          name="securityLevel"
-          value={settings.securityLevel}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField
-          label="Authentication Protocol"
-          name="authenticationProtocol"
-          value={settings.authenticationProtocol}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField
-          label="Authentication Passphrase"
-          name="authenticationPassphrase"
-          value={settings.authenticationPassphrase}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-          type="password"
-        />
-        <TextField
-          label="Confirm Authentication Passphrase"
-          name="confirmAuthenticationPassphrase"
-          value={settings.confirmAuthenticationPassphrase}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-          type="password"
-        />
-        <TextField
-          label="Privacy Protocol"
-          name="privacyProtocol"
-          value={settings.privacyProtocol}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField
-          label="Privacy Passphrase"
-          name="privacyPassphrase"
-          value={settings.privacyPassphrase}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-          type="password"
-        />
-        <TextField
-          label="Confirm Privacy Passphrase"
-          name="confirmPrivacyPassphrase"
-          value={settings.confirmPrivacyPassphrase}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-          type="password"
-        />
-      </FormGroup>
-      <Box display="flex" justifyContent="end">
-        <MuiButton variant="contained" color="primary" onClick={handleSave}>
-          Save
-        </MuiButton>
+        </FormGroup>
+        <FormGroup>
+          <Typography variant="subtitle1" gutterBottom>
+            SNMP Notifications
+          </Typography>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={settings.snmpNotificationsEnabled}
+                onChange={handleSwitchChange}
+                name="snmpNotificationsEnabled"
+              />
+            }
+            label="Enable SNMP notifications"
+          />
+          {settings.snmpNotificationsEnabled && <SNMPSettingsNotification />}
+        </FormGroup>
+        <Box display="flex" justifyContent="end" sx={{ marginTop: "12px" }}>
+          <MuiButton variant="contained" color="primary" onClick={handleSave}>
+            Save
+          </MuiButton>
+        </Box>
       </Box>
-    </Box>
-
-  </>
+    </>
   );
 }
 
@@ -463,35 +623,35 @@ function SMTPSettings() {
   };
 
   return (
-  <>
-    <Box>
-      <FormGroup>
-        <TextField
-          label="IP address/hostname"
-          name="ipAddress"
-          value={smtpSettings.ipAddress}
-          onChange={handleInputChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField
-          label="Port"
-          name="port"
-          type="number"
-          value={smtpSettings.port}
-          onChange={handleInputChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField
-          label="Sender email address"
-          name="senderEmail"
-          value={smtpSettings.senderEmail}
-          onChange={handleInputChange}
-          margin="normal"
-          fullWidth
-        />
-        {/* <TextField
+    <>
+      <Box>
+        <FormGroup>
+          <TextField
+            label="IP address/hostname"
+            name="ipAddress"
+            value={smtpSettings.ipAddress}
+            onChange={handleInputChange}
+            margin="normal"
+            fullWidth
+          />
+          <TextField
+            label="Port"
+            name="port"
+            type="number"
+            value={smtpSettings.port}
+            onChange={handleInputChange}
+            margin="normal"
+            fullWidth
+          />
+          <TextField
+            label="Sender email address"
+            name="senderEmail"
+            value={smtpSettings.senderEmail}
+            onChange={handleInputChange}
+            margin="normal"
+            fullWidth
+          />
+          {/* <TextField
           label="Number of sending retries"
           name="retries"
           type="number"
@@ -512,36 +672,36 @@ function SMTPSettings() {
             endAdornment: <InputAdornment position="end">min</InputAdornment>,
           }}
         /> */}
-        <FormControlLabel
-          control={<Switch checked={smtpSettings.requiresAuth} onChange={handleInputChange} name="requiresAuth" />}
-          label="Server requires authentication"
-        />
-        {smtpSettings.requiresAuth && (
-          <>
-            <TextField
-              label="User name"
-              name="username"
-              value={smtpSettings.username}
-              onChange={handleInputChange}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-              value={smtpSettings.password}
-              onChange={handleInputChange}
-              margin="normal"
-              fullWidth
-            />
-          </>
-        )}
-        <FormControlLabel
-          control={<Switch checked={smtpSettings.smtpOverTls} onChange={handleInputChange} name="smtpOverTls" />}
-          label="Enable SMTP over TLS (StartTLS)"
-        />
-        {/* <div style={{ display: "flex", alignItems: "center", margin: "8px 0" }}>
+          <FormControlLabel
+            control={<Switch checked={smtpSettings.requiresAuth} onChange={handleInputChange} name="requiresAuth" />}
+            label="Server requires authentication"
+          />
+          {smtpSettings.requiresAuth && (
+            <>
+              <TextField
+                label="User name"
+                name="username"
+                value={smtpSettings.username}
+                onChange={handleInputChange}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                label="Password"
+                name="password"
+                type="password"
+                value={smtpSettings.password}
+                onChange={handleInputChange}
+                margin="normal"
+                fullWidth
+              />
+            </>
+          )}
+          <FormControlLabel
+            control={<Switch checked={smtpSettings.smtpOverTls} onChange={handleInputChange} name="smtpOverTls" />}
+            label="Enable SMTP over TLS (StartTLS)"
+          />
+          {/* <div style={{ display: "flex", alignItems: "center", margin: "8px 0" }}>
           <Button variant="contained" component="label">
             Browse...
             <input
@@ -557,33 +717,37 @@ function SMTPSettings() {
           </Button>
           <Typography style={{ marginLeft: 16 }}>{smtpSettings.caCertificate || "not set"}</Typography>
         </div> */}
-        <FormControlLabel
-          control={
-            <Checkbox checked={smtpSettings.allowInvalidCerts} onChange={handleInputChange} name="allowInvalidCerts" />
-          }
-          label="Allow expired and not yet valid certificates"
-        />
-        <Typography variant="subtitle1" gutterBottom>
-          Test SMTP Settings
-        </Typography>
-        <TextField
-          label="Recipient email addresses"
-          name="recipientEmail"
-          value={smtpSettings.recipientEmail}
-          onChange={handleInputChange}
-          margin="normal"
-          fullWidth
-        />
-        <Button variant="contained" color="primary" onClick={() => alert("Test email sent")}>
-          Send Test Email
-        </Button>
-        <Box display="flex" justifyContent="end" mt={2}>
-          <MuiButton variant="contained" color="primary" onClick={handleSave}>
-            Save
-          </MuiButton>
-        </Box>
-      </FormGroup>
-    </Box>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={smtpSettings.allowInvalidCerts}
+                onChange={handleInputChange}
+                name="allowInvalidCerts"
+              />
+            }
+            label="Allow expired and not yet valid certificates"
+          />
+          <Typography variant="subtitle1" gutterBottom>
+            Test SMTP Settings
+          </Typography>
+          <TextField
+            label="Recipient email addresses"
+            name="recipientEmail"
+            value={smtpSettings.recipientEmail}
+            onChange={handleInputChange}
+            margin="normal"
+            fullWidth
+          />
+          <Button variant="contained" color="primary" onClick={() => alert("Test email sent")}>
+            Send Test Email
+          </Button>
+          <Box display="flex" justifyContent="end" mt={2}>
+            <MuiButton variant="contained" color="primary" onClick={handleSave}>
+              Save
+            </MuiButton>
+          </Box>
+        </FormGroup>
+      </Box>
     </>
   );
 }
@@ -640,20 +804,24 @@ function SSHSettings() {
         </FormControl>
 
         {/* SSH Host Keys */}
-        <Typography variant="subtitle1" gutterBottom>
-          SSH Host Keys
-        </Typography>
-        <TextField
-          label="RSA Public Key"
-          name="rsaPublicKey"
-          value={sshSettings.rsaPublicKey}
-          margin="normal"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        {sshSettings.authMethod == "publickey" || (
+        {sshSettings.authMethod == "publickey" && (
+          <Typography variant="subtitle1" gutterBottom>
+            SSH Host Keys
+          </Typography>
+        )}
+        {sshSettings.authMethod == "publickey" && (
+          <TextField
+            label="RSA Public Key"
+            name="rsaPublicKey"
+            value={sshSettings.rsaPublicKey}
+            margin="normal"
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        )}
+        {sshSettings.authMethod == "publickey" && (
           <TextField
             label="RSA Fingerprint (SHA256)"
             name="rsaFingerprintSHA256"
@@ -665,7 +833,7 @@ function SSHSettings() {
             }}
           />
         )}
-        {sshSettings.authMethod == "publickey" || (
+        {sshSettings.authMethod == "publickey" && (
           <TextField
             label="RSA Fingerprint (MD5)"
             name="rsaFingerprintMD5"
@@ -677,17 +845,19 @@ function SSHSettings() {
             }}
           />
         )}
-        <TextField
-          label="ECDSA Public Key"
-          name="ecdsaPublicKey"
-          value={sshSettings.ecdsaPublicKey}
-          margin="normal"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        {sshSettings.authMethod == "publickey" || (
+        {sshSettings.authMethod == "publickey" && (
+          <TextField
+            label="ECDSA Public Key"
+            name="ecdsaPublicKey"
+            value={sshSettings.ecdsaPublicKey}
+            margin="normal"
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        )}
+        {sshSettings.authMethod == "publickey" && (
           <TextField
             label="ECDSA Fingerprint (SHA256)"
             name="ecdsaFingerprintSHA256"
@@ -699,17 +869,19 @@ function SSHSettings() {
             }}
           />
         )}
-        <TextField
-          label="Ed25519 Public Key"
-          name="ed25519PublicKey"
-          value={sshSettings.ed25519PublicKey}
-          margin="normal"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        {sshSettings.authMethod == "publickey" || (
+        {sshSettings.authMethod == "publickey" && (
+          <TextField
+            label="Ed25519 Public Key"
+            name="ed25519PublicKey"
+            value={sshSettings.ed25519PublicKey}
+            margin="normal"
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        )}
+        {sshSettings.authMethod == "publickey" && (
           <TextField
             label="Ed25519 Fingerprint (SHA256)"
             name="ed25519FingerprintSHA256"
@@ -721,6 +893,7 @@ function SSHSettings() {
             }}
           />
         )}
+
         <Box display="flex" justifyContent="end">
           <MuiButton variant="contained" color="primary" onClick={handleSave}>
             Save
@@ -849,6 +1022,139 @@ function ModbusSettings() {
   );
 }
 
+function SyslogSettings() {
+  const [syslogs, setSyslogs] = useState([{ id: 1, ipAddress: "192.168.1.25", port: "514", severity: "5-Notice" }]);
+  const [currentSyslog, setCurrentSyslog] = useState({ ipAddress: "", port: "", severity: "5-Notice" });
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const handleInputChange = (e) => {
+    setCurrentSyslog({ ...currentSyslog, [e.target.name]: e.target.value });
+  };
+
+  const openDialog = (syslog = { ipAddress: "", port: "", severity: "5-Notice" }, edit = false) => {
+    setCurrentSyslog(syslog);
+    setIsEdit(edit);
+    setDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const saveSyslog = () => {
+    if (isEdit) {
+      setSyslogs(syslogs.map((s) => (s.id === currentSyslog.id ? currentSyslog : s)));
+    } else {
+      setSyslogs([...syslogs, { ...currentSyslog, id: syslogs.length + 1 }]);
+    }
+    closeDialog();
+  };
+
+  const deleteSyslog = (id) => {
+    setSyslogs(syslogs.filter((s) => s.id !== id));
+  };
+
+  return (
+    <>
+      <Button
+        onClick={() => openDialog()}
+        variant="contained"
+        color="primary"
+        disabled={syslogs.length >= 5}
+        sx={{ marginBottom: "12px" }}
+      >
+        Add Syslog Server
+      </Button>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>IP Address</TableCell>
+              <TableCell>Port</TableCell>
+              <TableCell>Severity</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {syslogs.map((syslog) => (
+              <TableRow key={syslog.id}>
+                <TableCell>{syslog.ipAddress}</TableCell>
+                <TableCell>{syslog.port}</TableCell>
+                <TableCell>{syslog.severity}</TableCell>
+                <TableCell>
+                  <IconButton onClick={() => openDialog(syslog, true)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => deleteSyslog(syslog.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Dialog open={dialogOpen} onClose={closeDialog}>
+        <DialogTitle>{isEdit ? "Edit Syslog Server" : "Add Syslog Server"}</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="IP Address (IPv4 or IPv6)"
+            type="text"
+            fullWidth
+            name="ipAddress"
+            value={currentSyslog.ipAddress}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            label="Port"
+            type="number"
+            fullWidth
+            name="port"
+            value={currentSyslog.port}
+            onChange={handleInputChange}
+          />
+          <FormControl fullWidth margin="dense">
+            <InputLabel id="severity-label">Severity</InputLabel>
+            <Select
+              labelId="severity-label"
+              name="severity"
+              value={currentSyslog.severity}
+              onChange={handleInputChange}
+              label="Severity"
+            >
+              <MenuItem value="0-Emergency">0-Emergency</MenuItem>
+              <MenuItem value="1-Alert">1-Alert</MenuItem>
+              <MenuItem value="2-Critical">2-Critical</MenuItem>
+              <MenuItem value="3-Error">3-Error</MenuItem>
+              <MenuItem value="4-Warning">4-Warning</MenuItem>
+              <MenuItem value="5-Notice">5-Notice</MenuItem>
+              <MenuItem value="6-Informational">6-Informational</MenuItem>
+              <MenuItem value="7-Debug">7-Debug</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={saveSyslog} color="primary">
+            {isEdit ? "Update" : "Save"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary" sx={{ marginTop: "12px" }}>
+          Save
+        </MuiButton>
+      </Box>
+    </>
+  );
+}
+
 function NetworkServices() {
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
@@ -874,6 +1180,11 @@ function NetworkServices() {
               <Grid item xs={12}>
                 <CollapsiableNamedContainer title="SSH">
                   <SSHSettings />
+                </CollapsiableNamedContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <CollapsiableNamedContainer title="SYSLOG">
+                  <SyslogSettings />
                 </CollapsiableNamedContainer>
               </Grid>
               <Grid item xs={12}>

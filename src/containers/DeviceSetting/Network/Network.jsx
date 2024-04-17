@@ -109,14 +109,14 @@ function IPConfiguration() {
           margin="normal"
           label="IP address/prefix length"
           value="192.168.33.130/24"
-        // onChange handler would update state here
+          // onChange handler would update state here
         />
         <TextField
           fullWidth
           margin="normal"
           label="Default gateway"
           value="192.168.33.126"
-        // onChange handler would update state here
+          // onChange handler would update state here
         />
       </FormGroup>
 
@@ -141,8 +141,8 @@ function IPConfiguration() {
           fullWidth
           margin="normal"
           label="Preferred hostname"
-        // value would be bound to state
-        // onChange handler would update state here
+          // value would be bound to state
+          // onChange handler would update state here
         />
       </FormGroup>
       <Box display="flex" justifyContent="end">
@@ -164,6 +164,29 @@ function InterfaceSettings() {
   const [authMethod, setAuthMethod] = useState("");
   const [peapVersion, setPeapVersion] = useState("");
   const [innerAuth, setInnerAuth] = useState("");
+  const [userCertFile, setUserCertFile] = useState("");
+  const [caCertFile, setCaCertFile] = useState("");
+  const [privateKeyFile, setPrivateKeyFile] = useState("");
+
+  const handleFileUpload = (e, fileType) => {
+    const file = e.target.files[0];
+    switch (fileType) {
+      case "userCertificate":
+        setUserCertFile(file);
+        // Store user certificate file
+        break;
+      case "caCertificate":
+        setCaCertFile(file);
+        // Store CA certificate file
+        break;
+      case "privateKey":
+        setPrivateKeyFile(file);
+        // Store private key file
+        break;
+      default:
+        break;
+    }
+  };
 
   // Based on your feedback, creating a dynamic list for authentication options
   const authenticationOptions = [
@@ -173,6 +196,7 @@ function InterfaceSettings() {
     { value: "pwd", label: "PWD" },
     { value: "fast", label: "FAST" },
     { value: "peap", label: "PEAP" },
+    { value: "tunneledTLS", label: "Tunneled TLS" },
   ];
 
   // Inner authentication options for PEAP and FAST
@@ -199,24 +223,14 @@ function InterfaceSettings() {
 
         {/* Speed selection */}
         <FormControl fullWidth margin="normal">
-          <InputLabel>Speed</InputLabel>
-          <Select value={speed} onChange={(e) => setSpeed(e.target.value)} label="Speed">
+          <InputLabel>Speed/Duplex</InputLabel>
+          <Select value={speed} onChange={(e) => setSpeed(e.target.value)} label="Speed/Duplex">
             <MenuItem value="auto">Auto</MenuItem>
             <MenuItem value="10MB/s_half">10 MB/s Half-Duplex</MenuItem>
             <MenuItem value="10MB/s_full">10 MB/s Full-Duplex</MenuItem>
             <MenuItem value="100MB/s_half">100 MB/s Half-Duplex</MenuItem>
             <MenuItem value="100MB/s_full">100 MB/s Full-Duplex</MenuItem>
             <MenuItem value="1GB/s_full">1 GB/s Full-Duplex</MenuItem>
-          </Select>
-        </FormControl>
-
-        {/* Duplex selection */}
-        <FormControl fullWidth margin="normal">
-          <InputLabel>Duplex</InputLabel>
-          <Select value={duplex} onChange={(e) => setDuplex(e.target.value)} label="Duplex">
-            <MenuItem value="auto">Auto</MenuItem>
-            <MenuItem value="half">Half</MenuItem>
-            <MenuItem value="full">Full</MenuItem>
           </Select>
         </FormControl>
 
@@ -231,7 +245,7 @@ function InterfaceSettings() {
 
         {/* Authentication method selection */}
         <FormControl fullWidth margin="normal">
-          <InputLabel>Authentication</InputLabel>
+          <InputLabel>802.11X Authentication</InputLabel>
           <Select
             value={authentication}
             onChange={(e) => {
@@ -241,7 +255,7 @@ function InterfaceSettings() {
               setPeapVersion("");
               setInnerAuth("");
             }}
-            label="Authentication"
+            label="802.11X Authentication"
           >
             {authenticationOptions.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -251,7 +265,7 @@ function InterfaceSettings() {
           </Select>
         </FormControl>
 
-        {authentication === "pwd" && (
+        {(authentication === "pwd" || authentication === "md5") && (
           <>
             <TextField fullWidth margin="normal" label="Username" />
             <TextField fullWidth margin="normal" label="Password" type="password" />
@@ -261,38 +275,308 @@ function InterfaceSettings() {
         {/* Conditional rendering for PEAP and FAST specific configurations */}
         {authentication === "peap" && (
           <>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>PEAP Version</InputLabel>
-              <Select value={peapVersion} onChange={(e) => setPeapVersion(e.target.value)} label="PEAP Version">
-                <MenuItem value="auto">Automatic</MenuItem>
-                <MenuItem value="0">Version 0</MenuItem>
-                <MenuItem value="1">Version 1</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Inner Authentication</InputLabel>
-              <Select value={innerAuth} onChange={(e) => setInnerAuth(e.target.value)} label="Inner Authentication">
-                {innerAuthOptions["peap"].map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Anonymous Identity"
+                variant="outlined"
+                helperText="Enter the anonymous identity used in the initial phase of authentication."
+              />
+            </div>
+            <div>
+              <TextField
+                type="file"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                label="CA Certificate File"
+                InputProps={{
+                  inputProps: {
+                    accept: ".crt,.pem",
+                  },
+                }}
+                fullWidth
+                margin="normal"
+                helperText="Upload the CA certificate file for server validation."
+                onChange={(e) => handleFileUpload(e, "caCertificate")}
+              />
+            </div>
+            <div>
+              <FormControl fullWidth margin="normal" variant="outlined">
+                <InputLabel id="inner-authentication-label">Inner Authentication</InputLabel>
+                <Select
+                  labelId="inner-authentication-label"
+                  id="inner-authentication-select"
+                  label="Inner Authentication"
+                >
+                  <MenuItem value="MSCHAPv2">MSCHAPv2</MenuItem>
+                  <MenuItem value="MD5">MD5</MenuItem>
+                  <MenuItem value="GTC">GTC</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <FormControl fullWidth margin="normal" variant="outlined">
+                <InputLabel id="peap-version-label">PEAP Version</InputLabel>
+                <Select labelId="peap-version-label" id="peap-version-select" label="PEAP Version">
+                  <MenuItem value="auto">Automatic</MenuItem>
+                  <MenuItem value="0">Version 0</MenuItem>
+                  <MenuItem value="1">Version 1</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Username"
+                variant="outlined"
+                helperText="Enter your username for network access authentication."
+              />
+            </div>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Password"
+                type="password"
+                variant="outlined"
+                helperText="Enter your password for authentication."
+              />
+            </div>
           </>
         )}
 
         {authentication === "fast" && (
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Inner Authentication</InputLabel>
-            <Select value={innerAuth} onChange={(e) => setInnerAuth(e.target.value)} label="Inner Authentication">
-              {innerAuthOptions["fast"].map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Anonymous Identity"
+                variant="outlined"
+                helperText="Provide the anonymous identity if required."
+              />
+            </div>
+            <div>
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Inner Authentication</InputLabel>
+                <Select value={innerAuth} onChange={(e) => setInnerAuth(e.target.value)} label="Inner Authentication">
+                  {innerAuthOptions["fast"].map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <TextField
+                type="file"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                label="PAC File"
+                InputProps={{
+                  inputProps: {
+                    accept: ".pac",
+                  },
+                }}
+                fullWidth
+                margin="normal"
+                helperText="Upload the PAC file for the network authentication."
+                onChange={(e) => handleFileUpload(e, "pacFile")}
+              />
+            </div>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Username"
+                variant="outlined"
+                helperText="Enter your username for authentication."
+              />
+            </div>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Password"
+                type="password"
+                variant="outlined"
+                helperText="Enter your password."
+              />
+            </div>
+            <FormControlLabel control={<Checkbox />} label="Allow Automatic PAC Provisioning" />
+            <div>
+              <FormControl fullWidth margin="normal" variant="outlined">
+                <InputLabel id="pac-provisioning-label">Provisioning Mode</InputLabel>
+                <Select labelId="pac-provisioning-label" id="pac-provisioning-select" label="Provisioning Mode">
+                  <MenuItem value="anonymous">Anonymous</MenuItem>
+                  <MenuItem value="authenticated">Authenticated</MenuItem>
+                  <MenuItem value="both">Both</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </>
+        )}
+
+        {authentication === "tunneledTLS" && (
+          <>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Anonymous Identity"
+                variant="outlined"
+                helperText="Enter the anonymous identity for initial client response."
+              />
+            </div>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Domains"
+                variant="outlined"
+                helperText="Enter the domains for tunnel authentication. Separate multiple domains with commas."
+              />
+            </div>
+            <div>
+              <TextField
+                type="file"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                label="CA Certificate File"
+                InputProps={{
+                  inputProps: {
+                    accept: ".crt,.pem",
+                  },
+                }}
+                fullWidth
+                margin="normal"
+                helperText="Upload the CA certificate file required for TLS."
+                onChange={(e) => handleFileUpload(e, "caCertificate")}
+              />
+            </div>
+            <div>
+              <FormControl fullWidth margin="normal" variant="outlined">
+                <InputLabel id="inner-authentication-label">Inner Authentication</InputLabel>
+                <Select
+                  labelId="inner-authentication-label"
+                  id="inner-authentication-select"
+                  label="Inner Authentication"
+                >
+                  <MenuItem value="PAP">PAP</MenuItem>
+                  <MenuItem value="MSCHAP">MSCHAP</MenuItem>
+                  <MenuItem value="MSCHAPv2">MSCHAPv2</MenuItem>
+                  <MenuItem value="MSCHAPv2-noPEAP">MSCHAPv2 (No PEAP)</MenuItem>
+                  <MenuItem value="CHAP">CHAP</MenuItem>
+                  <MenuItem value="MD5">MD5</MenuItem>
+                  <MenuItem value="GTC">GTC</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Username"
+                variant="outlined"
+                helperText="Enter your username for authentication."
+              />
+            </div>
+            <div>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Password"
+                type="password"
+                variant="outlined"
+                helperText="Enter your password."
+              />
+            </div>
+          </>
+        )}
+
+        {authentication === "tls" && (
+          <>
+            <div>
+              <TextField
+                type="file"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                label="User Certificate"
+                InputProps={{
+                  inputProps: {
+                    accept: ".pem,.crt",
+                  },
+                }}
+                onChange={(e) => handleFileUpload(e, "userCertificate")}
+                fullWidth
+                margin="normal"
+              />
+              {userCertFile && (
+                <Typography variant="body2" color="textSecondary">
+                  {userCertFile.name}
+                </Typography>
+              )}
+            </div>
+            <div>
+              <TextField
+                type="file"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                label="CA Certificate"
+                InputProps={{
+                  inputProps: {
+                    accept: ".pem,.crt",
+                  },
+                }}
+                onChange={(e) => handleFileUpload(e, "caCertificate")}
+                fullWidth
+                margin="normal"
+              />
+              {caCertFile && (
+                <Typography variant="body2" color="textSecondary">
+                  {caCertFile.name}
+                </Typography>
+              )}
+            </div>
+            <FormControlLabel control={<Checkbox />} label="No CA certificate required" />
+            <div>
+              <TextField
+                type="file"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                label="Private Key"
+                InputProps={{
+                  inputProps: {
+                    accept: ".key",
+                  },
+                }}
+                onChange={(e) => handleFileUpload(e, "privateKey")}
+                fullWidth
+                margin="normal"
+              />
+              {privateKeyFile && (
+                <Typography variant="body2" color="textSecondary">
+                  {privateKeyFile.name}
+                </Typography>
+              )}
+            </div>
+            <TextField fullWidth margin="normal" label="Private Key Password" type="password" variant="outlined" />
+          </>
         )}
 
         {/* Save button */}
@@ -337,7 +621,6 @@ function Wireless() {
             Show WLAN Diagnostic Log
           </Button>
         </div>
-
       </Box>
       <Box display="flex" justifyContent="end">
         <MuiButton variant="contained" color="primary">
