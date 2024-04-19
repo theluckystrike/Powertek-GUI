@@ -26,11 +26,12 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Dialog,
+  // Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import Dialog from "../../../components/common/DialogWithClose";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import MuiButton from "../../../components/common/styled/Button";
 import EditIcon from "@mui/icons-material/Edit";
@@ -1160,7 +1161,7 @@ function NetworkServices() {
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
-          <NamedContainer title="Network Services">
+          <NamedContainer title="Web Access/ API">
             <Grid container rowSpacing={2}>
               <Grid item xs={12}>
                 <CollapsiableNamedContainer title="HTTP">

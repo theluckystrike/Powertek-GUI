@@ -11,7 +11,7 @@ import {
   TableHead,
   TableRow,
   Checkbox,
-  Dialog,
+  // Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -20,6 +20,7 @@ import {
   Button,
   MenuItem,
 } from "@mui/material";
+import Dialog from "../../components/common/DialogWithClose";
 import NamedContainer from "../../components/common/NamedContainer";
 import { FaLockOpen } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";

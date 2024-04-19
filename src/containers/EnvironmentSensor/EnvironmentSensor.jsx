@@ -164,7 +164,10 @@ const ThresholdTable = () => {
 
   return (
     <TableContainer>
-      <Table aria-label="sensor table" sx={{ border: '1px dashed', borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5" }}>
+      <Table
+        aria-label="sensor table"
+        sx={{ border: "1px dashed", borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5" }}
+      >
         <TableHead>
           <TableRow>
             <StyledTableCell>Sensor</StyledTableCell>
@@ -255,6 +258,9 @@ const SensorSettings = ({ add }) => {
       ...settings,
       [event.target.name]: event.target.value,
     });
+    if (event.target.name === "locationName") {
+      onNameChange(index, event.target.value); // Update name in the parent component
+    }
   };
   return (
     <Box sx={{ border: "1px dashed", padding: 2, borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5" }}>
@@ -356,9 +362,24 @@ function CustomTabPanel(props) {
 function EnvironmentSensor() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [sensorData, setSensorData] = React.useState(data); // Initialize with default data
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  // Handler to update sensor names
+  const handleSensorNameChange = (index, newName) => {
+    const newData = sensorData.map((item, idx) => {
+      if (idx === index) {
+        return item.map((dataItem) => ({
+          ...dataItem,
+          label: dataItem.label.includes("EMD") ? `EMD${index + 1}-T(°C)` : dataItem.label,
+        }));
+      }
+      return item;
+    });
+    setSensorData(newData);
   };
 
   return (
@@ -377,13 +398,16 @@ function EnvironmentSensor() {
             }
           >
             <Grid container rowSpacing={2} columnSpacing={2}>
-              {data.map((item, index) => {
+              {sensorData.map((item, index) => {
                 return (
                   <Grid item xs={6}>
                     <NamedContainer
                       noDivider
                       overridetitle
-                      paperSx={{ border: "1px dashed", borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5" }}
+                      paperSx={{
+                        border: "1px dashed",
+                        borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
+                      }}
                       title={
                         <Chip
                           sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px", marginBottom: "5px" }}
@@ -440,9 +464,7 @@ function EnvironmentSensor() {
                 </CustomTabPanel>
               ))}
               <Box sx={{ display: "flex", placeContent: "end" }}>
-                <MuiButton variant="contained">
-                  Save
-                </MuiButton>
+                <MuiButton variant="contained">Save</MuiButton>
               </Box>
             </Box>
           </NamedContainer>

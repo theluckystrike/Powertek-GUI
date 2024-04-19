@@ -5,7 +5,7 @@ import {
   Grid,
   Typography,
   Button,
-  Dialog,
+  // Dialog,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -15,6 +15,7 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
+import Dialog from "../../components/common/DialogWithClose";
 import NamedContainer, { CollapsiableNamedContainer } from "../../components/common/NamedContainer";
 import PduSelect from "../../components/common/PDUSelect";
 import MuiButton from "../../components/common/styled/Button";

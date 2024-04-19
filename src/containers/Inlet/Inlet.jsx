@@ -14,7 +14,7 @@ import {
   TableHead,
   TableRow,
   IconButton,
-  Dialog,
+  // Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -24,6 +24,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+import Dialog from "../../components/common/DialogWithClose";
 import { CSVLink } from "react-csv";
 import { ResponsiveContainer, AreaChart, XAxis, YAxis, Area, Tooltip, CartesianGrid } from "recharts";
 

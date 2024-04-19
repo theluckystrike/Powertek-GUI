@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Dialog,
+  // Dialog,
   DialogTitle,
   DialogContent,
   TextField,
@@ -19,7 +19,7 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
-
+import Dialog from "../../components/common/DialogWithClose";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import PowerOffIcon from "@mui/icons-material/PowerOff";
 import LoopIcon from "@mui/icons-material/Loop";
@@ -246,7 +246,7 @@ function Outlet() {
         sx={{
           "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
           width: "40%",
-          minWidth: "40px"
+          minWidth: "40px",
         }}
       />
     );
@@ -265,7 +265,7 @@ function Outlet() {
             textTransform: "uppercase",
           },
           width: "40%",
-          minWidth: "80px"
+          minWidth: "80px",
         }}
       />
     );
@@ -344,13 +344,20 @@ function Outlet() {
                     />
                   </StyledTableCell>
                   <StyledTableCell align="center">{index + 1}</StyledTableCell>
-                  <StyledTableCell hover={outlet.name} sx={{ cursor: "pointer" }} onClick={() => handleClickOpen(outlet)} align="center">
+                  <StyledTableCell
+                    hover={outlet.name}
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => handleClickOpen(outlet)}
+                    align="center"
+                  >
                     {outlet.name}
                   </StyledTableCell>
                   <StyledTableCell align="center">{outlet.current}</StyledTableCell>
                   <StyledTableCell align="center">{getStateChip(outlet.state)}</StyledTableCell>
                   <StyledTableCell align="center">{getStatusChip(outlet.status)}</StyledTableCell>
-                  <StyledTableCell sx={{ minWidth : "50px"}} align="center">{outlet.lines.join(", ")}</StyledTableCell>
+                  <StyledTableCell sx={{ minWidth: "50px" }} align="center">
+                    {outlet.lines.join(", ")}
+                  </StyledTableCell>
                 </TableRow>
               ))}
             </TableBody>

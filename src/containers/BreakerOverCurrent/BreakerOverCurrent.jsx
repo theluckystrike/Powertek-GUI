@@ -12,7 +12,7 @@ import {
   Chip,
   Typography,
   ToggleButton,
-  Dialog,
+  // Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -27,6 +27,7 @@ import { FaLock } from "react-icons/fa";
 import PduSelect from "../../components/common/PDUSelect";
 import ConfigContext from "../../components/common/ConfigContext";
 import styled from "@emotion/styled";
+import Dialog from "../../components/common/DialogWithClose";
 
 function SensorDialog({ open, onClose, checked }) {
   const { config } = React.useContext(ConfigContext);

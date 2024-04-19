@@ -14,12 +14,24 @@ import {
   Avatar,
   Card,
   CardContent,
+  // Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions,
+  IconButton,
+  ToggleButton,
 } from "@mui/material";
+import Dialog from "../../components/common/DialogWithClose";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 
 import OfflineBoltIcon from "@mui/icons-material/OfflineBolt";
+import SettingsIcon from "@mui/icons-material/Settings";
+
+import { FaLockOpen } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 
 import NamedContainer from "../../components/common/NamedContainer";
 import InletStats from "../../components/homepage/InletStats";
@@ -52,6 +64,24 @@ function TabPanel(props) {
 }
 function HomePage(props) {
   const { config, setConfig } = useContext(ConfigContext);
+
+  const [open, setOpen] = useState(false);
+  const [settingsEdit, setsettingsEdit] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+    setsettingsEdit(!settingsEdit);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setsettingsEdit(!settingsEdit);
+  };
+
+  const handleSave = () => {
+    console.log("Threshold saved");
+    handleClose();
+  };
 
   const [stats, setStats] = useState([
     { name: "Power Factor", value: "0.45" },
@@ -232,7 +262,40 @@ function HomePage(props) {
         </Grid>
 
         <Grid item xs={12}>
-          <NamedContainer title="Residual Current Monitoring">
+          <NamedContainer
+            overridetitle
+            title={
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <Typography variant="h5" fontWeight="600">
+                  Residual Current Monitoring
+                </Typography>
+                <ToggleButton
+                  value="settingsEdit"
+                  selected={settingsEdit}
+                  onChange={handleClickOpen}
+                  sx={{
+                    padding: "0px",
+                    paddingRight: "5px",
+                    paddingLeft: "5px",
+                    borderRadius: "5px",
+                    textTransform: "none",
+                    border: "1px solid rgba(0, 0, 0, 0.87)",
+                  }}
+                  color="primary"
+                >
+                  <Typography
+                    variant=""
+                    fontWeight="400"
+                    sx={{ marginRight: "5px" }}
+                    //   color={settingsEdit ? "red" : "blue"}
+                  >
+                    Edit Settings
+                  </Typography>
+                  {settingsEdit ? <FaLockOpen color="red" /> : <FaLock color="#FFD700" />}
+                </ToggleButton>
+              </div>
+            }
+          >
             <Box sx={{ display: "flex", flexDirection: "row" }} gap={2}>
               <Typography
                 variant="h5"
@@ -244,6 +307,29 @@ function HomePage(props) {
                 /
                 <Chip label="Normal" color="success" />
               </Typography>
+
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Set Alarm Threshold</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="threshold"
+                    label="Alarm Threshold (mA)"
+                    type="number"
+                    fullWidth
+                    variant="outlined"
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleSave} color="primary">
+                    Save
+                  </Button>
+                </DialogActions>
+              </Dialog>
 
               <Typography
                 variant="h5"

@@ -24,22 +24,208 @@ import {
   InputLabel,
   FormGroup,
   Checkbox,
-  Dialog,
+  // Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormLabel,
   RadioGroup,
   Radio,
+  IconButton,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import Dialog from "../../../components/common/DialogWithClose";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import SaveIcon from "@mui/icons-material/Save";
 import MuiButton from "../../../components/common/styled/Button";
 import styled from "@emotion/styled";
+import AddIcon from "@mui/icons-material/Add";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
 }));
+
+const RoleACL = ({ roles, onEdit, onAdd }) => {
+  const [open, setOpen] = useState(false);
+  const [editedRole, setEditedRole] = useState(null);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [newRole, setNewRole] = useState({
+    name: "",
+    description: "",
+    permissions: { OnlyRead: {}, EditThreshold: {} },
+  });
+
+  const handleOpenDialog = (role) => {
+    setEditedRole({ ...role }); // Create a copy of the role for editing
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+    setEditedRole(null); // Clear the edited role
+  };
+
+  const handleCheckboxChange = (task, pdu, isChecked) => {
+    // Update the edited role's permissions based on the checkbox that was toggled
+    setEditedRole((prevEditedRole) => ({
+      ...prevEditedRole,
+      permissions: {
+        ...prevEditedRole.permissions,
+        [task]: {
+          ...prevEditedRole.permissions[task],
+          [pdu]: isChecked,
+        },
+      },
+    }));
+  };
+
+  const handleOpenAddDialog = () => {
+    setOpenAddDialog(true);
+  };
+
+  const handleCloseAddDialog = () => {
+    setOpenAddDialog(false);
+    setNewRole({
+      name: "",
+      description: "",
+      permissions: { OnlyRead: {}, EditThreshold: {} },
+    }); // Reset the new role state
+  };
+
+  const handleAddNewRole = () => {
+    onAdd(newRole);
+    handleCloseAddDialog();
+  };
+
+  const handleChangeNewRole = (key, value) => {
+    setNewRole((prevNewRole) => ({
+      ...prevNewRole,
+      [key]: value,
+    }));
+  };
+
+  return (
+    <div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Role Name</TableCell>
+              <TableCell align="center">Description</TableCell>
+              <TableCell align="center">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {roles.map((role, index) => (
+              <TableRow key={role.name}>
+                <TableCell align="center">{role.name}</TableCell>
+                <TableCell align="center">{role.description}</TableCell>
+                <TableCell align="center">
+                  <IconButton onClick={() => handleOpenDialog(role)}>
+                    <EditIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<AddIcon />}
+        onClick={handleOpenAddDialog}
+        style={{ margin: "10px 0" }}
+      >
+        Add Role
+      </Button>
+      <Dialog open={openAddDialog} onClose={handleCloseAddDialog} maxWidth="xs" fullWidth>
+        <DialogTitle>Add New Role</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Role Name"
+            type="text"
+            fullWidth
+            value={newRole.name}
+            onChange={(e) => handleChangeNewRole("name", e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            id="description"
+            label="Role Description"
+            type="text"
+            fullWidth
+            multiline
+            rows={4}
+            value={newRole.description}
+            onChange={(e) => handleChangeNewRole("description", e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAddDialog}>Cancel</Button>
+          <Button onClick={handleAddNewRole}>Add</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={open} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+        <DialogTitle>Edit Role Permissions</DialogTitle>
+        <DialogContent>
+          {editedRole && (
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Task</TableCell>
+                    {Array.from({ length: 8 }, (_, i) => (
+                      <TableCell key={`PDU ${i + 1}`}>PDU {i + 1}</TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {Object.keys(editedRole.permissions).map((task) => (
+                    <TableRow key={task}>
+                      <TableCell>{task}</TableCell>
+                      {Array.from({ length: 8 }, (_, i) => {
+                        const pdu = `PDU${i + 1}`;
+                        return (
+                          <TableCell key={pdu}>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={editedRole.permissions[task][pdu] || false}
+                                  onChange={(event) => handleCheckboxChange(task, pdu, event.target.checked)}
+                                />
+                              }
+                              label=""
+                            />
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button
+            onClick={() => {
+              onEdit(editedRole); // Implement this function to save the changes
+              handleCloseDialog();
+            }}
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
 
 function IpAccessControl4() {
   const [ipv4Enabled, setIpv4Enabled] = useState(false);
@@ -110,92 +296,6 @@ function IpAccessControl4() {
         </Box>
       </form>
     </Box>
-  );
-}
-
-function RoleACL({ title }) {
-  const [enabled, setEnabled] = useState(false);
-  const [rules, setRules] = useState([]);
-  const [defaultPolicy, setDefaultPolicy] = useState("accept");
-
-  const handleToggleChange = (event) => {
-    setEnabled(event.target.checked);
-  };
-
-  const handleDefaultPolicyChange = (event) => {
-    setDefaultPolicy(event.target.value);
-  };
-
-  const handleAddRule = () => {
-    // Placeholder for adding rule logic
-    const newRule = { startIP: "", endIP: "", role: "", policy: defaultPolicy };
-    setRules([...rules, newRule]);
-  };
-
-  // The rest of the CRUD operations (insert, delete, edit) would need to be implemented here
-
-  return (
-    <Container component={Paper} elevation={3} sx={{ padding: "20px", margin: "20px 0" }}>
-      <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-        <Typography variant="h6">{title}</Typography>
-        <FormControlLabel
-          control={<Switch checked={enabled} onChange={handleToggleChange} />}
-          label={`Enable role-based access control for ${title}`}
-        />
-      </Box>
-
-      <Box mb={2}>
-        <Select
-          value={defaultPolicy}
-          onChange={handleDefaultPolicyChange}
-          displayEmpty
-          inputProps={{ "aria-label": "Without label" }}
-        >
-          <MenuItem value="accept">Accept</MenuItem>
-          <MenuItem value="reject">Reject</MenuItem>
-        </Select>
-      </Box>
-
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>#</StyledTableCell>
-              <StyledTableCell>Start IP</StyledTableCell>
-              <StyledTableCell>End IP</StyledTableCell>
-              <StyledTableCell>Role</StyledTableCell>
-              <StyledTableCell>Policy</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rules.length === 0 && (
-              <TableRow>
-                <StyledTableCell colSpan={5} align="center">
-                  No rules defined
-                </StyledTableCell>
-              </TableRow>
-            )}
-            {rules.map((rule, index) => (
-              <TableRow key={index}>
-                <StyledTableCell component="th" scope="row">
-                  {index + 1}
-                </StyledTableCell>
-                <StyledTableCell>{rule.startIP}</StyledTableCell>
-                <StyledTableCell>{rule.endIP}</StyledTableCell>
-                <StyledTableCell>{rule.role}</StyledTableCell>
-                <StyledTableCell>{rule.policy}</StyledTableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Box mt={2}>
-        <Button variant="contained" color="primary" onClick={handleAddRule}>
-          Append
-        </Button>
-        {/* Add "Insert Above" button functionality as needed */}
-      </Box>
-    </Container>
   );
 }
 
@@ -365,9 +465,11 @@ function PasswordPolicy() {
 }
 
 function LDAP() {
-  // Assuming there's a state to manage LDAP entries
+  // LDAP entries without groupsOU and usersOU fields
   const [ldapEntries, setLdapEntries] = useState([]);
   const [selectedEntry, setSelectedEntry] = useState(null);
+  // Global settings for groupsOU and usersOU
+  const [globalOU, setGlobalOU] = useState({ groupsOU: "", usersOU: "" });
 
   const handleSelectEntry = (entry) => {
     setSelectedEntry(entry);
@@ -380,12 +482,10 @@ function LDAP() {
 
   const handleTestConnection = () => {
     console.log("Testing connection for:", selectedEntry);
-    // Placeholder for connection test logic
   };
 
   const handleSave = () => {
-    console.log("Saving LDAP settings:", ldapEntries);
-    // Placeholder for save logic
+    console.log("Saving LDAP settings:", ldapEntries, globalOU);
   };
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -393,91 +493,105 @@ function LDAP() {
   }));
 
   return (
-    <TableContainer>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Access Order</StyledTableCell>
-            <StyledTableCell>IP Address / Hostname</StyledTableCell>
-            <StyledTableCell>Security</StyledTableCell>
-            <StyledTableCell>Port</StyledTableCell>
-            <StyledTableCell>LDAP Server Type</StyledTableCell>
-            <StyledTableCell>Users OU</StyledTableCell>
-            <StyledTableCell>Groups OU</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {ldapEntries.map((entry, index) => (
-            <TableRow
-              key={index}
-              onClick={() => handleSelectEntry(entry)}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <StyledTableCell component="th" scope="row">
-                <TextField defaultValue={entry.order} label="Order" variant="outlined" size="small" />
-              </StyledTableCell>
-              <StyledTableCell>
-                <TextField
-                  defaultValue={entry.ip}
-                  fullWidth
-                  label="IP Address / Hostname"
-                  variant="outlined"
-                  size="small"
-                />
-              </StyledTableCell>
-              <StyledTableCell>
-                <Select defaultValue={entry.security} label="Security" onChange={() => {}} size="small">
-                  <MenuItem value="None">None</MenuItem>
-                  <MenuItem value="SSL">SSL</MenuItem>
-                </Select>
-              </StyledTableCell>
-              <StyledTableCell>
-                <TextField defaultValue={entry.port} label="Port" variant="outlined" size="small" />
-              </StyledTableCell>
-              <StyledTableCell>
-                <Select defaultValue={entry.type} label="LDAP Server Type" onChange={() => {}} size="small">
-                  <MenuItem value="Primary">Primary</MenuItem>
-                  <MenuItem value="Secondary">Secondary</MenuItem>
-                </Select>
-              </StyledTableCell>
-              <StyledTableCell>
-                <TextField defaultValue={entry.usersOU} fullWidth label="Users OU" variant="outlined" size="small" />
-              </StyledTableCell>
-              <StyledTableCell>
-                <TextField defaultValue={entry.groupsOU} fullWidth label="Groups OU" variant="outlined" size="small" />
-              </StyledTableCell>
+    <>
+      <TableContainer>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Access Order</StyledTableCell>
+              <StyledTableCell>IP Address / Hostname</StyledTableCell>
+              <StyledTableCell>Security</StyledTableCell>
+              <StyledTableCell>Port</StyledTableCell>
+              <StyledTableCell>LDAP Server Type</StyledTableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div style={{ display: "flex", justifyContent: "space-between", margin: "10px" }}>
-        <div>
-          <Button
-            variant="contained"
-            onClick={() =>
-              setLdapEntries([
-                ...ldapEntries,
-                { order: ldapEntries.length + 1, ip: "", port: "", security: "", type: "", usersOU: "", groupsOU: "" },
-              ])
-            }
-          >
-            New
-          </Button>
-          <Button variant="contained" color="primary" onClick={() => console.log("Edit")}>
-            Edit
-          </Button>
-          <Button variant="contained" color="secondary" onClick={handleDeleteEntry}>
-            Delete
-          </Button>
-          <Button variant="contained" color="warning" onClick={handleTestConnection}>
-            Test Connection
-          </Button>
+          </TableHead>
+          <TableBody>
+            {ldapEntries.map((entry, index) => (
+              <TableRow
+                key={index}
+                onClick={() => handleSelectEntry(entry)}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <StyledTableCell component="th" scope="row">
+                  <TextField defaultValue={entry.order} label="Order" variant="outlined" size="small" />
+                </StyledTableCell>
+                <StyledTableCell>
+                  <TextField
+                    defaultValue={entry.ip}
+                    fullWidth
+                    label="IP Address / Hostname"
+                    variant="outlined"
+                    size="small"
+                  />
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Select defaultValue={entry.security} label="Security" onChange={() => {}} size="small">
+                    <MenuItem value="None">None</MenuItem>
+                    <MenuItem value="SSL">SSL</MenuItem>
+                  </Select>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <TextField defaultValue={entry.port} label="Port" variant="outlined" size="small" />
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Select defaultValue={entry.type} label="LDAP Server Type" onChange={() => {}} size="small">
+                    <MenuItem value="Primary">Primary</MenuItem>
+                    <MenuItem value="Secondary">Secondary</MenuItem>
+                  </Select>
+                </StyledTableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <div style={{ display: "flex", justifyContent: "space-between", margin: "10px" }}>
+          <div>
+            <Button
+              variant="contained"
+              onClick={() =>
+                setLdapEntries([
+                  ...ldapEntries,
+                  { order: ldapEntries.length + 1, ip: "", port: "", security: "", type: "" },
+                ])
+              }
+            >
+              New
+            </Button>
+            <Button variant="contained" color="primary" onClick={() => console.log("Edit")}>
+              Edit
+            </Button>
+            <Button variant="contained" color="secondary" onClick={handleDeleteEntry}>
+              Delete
+            </Button>
+            <Button variant="contained" color="warning" onClick={handleTestConnection}>
+              Test Connection
+            </Button>
+          </div>
         </div>
-        <Button variant="contained" color="primary" onClick={handleSave}>
+      </TableContainer>
+      <TextField
+        fullWidth
+        label="Global Users OU"
+        variant="outlined"
+        size="small"
+        value={globalOU.usersOU}
+        onChange={(e) => setGlobalOU({ ...globalOU, usersOU: e.target.value })}
+        sx={{ marginTop: "12px" }}
+      />
+      <TextField
+        fullWidth
+        label="Global Groups OU"
+        variant="outlined"
+        size="small"
+        value={globalOU.groupsOU}
+        onChange={(e) => setGlobalOU({ ...globalOU, groupsOU: e.target.value })}
+        sx={{ marginTop: "12px" }}
+      />
+      <Box display="flex" justifyContent="end" mt={2}>
+        <MuiButton variant="contained" color="primary">
           Save
-        </Button>
-      </div>
-    </TableContainer>
+        </MuiButton>
+      </Box>
+    </>
   );
 }
 
@@ -761,6 +875,40 @@ function ManagePDUs() {
 }
 
 function Security() {
+  const roles_data = [
+    {
+      name: "Admin",
+      description: "Administrator role with full permissions",
+      permissions: {
+        OnlyRead: { PDU1: true, PDU2: false },
+        EditThreshold: { PDU1: true, PDU2: true },
+        // ... other tasks and PDUs
+      },
+    },
+    // ... other roles
+  ];
+
+  const [roles, setRoles] = useState(roles_data);
+
+  const handleEdit = (newRole) => {
+    // Logic to handle edit action
+    setRoles((prevRoles) => {
+      const index = prevRoles.findIndex((role) => role.name === newRole.name);
+      if (index >= 0) {
+        prevRoles[index] = newRole;
+      }
+      return [...prevRoles];
+    });
+
+    console.log("Edit role at index:", newRole);
+  };
+
+  const handleAddRole = (newRole) => {
+    // Here you would add the new role to your state or backend
+    // For example, if using useState:
+    setRoles((prevRoles) => [...prevRoles, newRole]);
+  };
+
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
@@ -779,12 +927,7 @@ function Security() {
               </Grid>
               <Grid item xs={12}>
                 <CollapsiableNamedContainer title="Role Based Access Control">
-                  <CollapsiableNamedContainer title="IPv4">
-                    <RoleACL title={"IPv4"} />
-                  </CollapsiableNamedContainer>
-                  <CollapsiableNamedContainer title="IPv6">
-                    <RoleACL title={"IPv6"} />
-                  </CollapsiableNamedContainer>
+                  <RoleACL roles={roles} onEdit={handleEdit} onAdd={handleAddRole} />
                 </CollapsiableNamedContainer>
               </Grid>
               <Grid item xs={12}>

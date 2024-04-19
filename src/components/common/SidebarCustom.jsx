@@ -51,7 +51,7 @@ function SidebarCustom(props) {
       onBackdropClick={() => setsideBarToggle(!sideBarToggle)}
       backgroundColor="#203246"
       iconColor="#e3e3e3"
-      style = {{zIndex: 1111}}
+      style={{ zIndex: 1111 }}
       rootStyles={{
         color: "#e3e3e3",
         borderRight: "0px",
@@ -75,7 +75,7 @@ function SidebarCustom(props) {
               objectFit: "cover",
               overflow: "hidden",
               cursor: "pointer",
-              maxHeight: "60px"
+              maxHeight: "60px",
             }}
             alt="Logo"
             src={imageurl}
@@ -111,14 +111,28 @@ function SidebarCustom(props) {
             User Settings
           </MenuItem>
 
-          <SubMenu label="Device Settings" icon={<RiListSettingsLine size={23}/>}>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/network" />}>Network</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/networkServices" />}>Network Services</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/security" />}>Security</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/datetime" />}>Date/Time</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/eventlogs" />}>Event Logs</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/data-logging" />}>Data Logging</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings/usb-host-port" />}>USB Host Ports</MenuItem>
+          <SubMenu label="Device Settings" icon={<RiListSettingsLine size={23} />}>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/network" />}>
+              Network
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/networkServices" />}>
+              Web Access/ API
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/security" />}>
+              Security
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/datetime" />}>
+              Date/Time
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/eventlogs" />}>
+              Event Logs
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/data-logging" />}>
+              Data Logging
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/usb-host-port" />}>
+              USB Host Ports
+            </MenuItem>
             {/* <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Server Reachability</MenuItem>
             <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Front Panel</MenuItem>
             <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Lua Scripts</MenuItem>
@@ -126,11 +140,21 @@ function SidebarCustom(props) {
           </SubMenu>
 
           <SubMenu label="Maintenance" icon={<GrHostMaintenance size={23} />}>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/pdu-information" />}>PDU Information</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/firmware-update" />}>Firmware Update</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/bulk-configuration" />}>Bulk Configuration</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/backup" />}>Backup</MenuItem>
-            <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/maintenance/reset-restore" />}>Reset/Restore</MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/pdu-information" />}>
+              PDU Information
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/firmware-update" />}>
+              Firmware Update
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/bulk-configuration" />}>
+              Bulk Configuration
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/backup" />}>
+              Backup
+            </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/reset-restore" />}>
+              Reset/Restore
+            </MenuItem>
           </SubMenu>
           {/* <MenuItem icon={<GrHostMaintenance size={23} />} component={<Link to="/maintenance" />}>
             Maintenance
