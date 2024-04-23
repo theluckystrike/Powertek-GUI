@@ -116,7 +116,7 @@ function SidebarCustom(props) {
               Network
             </MenuItem>
             <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/networkServices" />}>
-              Web Access/ API
+              Network Services
             </MenuItem>
             <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/security" />}>
               Security

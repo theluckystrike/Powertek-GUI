@@ -1161,10 +1161,10 @@ function NetworkServices() {
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
-          <NamedContainer title="Web Access/ API">
+          <NamedContainer title="Network Services">
             <Grid container rowSpacing={2}>
               <Grid item xs={12}>
-                <CollapsiableNamedContainer title="HTTP">
+                <CollapsiableNamedContainer title="Web Access/ API">
                   <HTTPSettingsPanel />
                 </CollapsiableNamedContainer>
               </Grid>

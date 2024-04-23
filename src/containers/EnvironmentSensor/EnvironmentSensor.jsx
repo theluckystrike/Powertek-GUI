@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Chip,
@@ -29,74 +29,91 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
 }));
 
-const data = [
-  [
-    { label: "EMD1-H(%)", value: 46.3, status: "Normal" },
-    { label: "EMD1-T(°C)", value: 18.4, status: "Normal" },
-    { label: "Smoke", value: "", status: "Normal" },
-    { label: "water", value: "", status: "Normal" },
-    { label: "Address", value: "1", status: "" },
-    { label: "Location Name", value: "Lab Room", status: "" },
-  ],
-  [
-    { label: "EMD2-H(%)", value: 46.3, status: "Normal" },
-    { label: "EMD2-T(°C)", value: 18.4, status: "Normal" },
-    { label: "Smoke", value: "", status: "Normal" },
-    { label: "water", value: "", status: "Normal" },
-    { label: "Address", value: "1", status: "" },
-    { label: "Location Name", value: "Lab Room", status: "" },
-  ],
-  [
-    { label: "EMD3-H(%)", value: 46.3, status: "Normal" },
-    { label: "EMD3-T(°C)", value: 18.4, status: "Normal" },
-    { label: "Smoke", value: "", status: "Normal" },
-    { label: "water", value: "", status: "Normal" },
-    { label: "Address", value: "1", status: "" },
-    { label: "Location Name", value: "Lab Room", status: "" },
-  ],
-  [
-    { label: "EMD4-H(%)", value: 46.3, status: "Normal" },
-    { label: "EMD4-T(°C)", value: 18.4, status: "Normal" },
-    { label: "Smoke", value: "", status: "Normal" },
-    { label: "water", value: "", status: "Normal" },
-    { label: "Address", value: "1", status: "" },
-    { label: "Location Name", value: "Lab Room", status: "" },
-  ],
-  [
-    { label: "EMD5-H(%)", value: 46.3, status: "Normal" },
-    { label: "EMD5-T(°C)", value: 18.4, status: "Normal" },
-    { label: "Smoke", value: "", status: "Normal" },
-    { label: "water", value: "", status: "Normal" },
-    { label: "Address", value: "1", status: "" },
-    { label: "Location Name", value: "Lab Room", status: "" },
-  ],
-  [
-    { label: "EMD6-H(%)", value: 46.3, status: "Normal" },
-    { label: "EMD6-T(°C)", value: 18.4, status: "Normal" },
-    { label: "Smoke", value: "", status: "Normal" },
-    { label: "water", value: "", status: "Normal" },
-    { label: "Address", value: "1", status: "" },
-    { label: "Location Name", value: "Lab Room", status: "" },
-  ],
-  [
-    { label: "EMD7-H(%)", value: 46.3, status: "Normal" },
-    { label: "EMD7-T(°C)", value: 18.4, status: "Normal" },
-    { label: "Smoke", value: "", status: "Normal" },
-    { label: "water", value: "", status: "Normal" },
-    { label: "Address", value: "1", status: "" },
-    { label: "Location Name", value: "Lab Room", status: "" },
-  ],
-  [
-    { label: "EMD8-H(%)", value: 46.3, status: "Normal" },
-    { label: "EMD8-T(°C)", value: 18.4, status: "Normal" },
-    { label: "Smoke", value: "", status: "Normal" },
-    { label: "water", value: "", status: "Normal" },
-    { label: "Address", value: "1", status: "" },
-    { label: "Location Name", value: "Lab Room", status: "" },
-  ],
-];
+const data = {
+  EMD1: {
+    address: "1",
+    application_fw_version: "01.00.0005",
+    location: "Data Center",
+    sensors: [
+      { name: "Smoke Sensor", value: "0", unit: "ppm", alarm: "Alarm 1", status: "Normal" },
+      { name: "Water Sensor", value: "0", unit: "ppm", alarm: "Disabled", status: "Normal" },
+    ],
+    thresholds: {
+      criticalHighTemperature: 60.0,
+      criticalLowTemperature: 5.0,
+      criticalHighHumidity: 90.0,
+      criticalLowHumidity: 20.0,
+      warningHighTemperature: 50.0,
+      warningLowTemperature: 10.0,
+      warningHighHumidity: 80.0,
+      warningLowHumidity: 30.0,
+    },
+    humidity: [46.3, "Normal"],
+    temprature: [23.5, "Normal"],
+  },
+  EMD2: {
+    address: "2",
+    application_fw_version: "01.00.0005",
+    location: "Data Center",
+    sensors: [{ name: "Smoke Sensor", value: "0", unit: "ppm", alarm: "Alarm 1", status: "Normal" }],
+    thresholds: {
+      criticalHighTemperature: 60.0,
+      criticalLowTemperature: 5.0,
+      criticalHighHumidity: 90.0,
+      criticalLowHumidity: 20.0,
+      warningHighTemperature: 50.0,
+      warningLowTemperature: 10.0,
+      warningHighHumidity: 80.0,
+      warningLowHumidity: 30.0,
+    },
+    humidity: [46.3, "Normal"],
+    temprature: [23.5, "Normal"],
+  },
+  EMD3: {
+    address: "3",
+    application_fw_version: "01.00.0005",
+    location: "Data Center",
+    sensors: [{ name: "Smoke Sensor", value: "0", unit: "ppm", alarm: "Alarm 1", status: "Normal" }],
+    thresholds: {
+      criticalHighTemperature: 60.0,
+      criticalLowTemperature: 5.0,
+      criticalHighHumidity: 90.0,
+      criticalLowHumidity: 20.0,
+      warningHighTemperature: 50.0,
+      warningLowTemperature: 10.0,
+      warningHighHumidity: 80.0,
+      warningLowHumidity: 30.0,
+    },
+    humidity: [46.3, "Normal"],
+    temprature: [23.5, "Normal"],
+  },
+  EMD4: {
+    address: "4",
+    application_fw_version: "01.00.0005",
+    location: "Data Center",
+    sensors: [{ name: "Water Sensor", value: "0", unit: "ppm", alarm: "Alarm 1", status: "Normal" }],
+    thresholds: {
+      criticalHighTemperature: 60.0,
+      criticalLowTemperature: 5.0,
+      criticalHighHumidity: 90.0,
+      criticalLowHumidity: 20.0,
+      warningHighTemperature: 50.0,
+      warningLowTemperature: 10.0,
+      warningHighHumidity: 80.0,
+      warningLowHumidity: 30.0,
+    },
+    humidity: [46.3, "Normal"],
+    temprature: [23.5, "Normal"],
+  },
+};
 
 function EMDTable({ data }) {
+  const [tableData, setTableData] = useState(data);
+
+  useEffect(() => {
+    setTableData(data);
+  }, [data]);
+
   return (
     <TableContainer
       sx={{
@@ -107,59 +124,259 @@ function EMDTable({ data }) {
     >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableBody>
-          {data.map((row) => (
-            <TableRow key={row.label} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+          <TableRow key="EMD1-H(%)" sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <StyledTableCell align="center" component="th" scope="row">
+              EMD1-H(%)
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <Typography component="span" variant="body2" sx={{ fontWeight: "medium" }}>
+                {typeof tableData.humidity[0] === "number" ? (
+                  <ReportingBar value={tableData.humidity[0]} max={100} min={0} />
+                ) : (
+                  tableData.humidity[0]
+                )}
+              </Typography>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              {tableData.humidity[1] && (
+                <Typography
+                  component="span"
+                  variant="body2"
+                  sx={{
+                    backgroundColor: tableData.humidity[1] === "Normal" ? "#4caf50" : "#f44336",
+                    color: "#fff",
+                    borderRadius: 1,
+                    padding: "3px 10px",
+                    display: "inline-block",
+                  }}
+                >
+                  {tableData.humidity[1]}
+                </Typography>
+              )}
+            </StyledTableCell>
+          </TableRow>
+          <TableRow key="EMD1-T(°C)" sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <StyledTableCell align="center" component="th" scope="row">
+              EMD1-T(°C)
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <Typography component="span" variant="body2" sx={{ fontWeight: "medium" }}>
+                {typeof tableData.temprature[0] === "number" ? (
+                  <ReportingBar value={tableData.temprature[0]} max={100} min={0} />
+                ) : (
+                  tableData.temprature[0]
+                )}
+              </Typography>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              {tableData.temprature[1] && (
+                <Typography
+                  component="span"
+                  variant="body2"
+                  sx={{
+                    backgroundColor: tableData.temprature[1] === "Normal" ? "#4caf50" : "#f44336",
+                    color: "#fff",
+                    borderRadius: 1,
+                    padding: "3px 10px",
+                    display: "inline-block",
+                  }}
+                >
+                  {tableData.temprature[1]}
+                </Typography>
+              )}
+            </StyledTableCell>
+          </TableRow>
+          {tableData.sensors.map((sensor, index) => (
+            <TableRow key={sensor.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
               <StyledTableCell align="center" component="th" scope="row">
-                {row.label}
+                {sensor.name}
               </StyledTableCell>
               <StyledTableCell align="center">
                 <Typography component="span" variant="body2" sx={{ fontWeight: "medium" }}>
-                  {typeof row.value === "number" ? <ReportingBar value={row.value} max={100} min={0} /> : row.value}
+                  {sensor.value} {sensor.unit}
                 </Typography>
               </StyledTableCell>
               <StyledTableCell align="center">
-                {row.status && (
+                {sensor.status && (
                   <Typography
                     component="span"
                     variant="body2"
                     sx={{
-                      backgroundColor: row.status === "Normal" ? "#4caf50" : "#f44336",
+                      backgroundColor: sensor.status === "Normal" ? "#4caf50" : "#f44336",
                       color: "#fff",
                       borderRadius: 1,
                       padding: "3px 10px",
                       display: "inline-block",
                     }}
                   >
-                    {row.status}
+                    {sensor.status}
                   </Typography>
                 )}
               </StyledTableCell>
             </TableRow>
           ))}
+          <TableRow key="Address" sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <StyledTableCell align="center" component="th" scope="row">
+              Address
+            </StyledTableCell>
+            <StyledTableCell align="center">{tableData.address}</StyledTableCell>
+            <StyledTableCell align="center"></StyledTableCell>
+          </TableRow>
+          <TableRow key="Location" sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <StyledTableCell align="center" component="th" scope="row">
+              Location
+            </StyledTableCell>
+            <StyledTableCell align="center">{tableData.location}</StyledTableCell>
+            <StyledTableCell align="center"></StyledTableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
   );
 }
 
-const ThresholdTable = () => {
+function SensorSettings({ sensorData, handleDataChange }) {
   const theme = useTheme();
-  // Data structure for table rows
-  const [sensor, setSensor] = useState({
-    name: "",
-    criticalHighTemperature: 60.0,
-    criticalLowTemperature: 5.0,
-    criticalHighHumidity: 90.0,
-    criticalLowHumidity: 20.0,
-    warningHighTemperature: 50.0,
-    warningLowTemperature: 10.0,
-    warningHighHumidity: 80.0,
-    warningLowHumidity: 30.0,
-  });
+  const [data, setData] = useState(sensorData);
 
-  // Handler to update sensor values
+  useEffect(() => {
+    setData(sensorData);
+  }, [sensorData]);
+
+  const handleChange = (e) => {
+    // write function to handle the change from text fields
+    const { name, value } = e.target;
+    const newData = { ...data };
+    newData[name] = value;
+    setData(newData);
+    handleDataChange(newData);
+  };
+
+  const handleSensorNameChange = (e) => {
+    const { name, value } = e.target;
+    const newData = { ...data };
+    newData.sensors = newData.sensors.map((sensor) => {
+      if (sensor.name === name) {
+        sensor.name = value;
+      }
+      return sensor;
+    });
+    setData(newData);
+    handleDataChange(newData);
+  };
+
+  const handleAlarmChange = (e) => {
+    const { name, value } = e.target;
+    const newData = { ...data };
+    newData.sensors = newData.sensors.map((sensor) => {
+      if (sensor.name === name) {
+        sensor.alarm = value;
+      }
+      return sensor;
+    });
+    setData(newData);
+    handleDataChange(newData);
+  };
+
+  return (
+    <Box sx={{ border: "1px dashed", padding: 2, borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5" }}>
+      <Grid container alignItems="flex-start" spacing={2}>
+        <Grid item xs={12}>
+          <TextField
+            label="EMD Address"
+            name="address"
+            fullWidth
+            margin="dense"
+            variant="outlined"
+            value={data.address}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Application FW Version"
+            name="application_fw_version"
+            fullWidth
+            margin="dense"
+            variant="outlined"
+            value={data.application_fw_version}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Location Name"
+            name="location"
+            fullWidth
+            margin="dense"
+            variant="outlined"
+            value={data.location}
+            onChange={handleChange}
+          />
+        </Grid>
+        {data.sensors.map((sensor, index) => (
+          <>
+            <Grid item xs={6}>
+              <TextField
+                label={`Sensor Name ${index + 1}`}
+                name={sensor.name}
+                fullWidth
+                margin="dense"
+                variant="outlined"
+                value={sensor.name}
+                onChange={handleSensorNameChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl fullWidth margin="dense" variant="outlined">
+                <InputLabel>Alarm</InputLabel>
+                <Select name={sensor.name} value={sensor.alarm} onChange={handleAlarmChange} label="Alarm">
+                  <MenuItem value="Alarm 1">Alarm-1</MenuItem>
+                  <MenuItem value="Disabled">Disabled</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </>
+        ))}
+      </Grid>
+    </Box>
+  );
+}
+
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+const ThresholdTable = ({ sensorData, handleDataChange }) => {
+  const theme = useTheme();
+  const [fullSensorData, setFullSensorData] = useState(sensorData);
+  //   const [sensorName, setSensorName] = useState(sensorData.name);
+  const [sensor, setSensor] = useState(sensorData.thresholds);
+
+  useEffect(() => {
+    setFullSensorData(sensorData);
+    // setSensorName(sensorData.name);
+    setSensor(sensorData.thresholds);
+  }, [sensorData]);
+
   const handleSensorChange = (event) => {
     setSensor({ ...sensor, [event.target.name]: event.target.value });
+    const tempData = { ...fullSensorData };
+    tempData.thresholds = { ...sensor, [event.target.name]: event.target.value };
+    setFullSensorData(tempData);
+    handleDataChange(tempData);
   };
 
   return (
@@ -176,30 +393,6 @@ const ThresholdTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <StyledTableCell component="th" scope="row">
-              Sensor Name
-            </StyledTableCell>
-            <StyledTableCell align="center">
-              <TextField
-                value={sensor.name}
-                onChange={handleSensorChange}
-                name="name"
-                variant="outlined"
-                size="small"
-              />
-            </StyledTableCell>
-            <StyledTableCell align="center">
-              <TextField
-                value={sensor.name}
-                onChange={handleSensorChange}
-                name="name"
-                variant="outlined"
-                size="small"
-              />
-            </StyledTableCell>
-          </TableRow>
-
           {["critical", "warning"].map((level) =>
             ["High", "Low"].map((threshold) => (
               <TableRow key={`${level}-${threshold}`} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
@@ -243,142 +436,18 @@ const ThresholdTable = () => {
   );
 };
 
-const SensorSettings = ({ add }) => {
+function EnvironemtSensor() {
   const theme = useTheme();
-  const [settings, setSettings] = React.useState({
-    emdAddress: add,
-    firmwareVersion: "01.00.0005",
-    locationName: "",
-    digitalInput1: "Alarm-1",
-    digitalInput2: "Alarm-2",
-  });
-
-  const handleChange = (event) => {
-    setSettings({
-      ...settings,
-      [event.target.name]: event.target.value,
-    });
-    if (event.target.name === "locationName") {
-      onNameChange(index, event.target.value); // Update name in the parent component
-    }
-  };
-  return (
-    <Box sx={{ border: "1px dashed", padding: 2, borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5" }}>
-      <Grid container alignItems="flex-start" spacing={2}>
-        <Grid item xs={12}>
-          <TextField
-            label="EMD Address"
-            name="emdAddress"
-            fullWidth
-            margin="dense"
-            variant="outlined"
-            value={settings.emdAddress}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="Application FW Version"
-            name="firmwareVersion"
-            fullWidth
-            margin="dense"
-            variant="outlined"
-            value={settings.firmwareVersion}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="Location Name"
-            name="locationName"
-            fullWidth
-            margin="dense"
-            variant="outlined"
-            value={settings.locationName}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Digital Input 1"
-            name="digitalInput1"
-            fullWidth
-            margin="dense"
-            variant="outlined"
-            value={settings.digitalInput1}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth margin="dense" variant="outlined">
-            <InputLabel>Alarm 1</InputLabel>
-            <Select name="alarm1" value={settings.digitalInput1} onChange={handleChange} label="Alarm 1">
-              <MenuItem value="Alarm-1">Alarm-1</MenuItem>
-              <MenuItem value="Disable">Disable</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Digital Input 2"
-            name="digitalInput2"
-            fullWidth
-            margin="dense"
-            variant="outlined"
-            value={settings.digitalInput2}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth margin="dense" variant="outlined">
-            <InputLabel>Alarm 2</InputLabel>
-            <Select name="alarm2" value={settings.digitalInput2} onChange={handleChange} label="Alarm 2">
-              <MenuItem value="Alarm-2">Alarm-2</MenuItem>
-              <MenuItem value="Disable">Disable</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-    </Box>
-  );
-};
-
-function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-}
-
-function EnvironmentSensor() {
-  const theme = useTheme();
-  const [value, setValue] = React.useState(0);
-  const [sensorData, setSensorData] = React.useState(data); // Initialize with default data
+  const [sensorData, setSensorData] = React.useState(data);
+  const [tabValue, setTabValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTabValue(newValue);
   };
 
-  // Handler to update sensor names
-  const handleSensorNameChange = (index, newName) => {
-    const newData = sensorData.map((item, idx) => {
-      if (idx === index) {
-        return item.map((dataItem) => ({
-          ...dataItem,
-          label: dataItem.label.includes("EMD") ? `EMD${index + 1}-T(°C)` : dataItem.label,
-        }));
-      }
-      return item;
-    });
+  const handleSensorDataChange = (newSingleSensorData) => {
+    const newData = { ...sensorData };
+    newData[`EMD${newSingleSensorData.address}`] = newSingleSensorData;
     setSensorData(newData);
   };
 
@@ -398,7 +467,7 @@ function EnvironmentSensor() {
             }
           >
             <Grid container rowSpacing={2} columnSpacing={2}>
-              {sensorData.map((item, index) => {
+              {Object.keys(sensorData).map((item, index) => {
                 return (
                   <Grid item xs={6}>
                     <NamedContainer
@@ -411,12 +480,12 @@ function EnvironmentSensor() {
                       title={
                         <Chip
                           sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px", marginBottom: "5px" }}
-                          label={`EMD ${index + 1}`}
+                          label={`EMD ${sensorData[item].address}`}
                           clickable={true}
                         />
                       }
                     >
-                      <EMDTable data={item} />
+                      <EMDTable data={sensorData[item]} />
                     </NamedContainer>
                   </Grid>
                 );
@@ -437,13 +506,13 @@ function EnvironmentSensor() {
           >
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-                  {data.map((row, index) => (
+                <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" centered>
+                  {Object.keys(sensorData).map((key, index) => (
                     <Tab
                       icon={
                         <Chip
                           sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
-                          label={`EMD ${index + 1}`}
+                          label={`EMD ${sensorData[key].address}`}
                           clickable={true}
                         />
                       }
@@ -451,14 +520,14 @@ function EnvironmentSensor() {
                   ))}
                 </Tabs>
               </Box>
-              {[...Array(data.length)].map((item, index) => (
-                <CustomTabPanel value={value} index={index}>
+              {Object.keys(sensorData).map((key, index) => (
+                <CustomTabPanel value={tabValue} index={index}>
                   <Grid container rowSpacing={2} columnSpacing={2}>
                     <Grid item xs={6}>
-                      <SensorSettings add={index + 1} />
+                      <SensorSettings sensorData={sensorData[key]} handleDataChange={handleSensorDataChange} />
                     </Grid>
                     <Grid item xs={6}>
-                      <ThresholdTable />
+                      <ThresholdTable sensorData={sensorData[key]} handleDataChange={handleSensorDataChange} />
                     </Grid>
                   </Grid>
                 </CustomTabPanel>
@@ -474,4 +543,4 @@ function EnvironmentSensor() {
   );
 }
 
-export default EnvironmentSensor;
+export default EnvironemtSensor;

@@ -40,6 +40,8 @@ import SaveIcon from "@mui/icons-material/Save";
 import MuiButton from "../../../components/common/styled/Button";
 import styled from "@emotion/styled";
 import AddIcon from "@mui/icons-material/Add";
+import { MdOutlineAddModerator } from "react-icons/md";
+import Tooltip from "@mui/material/Tooltip";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
@@ -122,9 +124,11 @@ const RoleACL = ({ roles, onEdit, onAdd }) => {
                 <TableCell align="center">{role.name}</TableCell>
                 <TableCell align="center">{role.description}</TableCell>
                 <TableCell align="center">
-                  <IconButton onClick={() => handleOpenDialog(role)}>
-                    <EditIcon />
-                  </IconButton>
+                  <Tooltip title="Edit Permissions">
+                    <IconButton onClick={() => handleOpenDialog(role)}>
+                      <MdOutlineAddModerator />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
@@ -164,6 +168,13 @@ const RoleACL = ({ roles, onEdit, onAdd }) => {
             value={newRole.description}
             onChange={(e) => handleChangeNewRole("description", e.target.value)}
           />
+          <Typography
+            variant="caption"
+            style={{ marginTop: "10px", placeContent: "center", display: "flex", textAlign: "center" }}
+          >
+            Permissions will be set after adding the role. <br></br> Please click on the 'Edit Permissions' button in
+            actions to set permissions for this role.
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseAddDialog}>Cancel</Button>
@@ -575,6 +586,7 @@ function LDAP() {
         size="small"
         value={globalOU.usersOU}
         onChange={(e) => setGlobalOU({ ...globalOU, usersOU: e.target.value })}
+        helperText="Example Syntax: DC=local,DC=powertek,OU=users,OU=pdu"
         sx={{ marginTop: "12px" }}
       />
       <TextField
@@ -584,6 +596,7 @@ function LDAP() {
         size="small"
         value={globalOU.groupsOU}
         onChange={(e) => setGlobalOU({ ...globalOU, groupsOU: e.target.value })}
+        helperText="Example Syntax: DC=local,DC=powertek,OU=users,OU=pdu"
         sx={{ marginTop: "12px" }}
       />
       <Box display="flex" justifyContent="end" mt={2}>
@@ -880,8 +893,10 @@ function Security() {
       name: "Admin",
       description: "Administrator role with full permissions",
       permissions: {
-        OnlyRead: { PDU1: true, PDU2: false },
-        EditThreshold: { PDU1: true, PDU2: true },
+        Only_Read: { PDU1: true, PDU2: false },
+        Edit_Threshold: { PDU1: true, PDU2: true },
+        Edit_Outlet_Status: {},
+        Edit_Configuration: {},
         // ... other tasks and PDUs
       },
     },
