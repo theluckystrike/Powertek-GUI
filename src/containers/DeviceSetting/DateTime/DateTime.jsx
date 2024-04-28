@@ -3,13 +3,19 @@ import {
   Box,
   Grid,
   Select,
+  MenuItem,
   FormControl,
   FormGroup,
   Checkbox,
   FormControlLabel,
   TextField,
+  Typography,
 } from "@mui/material";
-import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import TimePicker from "@mui/lab/TimePicker";
+import NamedContainer from "../../../components/common/NamedContainer";
 import MuiButton from "../../../components/common/styled/Button";
 
 function DateTime() {
@@ -18,11 +24,15 @@ function DateTime() {
   const [timeSetupMethod, setTimeSetupMethod] = useState("ntp");
   const [ntpServer1, setNtpServer1] = useState("pool.ntp.org");
   const [ntpServer2, setNtpServer2] = useState("");
+  const [manualDate, setManualDate] = useState(new Date());
+  const [manualTime, setManualTime] = useState(new Date());
   const handleTimezoneChange = (event) => setTimezone(event.target.value);
   const toggleAutomaticDST = () => setAutomaticDST(!automaticDST);
   const handleTimeSetupMethodChange = (event) => setTimeSetupMethod(event.target.value);
   const handleNtpServer1Change = (event) => setNtpServer1(event.target.value);
   const handleNtpServer2Change = (event) => setNtpServer2(event.target.value);
+  const handleDateChange = (newValue) => setManualDate(newValue);
+  const handleTimeChange = (newValue) => setManualTime(newValue);
 
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
@@ -31,15 +41,20 @@ function DateTime() {
           <NamedContainer title="Date/Time">
             <Grid container rowSpacing={2}>
               <Grid item xs={12}>
-                <form noValidate autoComplete="off" sx={{ width: "100%" }}>
+                <form noValidate autoComplete="off">
                   <FormGroup>
-                    <FormControl variant="outlined">
+                    <FormControl fullWidth variant="outlined">
+                      <Typography variant="h6">Time Zone</Typography>
                       <Select
                         labelId="timezone-select-label"
                         id="timezone-select"
                         value={timezone}
                         onChange={handleTimezoneChange}
-                      ></Select>
+                      >
+                        {/* Populate with time zones */}
+                        <MenuItem value="(UTC-05:00) Eastern Time (US & Canada)">Eastern Time (US & Canada)</MenuItem>
+                        <MenuItem value="(UTC-08:00) Pacific Time (US & Canada)">Pacific Time (US & Canada)</MenuItem>
+                      </Select>
                     </FormControl>
                     <FormControlLabel
                       control={<Checkbox checked={automaticDST} onChange={toggleAutomaticDST} />}
@@ -47,11 +62,7 @@ function DateTime() {
                     />
                     <FormControlLabel
                       control={
-                        <Checkbox
-                          checked={timeSetupMethod === "ntp"}
-                          onChange={handleTimeSetupMethodChange}
-                          value="ntp"
-                        />
+                        <Checkbox checked={timeSetupMethod === "ntp"} onChange={() => setTimeSetupMethod("ntp")} />
                       }
                       label="Synchronize with NTP server"
                     />
@@ -59,28 +70,46 @@ function DateTime() {
                       control={
                         <Checkbox
                           checked={timeSetupMethod === "manual"}
-                          onChange={handleTimeSetupMethodChange}
-                          value="manual"
+                          onChange={() => setTimeSetupMethod("manual")}
                         />
                       }
                       label="User specified time"
                     />
-                    <TextField
-                      label="First time server"
-                      variant="outlined"
-                      value={ntpServer1}
-                      onChange={handleNtpServer1Change}
-                    />
-                    <TextField
-                      label="Second time server"
-                      variant="outlined"
-                      value={ntpServer2}
-                      onChange={handleNtpServer2Change}
-                      margin="normal"
-                    />
-                    <MuiButton variant="contained">
-                      Save
-                    </MuiButton>
+                    {timeSetupMethod === "ntp" && (
+                      <>
+                        <TextField
+                          label="First NTP server"
+                          variant="outlined"
+                          value={ntpServer1}
+                          onChange={handleNtpServer1Change}
+                        />
+                        <TextField
+                          label="Second NTP server"
+                          variant="outlined"
+                          value={ntpServer2}
+                          onChange={handleNtpServer2Change}
+                          margin="normal"
+                        />
+                      </>
+                    )}
+                    {timeSetupMethod === "manual" && (
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DesktopDatePicker
+                          label="Date"
+                          inputFormat="MM/dd/yyyy"
+                          value={manualDate}
+                          onChange={handleDateChange}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                        <TimePicker
+                          label="Time"
+                          value={manualTime}
+                          onChange={handleTimeChange}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>
+                    )}
+                    <MuiButton variant="contained">Save</MuiButton>
                   </FormGroup>
                 </form>
               </Grid>

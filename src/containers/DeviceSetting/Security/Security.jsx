@@ -34,6 +34,7 @@ import {
   IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Dialog from "../../../components/common/DialogWithClose";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import SaveIcon from "@mui/icons-material/Save";
@@ -47,25 +48,38 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   borderColor: theme.palette.mode === "dark" ? "#233a57" : "#d4dbe5",
 }));
 
-const RoleACL = ({ roles, onEdit, onAdd }) => {
+const RoleACL = ({ roles, onEdit, onAdd, onDelete }) => {
   const [open, setOpen] = useState(false);
-  const [editedRole, setEditedRole] = useState(null);
+  const [editedRole, setEditedRole] = useState({
+    name: "",
+    description: "",
+    permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {} },
+  });
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [newRole, setNewRole] = useState({
     name: "",
     description: "",
-    permissions: { OnlyRead: {}, EditThreshold: {} },
+    permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {} },
   });
 
-  const handleOpenDialog = (role) => {
+  const handleOpenDialog = (role, action = null) => {
     setEditedRole({ ...role }); // Create a copy of the role for editing
     setOpen(true);
   };
 
+  const handleEditRoleDialog = (role, action = null) => {
+    setEditedRole(role);
+    setOpenEditDialog(true);
+  };
+
   const handleCloseDialog = () => {
     setOpen(false);
-    setEditedRole(null); // Clear the edited role
+    setEditedRole({
+      name: "",
+      description: "",
+      permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {} },
+    }); // Clear the edited role
   };
 
   const handleCheckboxChange = (task, pdu, isChecked) => {
@@ -88,10 +102,11 @@ const RoleACL = ({ roles, onEdit, onAdd }) => {
 
   const handleCloseAddDialog = () => {
     setOpenAddDialog(false);
+    setOpenEditDialog(false);
     setNewRole({
       name: "",
       description: "",
-      permissions: { OnlyRead: {}, EditThreshold: {} },
+      permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {} },
     }); // Reset the new role state
   };
 
@@ -103,6 +118,13 @@ const RoleACL = ({ roles, onEdit, onAdd }) => {
   const handleChangeNewRole = (key, value) => {
     setNewRole((prevNewRole) => ({
       ...prevNewRole,
+      [key]: value,
+    }));
+  };
+
+  const handleEditRole = (key, value) => {
+    setEditedRole((prevEditedRole) => ({
+      ...prevEditedRole,
       [key]: value,
     }));
   };
@@ -127,6 +149,16 @@ const RoleACL = ({ roles, onEdit, onAdd }) => {
                   <Tooltip title="Edit Permissions">
                     <IconButton onClick={() => handleOpenDialog(role)}>
                       <MdOutlineAddModerator />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Edit Role">
+                    <IconButton onClick={() => handleEditRoleDialog(role, "edit")}>
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete Role">
+                    <IconButton onClick={() => onDelete(role.name)}>
+                      <DeleteIcon />
                     </IconButton>
                   </Tooltip>
                 </TableCell>
@@ -179,6 +211,49 @@ const RoleACL = ({ roles, onEdit, onAdd }) => {
         <DialogActions>
           <Button onClick={handleCloseAddDialog}>Cancel</Button>
           <Button onClick={handleAddNewRole}>Add</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openEditDialog} onClose={handleCloseAddDialog} maxWidth="xs" fullWidth>
+        <DialogTitle>Edit Role</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Role Name"
+            type="text"
+            fullWidth
+            value={editedRole.name}
+            onChange={(e) => handleEditRole("name", e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            id="description"
+            label="Role Description"
+            type="text"
+            fullWidth
+            multiline
+            rows={4}
+            value={editedRole.description}
+            onChange={(e) => handleEditRole("description", e.target.value)}
+          />
+          <Typography
+            variant="caption"
+            style={{ marginTop: "10px", placeContent: "center", display: "flex", textAlign: "center" }}
+          >
+            Please click on the 'Edit Permissions' button in actions to edit permissions for this role.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAddDialog}>Cancel</Button>
+          <Button
+            onClick={() => {
+              onEdit(editedRole); // Implement this function to save the changes
+              handleCloseAddDialog();
+            }}
+          >
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
       <Dialog open={open} onClose={handleCloseDialog} maxWidth="md" fullWidth>
@@ -905,6 +980,12 @@ function Security() {
 
   const [roles, setRoles] = useState(roles_data);
 
+  const handleDeleteRole = (roleName) => {
+    // Implement deletion logic
+    setRoles((prevRoles) => prevRoles.filter((role) => role.name !== roleName));
+    console.log("Deleted role:", roleName);
+  };
+
   const handleEdit = (newRole) => {
     // Logic to handle edit action
     setRoles((prevRoles) => {
@@ -942,7 +1023,7 @@ function Security() {
               </Grid>
               <Grid item xs={12}>
                 <CollapsiableNamedContainer title="Role Based Access Control">
-                  <RoleACL roles={roles} onEdit={handleEdit} onAdd={handleAddRole} />
+                  <RoleACL roles={roles} onEdit={handleEdit} onAdd={handleAddRole} onDelete={handleDeleteRole} />
                 </CollapsiableNamedContainer>
               </Grid>
               <Grid item xs={12}>

@@ -1,5 +1,16 @@
-import React from "react";
-import { Box, Grid, Button, Typography, Paper } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Grid,
+  Button,
+  Typography,
+  Paper,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
+} from "@mui/material";
 import NamedContainer from "../../components/common/NamedContainer";
 import { styled } from "@mui/material/styles";
 
@@ -19,16 +30,27 @@ const WarningBox = styled(Box)({
 });
 
 const ApplyButton = styled(Button)({
-  backgroundColor: "red", // green background
+  backgroundColor: "red", // red background, not green
   "&:hover": {
     backgroundColor: "darkred",
   },
 });
 
-function ReserRestore() {
+function ResetRestore() {
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   const handleApply = () => {
     // Implement what happens when apply is clicked
-    // console.log("Apply was clicked");
+    console.log("System will be reset to defaults");
+    handleCloseDialog(); // Close dialog after applying
   };
 
   return (
@@ -42,23 +64,43 @@ function ReserRestore() {
               </Typography>
               <WarningBox>
                 <Typography variant="h6">
-                  If you click 'Apply', system will be reset to defaults immediately. The entire system configuration
-                  will be overwritten. The IP address, Subnet Mask, Gateway, and DNS Server will not be changed. The
-                  password will be set to 'admin'.
+                  If you click 'Apply', the system will be reset to defaults immediately. The entire system
+                  configuration will be overwritten. The IP address, Subnet Mask, Gateway, and DNS Server will not be
+                  changed. The password will be set to 'admin'.
                 </Typography>
               </WarningBox>
               <Typography variant="h5" color="error" gutterBottom>
                 Are you sure you want to proceed?
               </Typography>
-              <ApplyButton variant="contained" size="large" onClick={handleApply}>
+              <ApplyButton variant="contained" size="large" onClick={handleOpenDialog}>
                 Apply
               </ApplyButton>
             </StyledPaper>
           </NamedContainer>
         </Grid>
       </Grid>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Reset"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Do you really want to reset the system settings to default without changing IP settings? This action cannot
+            be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleApply} autoFocus color="error">
+            Proceed
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
 
-export default ReserRestore;
+export default ResetRestore;

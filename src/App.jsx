@@ -34,6 +34,8 @@ import DataLogging from "./containers/DeviceSetting/DataLogging/DataLogging";
 import PDUInformation from "./containers/Maintenance/PDUInformation";
 import default_config from "./assets/config.json";
 import UI_Config from "./assets/UIConfig.json";
+import ManagePDU from "./containers/DeviceSetting/ManagePDU/ManagePDU";
+import Backup from "./containers/Maintenance/Backup";
 
 function App() {
   const navigate = useNavigate();
@@ -121,13 +123,14 @@ function App() {
                 <Route path="/device-settings/eventlogs" element={<PrivateRoute Component={<EventLogs />} />} />
                 <Route path="/device-settings/data-logging" element={<PrivateRoute Component={<DataLogging />} />} />
                 <Route path="/device-settings/usb-host-port" element={<PrivateRoute Component={<USBHostPorts />} />} />
+                <Route path="/device-settings/manage-pdu" element={<PrivateRoute Component={<ManagePDU />} />} />
                 <Route path="/maintenance/pdu-information" element={<PrivateRoute Component={<PDUInformation />} />} />
                 <Route path="/maintenance/firmware-update" element={<PrivateRoute Component={<FirmwareUpdate />} />} />
                 <Route
                   path="/maintenance/bulk-configuration"
                   element={<PrivateRoute Component={<BulkConfiguration />} />}
                 />
-                <Route path="/maintenance/backup" element={<PrivateRoute Component={<h1>Not Implemented...</h1>} />} />
+                <Route path="/maintenance/backup" element={<PrivateRoute Component={<Backup />} />} />
                 <Route path="/maintenance/reset-restore" element={<PrivateRoute Component={<ReserRestore />} />} />
                 <Route path="/powertek-analytics" element={<PrivateRoute Component={<PowertekAnalytics />} />} />
                 <Route path="/about" element={<h1>About</h1>} />

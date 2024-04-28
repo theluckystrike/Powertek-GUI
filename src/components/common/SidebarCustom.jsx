@@ -133,6 +133,9 @@ function SidebarCustom(props) {
             <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/usb-host-port" />}>
               USB Host Ports
             </MenuItem>
+            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/manage-pdu" />}>
+              Manage PDU(s)
+            </MenuItem>
             {/* <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Server Reachability</MenuItem>
             <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Front Panel</MenuItem>
             <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Lua Scripts</MenuItem>
@@ -150,10 +153,10 @@ function SidebarCustom(props) {
               Bulk Configuration
             </MenuItem>
             <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/backup" />}>
-              Backup
+              Backup / Restore
             </MenuItem>
             <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/reset-restore" />}>
-              Reset/Restore
+              Reset
             </MenuItem>
           </SubMenu>
           {/* <MenuItem icon={<GrHostMaintenance size={23} />} component={<Link to="/maintenance" />}>
