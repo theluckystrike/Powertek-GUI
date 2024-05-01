@@ -36,6 +36,7 @@ import default_config from "./assets/config.json";
 import UI_Config from "./assets/UIConfig.json";
 import ManagePDU from "./containers/ManagePDU/ManagePDU";
 import Backup from "./containers/Maintenance/Backup";
+import APIErrorDemo from "./containers/APIErrorDemo/APIErrorDemo";
 
 function App() {
   const navigate = useNavigate();
@@ -133,6 +134,7 @@ function App() {
                 <Route path="/maintenance/backup" element={<PrivateRoute Component={<Backup />} />} />
                 <Route path="/maintenance/reset-restore" element={<PrivateRoute Component={<ReserRestore />} />} />
                 <Route path="/powertek-analytics" element={<PrivateRoute Component={<PowertekAnalytics />} />} />
+                <Route path="/api-error-demo" element={<PrivateRoute Component={<APIErrorDemo />} />} />
                 <Route path="/about" element={<h1>About</h1>} />
               </Route>
             </Routes>
