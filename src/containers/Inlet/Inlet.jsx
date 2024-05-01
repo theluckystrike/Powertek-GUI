@@ -668,6 +668,7 @@ function SinglePhaseCase() {
 
 function ThreePhaseCaseWYE() {
   const theme = useTheme();
+  const isMdScreen = useMediaQuery("(min-width:1450px)");
   const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
   const [currentThresholds, setCurrentThresholds] = useState({
     lowerWarning: "",
@@ -1110,9 +1111,13 @@ function ThreePhaseCaseWYE() {
                       size="small"
                       icon={getStatusColor(row.TIStatus)[1]}
                       sx={{
-                        "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                        "& .MuiChip-label": {
+                          fontWeight: 600,
+                          textTransform: "uppercase",
+                          display: !isMdScreen ? "none" : "inline-block",
+                        },
                         width: "40%",
-                        minWidth: "100px",
+                        minWidth: "10px",
                       }}
                     />
                   ) : null}
@@ -1125,9 +1130,13 @@ function ThreePhaseCaseWYE() {
                     size="small"
                     icon={getStatusColor(row.L1Status)[1]}
                     sx={{
-                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      "& .MuiChip-label": {
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        display: !isMdScreen ? "none" : "inline-block",
+                      },
                       width: "40%",
-                      minWidth: "100px",
+                      minWidth: "10px",
                     }}
                   />
                 </StyledTableCell>
@@ -1139,9 +1148,13 @@ function ThreePhaseCaseWYE() {
                     size="small"
                     icon={getStatusColor(row.L2Status)[1]}
                     sx={{
-                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      "& .MuiChip-label": {
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        display: !isMdScreen ? "none" : "inline-block",
+                      },
                       width: "40%",
-                      minWidth: "100px",
+                      minWidth: "10px",
                     }}
                   />
                 </StyledTableCell>
@@ -1153,9 +1166,13 @@ function ThreePhaseCaseWYE() {
                     size="small"
                     icon={getStatusColor(row.L3Status)[1]}
                     sx={{
-                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      "& .MuiChip-label": {
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        display: !isMdScreen ? "none" : "inline-block",
+                      },
                       width: "40%",
-                      minWidth: "100px",
+                      minWidth: "10px",
                     }}
                   />
                 </StyledTableCell>
@@ -1176,6 +1193,7 @@ function ThreePhaseCaseWYE() {
 
 function ThreePhaseCaseDelta() {
   const theme = useTheme();
+  const isMdScreen = useMediaQuery("(min-width:1450px)");
   const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
   const [currentThresholds, setCurrentThresholds] = useState({
     lowerWarning: "",
@@ -1628,9 +1646,13 @@ function ThreePhaseCaseDelta() {
                       size="small"
                       icon={getStatusColor(row.TIstatus)[1]}
                       sx={{
-                        "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                        "& .MuiChip-label": {
+                          fontWeight: 600,
+                          textTransform: "uppercase",
+                          display: !isMdScreen ? "none" : "inline-block",
+                        },
                         width: "40%",
-                        minWidth: "100px",
+                        minWidth: "10px",
                       }}
                     />
                   ) : null}
@@ -1643,9 +1665,13 @@ function ThreePhaseCaseDelta() {
                     size="small"
                     icon={getStatusColor(row.L1L2status)[1]}
                     sx={{
-                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      "& .MuiChip-label": {
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        display: !isMdScreen ? "none" : "inline-block",
+                      },
                       width: "40%",
-                      minWidth: "100px",
+                      minWidth: "10px",
                     }}
                   />
                 </StyledTableCell>
@@ -1657,9 +1683,13 @@ function ThreePhaseCaseDelta() {
                     size="small"
                     icon={getStatusColor(row.L2L3status)[1]}
                     sx={{
-                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      "& .MuiChip-label": {
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        display: !isMdScreen ? "none" : "inline-block",
+                      },
                       width: "40%",
-                      minWidth: "100px",
+                      minWidth: "10px",
                     }}
                   />
                 </StyledTableCell>
@@ -1671,9 +1701,13 @@ function ThreePhaseCaseDelta() {
                     size="small"
                     icon={getStatusColor(row.L3L1status)[1]}
                     sx={{
-                      "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+                      "& .MuiChip-label": {
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        display: !isMdScreen ? "none" : "inline-block",
+                      },
                       width: "40%",
-                      minWidth: "100px",
+                      minWidth: "10px",
                     }}
                   />
                 </StyledTableCell>

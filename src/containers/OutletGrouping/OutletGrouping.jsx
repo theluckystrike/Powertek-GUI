@@ -233,7 +233,7 @@ function OutletGrouping() {
               title={
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                   <Typography variant="h5" fontWeight="600">
-                    SETTINGS
+                    Outlet Grouping
                   </Typography>
                   <PduSelect />
                   <Box gap={2}>

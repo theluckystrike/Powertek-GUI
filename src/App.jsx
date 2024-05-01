@@ -34,7 +34,7 @@ import DataLogging from "./containers/DeviceSetting/DataLogging/DataLogging";
 import PDUInformation from "./containers/Maintenance/PDUInformation";
 import default_config from "./assets/config.json";
 import UI_Config from "./assets/UIConfig.json";
-import ManagePDU from "./containers/DeviceSetting/ManagePDU/ManagePDU";
+import ManagePDU from "./containers/ManagePDU/ManagePDU";
 import Backup from "./containers/Maintenance/Backup";
 
 function App() {

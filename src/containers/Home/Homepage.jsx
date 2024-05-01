@@ -265,8 +265,15 @@ function HomePage(props) {
           <NamedContainer
             overridetitle
             title={
-              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                <Typography variant="h5" fontWeight="600">
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  justifyContent: "space-between",
+                  alignItems: { xs: "start", sm: "center" },
+                }}
+              >
+                <Typography variant="h5" sx={{ fontWeight: "600", mb: { xs: 1, sm: 0 } }}>
                   Residual Current Monitoring
                 </Typography>
                 <ToggleButton
@@ -275,35 +282,33 @@ function HomePage(props) {
                   onChange={handleClickOpen}
                   sx={{
                     padding: "0px",
-                    paddingRight: "5px",
-                    paddingLeft: "5px",
                     borderRadius: "5px",
                     textTransform: "none",
                     border: "1px solid rgba(0, 0, 0, 0.87)",
                   }}
                   color="primary"
                 >
-                  <Typography
-                    variant=""
-                    fontWeight="400"
-                    sx={{ marginRight: "5px" }}
-                    //   color={settingsEdit ? "red" : "blue"}
-                  >
+                  <Typography variant="body2" fontWeight="400" sx={{ marginRight: "5px" }}>
                     Edit Settings
                   </Typography>
                   {settingsEdit ? <FaLockOpen color="red" /> : <FaLock color="#FFD700" />}
                 </ToggleButton>
-              </div>
+              </Box>
             }
           >
-            <Box sx={{ display: "flex", flexDirection: "row" }} gap={2}>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                sx={{ width: "30%", margin: "auto", display: "flex", placeContent: "center" }}
-              >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: 2,
+                width: "100%",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h5" fontWeight="600" sx={{ width: { xs: "100%", sm: "30%" }, textAlign: "center" }}>
                 Residual Current : 0.0 mA
-                <Chip sx={{ marginLeft: "10px" }} label="Error" color="error" />
+                <Chip sx={{ mx: 1 }} label="Error" color="error" />
                 /
                 <Chip label="Normal" color="success" />
               </Typography>
@@ -331,22 +336,18 @@ function HomePage(props) {
                 </DialogActions>
               </Dialog>
 
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                sx={{ width: "39%", margin: "auto", display: "flex", placeContent: "center" }}
-              >
+              <Typography variant="h5" fontWeight="600" sx={{ width: { xs: "100%", sm: "39%" }, textAlign: "center" }}>
                 Power Share :
-                <Chip sx={{ marginLeft: "10px" }} label="Inactive" color="primary" />
+                <Chip sx={{ mx: 1 }} label="Inactive" color="primary" />
                 /
                 <Chip label="Active/Backup Power" color="error" />
                 /
                 <Chip label="Active/Main Power" color="success" />
               </Typography>
 
-              <Typography variant="h5" fontWeight="600" sx={{ width: "30%", margin: "auto" }}>
+              <Typography variant="h5" fontWeight="600" sx={{ width: { xs: "100%", sm: "30%" } }}>
                 Over Voltage Protection :
-                <Chip sx={{ marginLeft: "10px" }} label="Activated" color="error" />
+                <Chip sx={{ mx: 1 }} label="Activated" color="error" />
                 /
                 <Chip label="Normal" color="success" />
               </Typography>

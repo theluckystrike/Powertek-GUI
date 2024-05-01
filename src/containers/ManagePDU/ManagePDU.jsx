@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
+import NamedContainer, { CollapsiableNamedContainer } from "../../components/common/NamedContainer";
 import {
   Switch,
   FormControlLabel,
@@ -34,7 +34,7 @@ import {
   Radio,
   IconButton,
 } from "@mui/material";
-import MuiButton from "../../../components/common/styled/Button";
+import MuiButton from "../../components/common/styled/Button";
 
 function ManagePDUComponenet() {
   const [pdus, setPdus] = useState([]);

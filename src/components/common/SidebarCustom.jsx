@@ -18,6 +18,7 @@ import { IoSettings } from "react-icons/io5";
 import { RiListSettingsLine } from "react-icons/ri";
 import { GrHostMaintenance } from "react-icons/gr";
 import { IoMdAnalytics } from "react-icons/io";
+import { MdManageAccounts } from "react-icons/md";
 
 import ConfigContext, { UIConfigContext } from "./ConfigContext";
 import logo from "../../assets/logo-clear.png";
@@ -107,7 +108,7 @@ function SidebarCustom(props) {
             Environment Sensor
           </MenuItem>
 
-          <MenuItem icon={<IoSettings size={23} />} component={<Link to="/user-settings" />}>
+          <MenuItem icon={<MdManageAccounts size={23} />} component={<Link to="/user-settings" />}>
             User Settings
           </MenuItem>
 
@@ -133,9 +134,9 @@ function SidebarCustom(props) {
             <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/usb-host-port" />}>
               USB Host Ports
             </MenuItem>
-            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/manage-pdu" />}>
+            {/* <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/device-settings/manage-pdu" />}>
               Manage PDU(s)
-            </MenuItem>
+            </MenuItem> */}
             {/* <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Server Reachability</MenuItem>
             <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Front Panel</MenuItem>
             <MenuItem style={{paddingLeft: '65px'}} component={<Link to="/device-settings" />}>Lua Scripts</MenuItem>
@@ -159,6 +160,10 @@ function SidebarCustom(props) {
               Reset
             </MenuItem>
           </SubMenu>
+
+          <MenuItem icon={<IoSettings size={23} />} component={<Link to="/device-settings/manage-pdu" />}>
+            Manage PDU(s)
+          </MenuItem>
           {/* <MenuItem icon={<GrHostMaintenance size={23} />} component={<Link to="/maintenance" />}>
             Maintenance
           </MenuItem> */}

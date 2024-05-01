@@ -19,6 +19,7 @@ import {
   Button,
   TextField,
   Grid,
+  useMediaQuery,
 } from "@mui/material";
 import NamedContainer from "../../components/common/NamedContainer";
 import { ReportingBar } from "../../components/common/ReportingBar";
@@ -28,6 +29,8 @@ import PduSelect from "../../components/common/PDUSelect";
 import ConfigContext from "../../components/common/ConfigContext";
 import styled from "@emotion/styled";
 import Dialog from "../../components/common/DialogWithClose";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import WarningIcon from "@mui/icons-material/Warning";
 
 function SensorDialog({ open, onClose, checked }) {
   const { config } = React.useContext(ConfigContext);
@@ -85,6 +88,7 @@ function SensorDialog({ open, onClose, checked }) {
 }
 
 function BreakerOverCurrent() {
+  const isMdScreen = useMediaQuery("(min-width:1450px)");
   const { config, setConfig, allConfig } = React.useContext(ConfigContext);
   const [checked, setChecked] = useState([false, false, false]);
   const [settingsEdit, setsettingsEdit] = useState(false);
@@ -118,9 +122,23 @@ function BreakerOverCurrent() {
       <Chip
         label={status}
         style={{ backgroundColor: status === "OPEN" ? "green" : "red", color: "white" }}
+        icon={status === "OPEN" ? <ThumbUpAltIcon /> : <WarningIcon />}
         sx={{
-          "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
+          "& .MuiChip-label": {
+            fontWeight: 600,
+            textTransform: "uppercase",
+            display: !isMdScreen ? "none" : "inline-block",
+            paddingLeft: "5px",
+          },
+          "& .MuiChip-icon": {
+            marginRight: !isMdScreen ? "0px" : "0px",
+            marginLeft: !isMdScreen ? "0px" : "5px",
+          },
           width: "40%",
+          minWidth: !isMdScreen ? "50px" : "100px",
+          // display: "flex",
+          // justifyContent: "center",
+          // alignItems: "center",
         }}
       />
     );
@@ -133,7 +151,7 @@ function BreakerOverCurrent() {
         title={
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <Typography variant="h5" fontWeight="600">
-              EDIT THRESHOLD
+              Breaker Overcurrent Protection
             </Typography>
             <PduSelect />
             <ToggleButton
@@ -192,7 +210,7 @@ function BreakerOverCurrent() {
                   <StyledTableCell align="center">{name}</StyledTableCell>
                   <StyledTableCell align="center">PDU name</StyledTableCell>
                   <StyledTableCell align="center">{getStatusChip(index % 2 === 0 ? "OPEN" : "CLOSED")}</StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="center" sx={{ minWidth: "150px" }}>
                     <div>
                       <div>{index}/ 16 A</div>
                       <ReportingBar value={index} />

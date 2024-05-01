@@ -17,6 +17,7 @@ import {
   TableRow,
   Tabs,
   Tab,
+  useMediaQuery,
 } from "@mui/material";
 import NamedContainer from "../../components/common/NamedContainer";
 import { ReportingBar } from "../../components/common/ReportingBar";
@@ -107,7 +108,21 @@ const data = {
   },
 };
 
+const styles = {
+  scrollTabs: {
+    overflowX: "auto", // Enables horizontal scrolling
+    overflowY: "hidden", // Prevents vertical scrolling
+    whiteSpace: "nowrap", // Keeps tabs in a single line
+    scrollbarWidth: "none", // Hides scrollbar on Firefox
+    msOverflowStyle: "none", // Hides scrollbar on IE and Edge
+    "&::-webkit-scrollbar": {
+      display: "none", // Hides scrollbar on WebKit browsers
+    },
+  },
+};
+
 function EMDTable({ data }) {
+  const isMdScreen = useMediaQuery("(min-width:1450px)");
   const [tableData, setTableData] = useState(data);
 
   useEffect(() => {
@@ -122,7 +137,7 @@ function EMDTable({ data }) {
         placeContent: "center",
       }}
     >
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table aria-label="simple table">
         <TableBody>
           <TableRow key="EMD1-H(%)" sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
             <StyledTableCell align="center" component="th" scope="row">
@@ -131,7 +146,11 @@ function EMDTable({ data }) {
             <StyledTableCell align="center">
               <Typography component="span" variant="body2" sx={{ fontWeight: "medium" }}>
                 {typeof tableData.humidity[0] === "number" ? (
-                  <ReportingBar value={tableData.humidity[0]} max={100} min={0} />
+                  isMdScreen ? (
+                    <ReportingBar value={tableData.humidity[0]} max={100} min={0} />
+                  ) : (
+                    tableData.humidity[0]
+                  )
                 ) : (
                   tableData.humidity[0]
                 )}
@@ -162,7 +181,11 @@ function EMDTable({ data }) {
             <StyledTableCell align="center">
               <Typography component="span" variant="body2" sx={{ fontWeight: "medium" }}>
                 {typeof tableData.temprature[0] === "number" ? (
-                  <ReportingBar value={tableData.temprature[0]} max={100} min={0} />
+                  isMdScreen ? (
+                    <ReportingBar value={tableData.temprature[0]} max={100} min={0} />
+                  ) : (
+                    tableData.temprature[0]
+                  )
                 ) : (
                   tableData.temprature[0]
                 )}
@@ -469,7 +492,7 @@ function EnvironemtSensor() {
             <Grid container rowSpacing={2} columnSpacing={2}>
               {Object.keys(sensorData).map((item, index) => {
                 return (
-                  <Grid item xs={6}>
+                  <Grid item xs={12} md={6}>
                     <NamedContainer
                       noDivider
                       overridetitle
@@ -506,7 +529,19 @@ function EnvironemtSensor() {
           >
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" centered>
+                <Tabs
+                  value={tabValue}
+                  onChange={handleChange}
+                  aria-label="basic tabs example"
+                  centered
+                  sx={{
+                    ...styles.scrollTabs,
+                    flexDirection: { xs: "column", sm: "row" }, // Vertical on extra small screens, horizontal on others
+                    "& .MuiTabs-flexContainer": {
+                      flexDirection: { xs: "column", sm: "row" }, // Ensuring flex direction for the container
+                    },
+                  }}
+                >
                   {Object.keys(sensorData).map((key, index) => (
                     <Tab
                       icon={
@@ -523,10 +558,10 @@ function EnvironemtSensor() {
               {Object.keys(sensorData).map((key, index) => (
                 <CustomTabPanel value={tabValue} index={index}>
                   <Grid container rowSpacing={2} columnSpacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} md={6}>
                       <SensorSettings sensorData={sensorData[key]} handleDataChange={handleSensorDataChange} />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} md={6}>
                       <ThresholdTable sensorData={sensorData[key]} handleDataChange={handleSensorDataChange} />
                     </Grid>
                   </Grid>
