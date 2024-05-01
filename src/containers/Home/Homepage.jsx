@@ -269,13 +269,13 @@ function HomePage(props) {
                 sx={{
                   display: "flex",
                   flexDirection: { xs: "column", sm: "row" },
-                  justifyContent: "space-between",
+                  justifyContent: "end",
                   alignItems: { xs: "start", sm: "center" },
                 }}
               >
-                <Typography variant="h5" sx={{ fontWeight: "600", mb: { xs: 1, sm: 0 } }}>
+                {/* <Typography variant="h5" sx={{ fontWeight: "600", mb: { xs: 1, sm: 0 } }}>
                   Residual Current Monitoring
-                </Typography>
+                </Typography> */}
                 <ToggleButton
                   value="settingsEdit"
                   selected={settingsEdit}
