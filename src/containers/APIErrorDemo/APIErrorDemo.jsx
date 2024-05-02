@@ -11,7 +11,7 @@ export default function APIErrorDemo() {
 
   const [state, setState] = React.useState({
     vertical: "top",
-    horizontal: "center",
+    horizontal: "right",
   });
 
   const { vertical, horizontal } = state;
@@ -38,27 +38,27 @@ export default function APIErrorDemo() {
     setOpen(false);
   };
 
-  const positionSelector = (
-    <React.Fragment>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <RadioGroup row value={`${state.vertical}-${state.horizontal}`} onChange={handleChange}>
-          <FormControlLabel value="top-center" control={<Radio />} label="Top-Center" />
-          <FormControlLabel value="top-left" control={<Radio />} label="Top-Left" />
-          <FormControlLabel value="top-right" control={<Radio />} label="Top-Right" />
-          <FormControlLabel value="bottom-left" control={<Radio />} label="Bottom-Left" />
-          <FormControlLabel value="bottom-right" control={<Radio />} label="Bottom-Right" />
-          <FormControlLabel value="bottom-center" control={<Radio />} label="Bottom-Center" />
-        </RadioGroup>
-      </Box>
-    </React.Fragment>
-  );
+  // const positionSelector = (
+  //   <React.Fragment>
+  //     <Box sx={{ display: "flex", justifyContent: "center" }}>
+  //       <RadioGroup row value={`${state.vertical}-${state.horizontal}`} onChange={handleChange}>
+  //         <FormControlLabel value="top-center" control={<Radio />} label="Top-Center" />
+  //         <FormControlLabel value="top-left" control={<Radio />} label="Top-Left" />
+  //         <FormControlLabel value="top-right" control={<Radio />} label="Top-Right" />
+  //         <FormControlLabel value="bottom-left" control={<Radio />} label="Bottom-Left" />
+  //         <FormControlLabel value="bottom-right" control={<Radio />} label="Bottom-Right" />
+  //         <FormControlLabel value="bottom-center" control={<Radio />} label="Bottom-Center" />
+  //       </RadioGroup>
+  //     </Box>
+  //   </React.Fragment>
+  // );
 
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <NamedContainer title="API Error Demo">
-            {positionSelector}
+            {/* {positionSelector} */}
             <Grid container rowSpacing={2}>
               <Grid item xs={6}>
                 <Button
