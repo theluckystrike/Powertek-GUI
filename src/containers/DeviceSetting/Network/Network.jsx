@@ -12,9 +12,17 @@ import {
   FormControlLabel,
   TextField,
   Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  IconButton,
 } from "@mui/material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import MuiButton from "../../../components/common/styled/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 function NetworkSettingsForm() {
   const ipv4Routes = [];
@@ -145,6 +153,263 @@ function IPConfiguration() {
           // onChange handler would update state here
         />
       </FormGroup>
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary">
+          Save
+        </MuiButton>
+      </Box>
+    </Box>
+  );
+}
+
+function IPv4() {
+  const [ipv4Enabled, setIpv4Enabled] = useState(true);
+  const [ipv4Configuration, setIpv4Configuration] = useState("static");
+  const [ipAddress, setIpAddress] = useState("192.168.33.130/24");
+  const [defaultGateway, setDefaultGateway] = useState("192.168.33.126");
+  const [dns1, setDns1] = useState("");
+  const [dns2, setDns2] = useState("");
+  const [dns3, setDns3] = useState("");
+  const [routes, setRoutes] = useState([
+    { id: 1, network: "192.168.1.0", mask: "255.255.255.0", metric: 1, nextHop: "192.168.0.15" },
+  ]);
+
+  const handleAddRoute = () => {
+    const newRoute = { id: Date.now(), network: "", mask: "", metric: 0, nextHop: "" };
+    setRoutes([...routes, newRoute]);
+  };
+
+  const handleRouteChange = (id, field, value) => {
+    const newRoutes = routes.map((route) => {
+      if (route.id === id) {
+        return { ...route, [field]: value };
+      }
+      return route;
+    });
+    setRoutes(newRoutes);
+  };
+
+  const handleRemoveRoute = (id) => {
+    setRoutes(routes.filter((route) => route.id !== id));
+  };
+
+  return (
+    <Box p={3}>
+      <FormGroup>
+        <FormControlLabel
+          control={<Checkbox checked={ipv4Enabled} onChange={(e) => setIpv4Enabled(e.target.checked)} />}
+          label="Enable IPv4"
+        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel>IP auto configuration</InputLabel>
+          <Select
+            value={ipv4Configuration}
+            onChange={(e) => setIpv4Configuration(e.target.value)}
+            label="IP auto configuration"
+          >
+            <MenuItem value="static">Static</MenuItem>
+            <MenuItem value="dhcp">DHCP</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          fullWidth
+          margin="normal"
+          label="IP address/prefix length"
+          value={ipAddress}
+          onChange={(e) => setIpAddress(e.target.value)}
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Default gateway"
+          value={defaultGateway}
+          onChange={(e) => setDefaultGateway(e.target.value)}
+        />
+        <TextField fullWidth margin="normal" label="DNS 1" value={dns1} onChange={(e) => setDns1(e.target.value)} />
+        <TextField fullWidth margin="normal" label="DNS 2" value={dns2} onChange={(e) => setDns2(e.target.value)} />
+        <TextField fullWidth margin="normal" label="DNS 3" value={dns3} onChange={(e) => setDns3(e.target.value)} />
+      </FormGroup>
+
+      <Box>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Network</TableCell>
+              <TableCell>Mask</TableCell>
+              <TableCell>Metric</TableCell>
+              <TableCell>Next Hop IP</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {routes.map((route, index) => (
+              <TableRow key={route.id}>
+                <TableCell>
+                  <TextField
+                    value={route.network}
+                    onChange={(e) => handleRouteChange(route.id, "network", e.target.value)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField value={route.mask} onChange={(e) => handleRouteChange(route.id, "mask", e.target.value)} />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    type="number"
+                    value={route.metric}
+                    onChange={(e) => handleRouteChange(route.id, "metric", parseInt(e.target.value, 10))}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    value={route.nextHop}
+                    onChange={(e) => handleRouteChange(route.id, "nextHop", e.target.value)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <IconButton onClick={() => handleRemoveRoute(route.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <MuiButton variant="contained" color="primary" onClick={handleAddRoute}>
+          Add Route
+        </MuiButton>
+      </Box>
+
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary">
+          Save
+        </MuiButton>
+      </Box>
+    </Box>
+  );
+}
+
+function IPv6() {
+  const [ipv4Enabled, setIpv4Enabled] = useState(true);
+  const [ipv4Configuration, setIpv4Configuration] = useState("static");
+  const [ipAddress, setIpAddress] = useState("192.168.33.130/24");
+  const [defaultGateway, setDefaultGateway] = useState("192.168.33.126");
+  const [dns1, setDns1] = useState("");
+  const [dns2, setDns2] = useState("");
+  const [dns3, setDns3] = useState("");
+  const [routes, setRoutes] = useState([
+    { id: 1, network: "192.168.1.0", prefix: "62", metric: 1, nextHop: "192.168.0.15" },
+  ]);
+
+  const handleAddRoute = () => {
+    const newRoute = { id: Date.now(), network: "", prefix: "62", metric: 0, nextHop: "" };
+    setRoutes([...routes, newRoute]);
+  };
+
+  const handleRouteChange = (id, field, value) => {
+    const newRoutes = routes.map((route) => {
+      if (route.id === id) {
+        return { ...route, [field]: value };
+      }
+      return route;
+    });
+    setRoutes(newRoutes);
+  };
+
+  const handleRemoveRoute = (id) => {
+    setRoutes(routes.filter((route) => route.id !== id));
+  };
+
+  return (
+    <Box p={3}>
+      <FormGroup>
+        <FormControlLabel
+          control={<Checkbox checked={ipv4Enabled} onChange={(e) => setIpv4Enabled(e.target.checked)} />}
+          label="Enable IPv6"
+        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel>IP auto configuration</InputLabel>
+          <Select
+            value={ipv4Configuration}
+            onChange={(e) => setIpv4Configuration(e.target.value)}
+            label="IP auto configuration"
+          >
+            <MenuItem value="static">Static</MenuItem>
+            <MenuItem value="dhcp">DHCP</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          fullWidth
+          margin="normal"
+          label="IP address/prefix length"
+          value={ipAddress}
+          onChange={(e) => setIpAddress(e.target.value)}
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Default gateway"
+          value={defaultGateway}
+          onChange={(e) => setDefaultGateway(e.target.value)}
+        />
+        <TextField fullWidth margin="normal" label="DNS 1" value={dns1} onChange={(e) => setDns1(e.target.value)} />
+        <TextField fullWidth margin="normal" label="DNS 2" value={dns2} onChange={(e) => setDns2(e.target.value)} />
+        <TextField fullWidth margin="normal" label="DNS 3" value={dns3} onChange={(e) => setDns3(e.target.value)} />
+      </FormGroup>
+
+      <Box>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Network</TableCell>
+              <TableCell>Prefix</TableCell>
+              <TableCell>Metric</TableCell>
+              <TableCell>Next Hop IP</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {routes.map((route, index) => (
+              <TableRow key={route.id}>
+                <TableCell>
+                  <TextField
+                    value={route.network}
+                    onChange={(e) => handleRouteChange(route.id, "network", e.target.value)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    value={route.prefix}
+                    onChange={(e) => handleRouteChange(route.id, "prefix", e.target.value)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    type="number"
+                    value={route.metric}
+                    onChange={(e) => handleRouteChange(route.id, "metric", parseInt(e.target.value, 10))}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    value={route.nextHop}
+                    onChange={(e) => handleRouteChange(route.id, "nextHop", e.target.value)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <IconButton onClick={() => handleRemoveRoute(route.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <MuiButton variant="contained" color="primary" onClick={handleAddRoute}>
+          Add Route
+        </MuiButton>
+      </Box>
+
       <Box display="flex" justifyContent="end">
         <MuiButton variant="contained" color="primary">
           Save
@@ -657,18 +922,28 @@ function Network() {
             </FormControl>
 
             <Grid container rowSpacing={2}>
-              {/* Always show common network settings */}
               <Grid item xs={12}>
+                <CollapsiableNamedContainer title="IPv4">
+                  <IPv4 />
+                </CollapsiableNamedContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <CollapsiableNamedContainer title="IPv6">
+                  <IPv6 />
+                </CollapsiableNamedContainer>
+              </Grid>
+              {/* Always show common network settings */}
+              {/* <Grid item xs={12}>
                 <CollapsiableNamedContainer title="Common Network Settings">
                   <NetworkSettingsForm />
                 </CollapsiableNamedContainer>
-              </Grid>
+              </Grid> */}
               {/* Conditionally render parts of the UI based on the selected mode */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <CollapsiableNamedContainer title="Bridge">
                   <IPConfiguration />
                 </CollapsiableNamedContainer>
-              </Grid>
+              </Grid> */}
               {(networkMode === "VRF" || networkMode === "Independent") && (
                 <>
                   <Grid item xs={12}>
