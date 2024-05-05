@@ -206,6 +206,7 @@ function IPv4() {
             value={ipv4Configuration}
             onChange={(e) => setIpv4Configuration(e.target.value)}
             label="IP auto configuration"
+            disabled={!ipv4Enabled} // Disable if IPv4 is disabled
           >
             <MenuItem value="static">Static</MenuItem>
             <MenuItem value="dhcp">DHCP</MenuItem>
@@ -217,6 +218,7 @@ function IPv4() {
           label="IP address/prefix length"
           value={ipAddress}
           onChange={(e) => setIpAddress(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
         />
         <TextField
           fullWidth
@@ -224,10 +226,32 @@ function IPv4() {
           label="Default gateway"
           value={defaultGateway}
           onChange={(e) => setDefaultGateway(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
         />
-        <TextField fullWidth margin="normal" label="DNS 1" value={dns1} onChange={(e) => setDns1(e.target.value)} />
-        <TextField fullWidth margin="normal" label="DNS 2" value={dns2} onChange={(e) => setDns2(e.target.value)} />
-        <TextField fullWidth margin="normal" label="DNS 3" value={dns3} onChange={(e) => setDns3(e.target.value)} />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="DNS 1"
+          value={dns1}
+          onChange={(e) => setDns1(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="DNS 2"
+          value={dns2}
+          onChange={(e) => setDns2(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="DNS 3"
+          value={dns3}
+          onChange={(e) => setDns3(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
+        />
       </FormGroup>
 
       <Box>
@@ -248,22 +272,29 @@ function IPv4() {
                   <TextField
                     value={route.network}
                     onChange={(e) => handleRouteChange(route.id, "network", e.target.value)}
+                    disabled={!ipv4Enabled}
                   />
                 </TableCell>
                 <TableCell>
-                  <TextField value={route.mask} onChange={(e) => handleRouteChange(route.id, "mask", e.target.value)} />
+                  <TextField
+                    value={route.mask}
+                    onChange={(e) => handleRouteChange(route.id, "mask", e.target.value)}
+                    disabled={!ipv4Enabled}
+                  />
                 </TableCell>
                 <TableCell>
                   <TextField
                     type="number"
                     value={route.metric}
                     onChange={(e) => handleRouteChange(route.id, "metric", parseInt(e.target.value, 10))}
+                    disabled={!ipv4Enabled}
                   />
                 </TableCell>
                 <TableCell>
                   <TextField
                     value={route.nextHop}
                     onChange={(e) => handleRouteChange(route.id, "nextHop", e.target.value)}
+                    disabled={!ipv4Enabled}
                   />
                 </TableCell>
                 <TableCell>
@@ -333,6 +364,7 @@ function IPv6() {
             value={ipv4Configuration}
             onChange={(e) => setIpv4Configuration(e.target.value)}
             label="IP auto configuration"
+            disabled={!ipv4Enabled} // Disable if IPv4 is disabled
           >
             <MenuItem value="static">Static</MenuItem>
             <MenuItem value="dhcp">DHCP</MenuItem>
@@ -344,6 +376,7 @@ function IPv6() {
           label="IP address/prefix length"
           value={ipAddress}
           onChange={(e) => setIpAddress(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
         />
         <TextField
           fullWidth
@@ -351,10 +384,32 @@ function IPv6() {
           label="Default gateway"
           value={defaultGateway}
           onChange={(e) => setDefaultGateway(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
         />
-        <TextField fullWidth margin="normal" label="DNS 1" value={dns1} onChange={(e) => setDns1(e.target.value)} />
-        <TextField fullWidth margin="normal" label="DNS 2" value={dns2} onChange={(e) => setDns2(e.target.value)} />
-        <TextField fullWidth margin="normal" label="DNS 3" value={dns3} onChange={(e) => setDns3(e.target.value)} />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="DNS 1"
+          value={dns1}
+          onChange={(e) => setDns1(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="DNS 2"
+          value={dns2}
+          onChange={(e) => setDns2(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="DNS 3"
+          value={dns3}
+          onChange={(e) => setDns3(e.target.value)}
+          disabled={!ipv4Enabled} // Disable if IPv4 is disabled
+        />
       </FormGroup>
 
       <Box>
@@ -375,12 +430,14 @@ function IPv6() {
                   <TextField
                     value={route.network}
                     onChange={(e) => handleRouteChange(route.id, "network", e.target.value)}
+                    disabled={!ipv4Enabled}
                   />
                 </TableCell>
                 <TableCell>
                   <TextField
                     value={route.prefix}
                     onChange={(e) => handleRouteChange(route.id, "prefix", e.target.value)}
+                    disabled={!ipv4Enabled}
                   />
                 </TableCell>
                 <TableCell>
@@ -388,12 +445,14 @@ function IPv6() {
                     type="number"
                     value={route.metric}
                     onChange={(e) => handleRouteChange(route.id, "metric", parseInt(e.target.value, 10))}
+                    disabled={!ipv4Enabled}
                   />
                 </TableCell>
                 <TableCell>
                   <TextField
                     value={route.nextHop}
                     onChange={(e) => handleRouteChange(route.id, "nextHop", e.target.value)}
+                    disabled={!ipv4Enabled}
                   />
                 </TableCell>
                 <TableCell>
@@ -923,15 +982,33 @@ function Network() {
 
             <Grid container rowSpacing={2}>
               <Grid item xs={12}>
-                <CollapsiableNamedContainer title="IPv4">
+                <CollapsiableNamedContainer
+                  title={networkMode == "VRF" || networkMode == "Link-Local" ? "IPv4-Eth1" : "IPv4"}
+                >
                   <IPv4 />
                 </CollapsiableNamedContainer>
               </Grid>
               <Grid item xs={12}>
-                <CollapsiableNamedContainer title="IPv6">
+                <CollapsiableNamedContainer
+                  title={networkMode == "VRF" || networkMode == "Link-Local" ? "IPv6-Eth1" : "IPv6"}
+                >
                   <IPv6 />
                 </CollapsiableNamedContainer>
               </Grid>
+              {networkMode == "VRF" && (
+                <>
+                  <Grid item xs={12}>
+                    <CollapsiableNamedContainer title={networkMode == "VRF" ? "IPv4-Eth2" : "IPv4"}>
+                      <IPv4 />
+                    </CollapsiableNamedContainer>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CollapsiableNamedContainer title={networkMode == "VRF" ? "IPv6-Eth2" : "IPv6"}>
+                      <IPv6 />
+                    </CollapsiableNamedContainer>
+                  </Grid>
+                </>
+              )}
               {/* Always show common network settings */}
               {/* <Grid item xs={12}>
                 <CollapsiableNamedContainer title="Common Network Settings">
@@ -946,11 +1023,13 @@ function Network() {
               </Grid> */}
               {(networkMode === "VRF" || networkMode === "Independent") && (
                 <>
-                  <Grid item xs={12}>
-                    <CollapsiableNamedContainer title="ETH1">
-                      <InterfaceSettings />
-                    </CollapsiableNamedContainer>
-                  </Grid>
+                  {networkMode !== "Link-Local" && (
+                    <Grid item xs={12}>
+                      <CollapsiableNamedContainer title="ETH1">
+                        <InterfaceSettings />
+                      </CollapsiableNamedContainer>
+                    </Grid>
+                  )}
                   {networkMode !== "Link-Local" && (
                     <Grid item xs={12}>
                       <CollapsiableNamedContainer title="ETH2">

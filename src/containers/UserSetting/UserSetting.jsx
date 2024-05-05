@@ -251,7 +251,7 @@ function UserSetting() {
                 <StyledTableCell align="center">Username</StyledTableCell>
                 <StyledTableCell align="center">Full Name</StyledTableCell>
                 <StyledTableCell align="center">Roles</StyledTableCell>
-                <StyledTableCell align="center">Enabled</StyledTableCell>
+                <StyledTableCell align="center">Enabled/Disabled</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>

@@ -558,10 +558,10 @@ function EnvironemtSensor() {
               {Object.keys(sensorData).map((key, index) => (
                 <CustomTabPanel value={tabValue} index={index}>
                   <Grid container rowSpacing={2} columnSpacing={2}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={12}>
                       <SensorSettings sensorData={sensorData[key]} handleDataChange={handleSensorDataChange} />
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={12}>
                       <ThresholdTable sensorData={sensorData[key]} handleDataChange={handleSensorDataChange} />
                     </Grid>
                   </Grid>

@@ -450,11 +450,12 @@ function TLSCertificate() {
 }
 
 function Authentication() {
-  const [authnticationType, setAuthnticationType] = React.useState("");
+  const [authenticationType, setAuthenticationType] = React.useState("");
 
   const handleChange = (event) => {
-    setAuthnticationType(event.target.value);
+    setAuthenticationType(event.target.value);
   };
+
   return (
     <Box elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
       <Grid container spacing={3}>
@@ -469,18 +470,21 @@ function Authentication() {
         </Grid>
         <Grid item xs={10}>
           <FormControl sx={{ m: 1, minWidth: "100%" }} size="small">
-            <InputLabel id="demo-select-small-label">Authntication Type</InputLabel>
+            <InputLabel id="demo-select-small-label">Authentication Type</InputLabel>
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
-              value={authnticationType}
-              label="Authntication Type"
+              value={authenticationType}
+              label="Authentication Type"
               onChange={handleChange}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
               <MenuItem value={"Local"}>Local</MenuItem>
+              <MenuItem value={"Local + LDAP / Active Directory"}>Local + LDAP / Active Directory</MenuItem>
+              <MenuItem value={"Local + Radius"}>Local + Radius</MenuItem>
+              <MenuItem value={"Local + Tacacs+"}>Local + Tacacs+</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -1061,11 +1065,11 @@ function Security() {
                   <PasswordPolicy />
                 </CollapsiableNamedContainer>
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <CollapsiableNamedContainer title="Manage PDU">
                   <ManagePDUs />
                 </CollapsiableNamedContainer>
-              </Grid>
+              </Grid> */}
             </Grid>
           </NamedContainer>
         </Grid>
