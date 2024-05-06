@@ -1023,13 +1023,11 @@ function Network() {
               </Grid> */}
               {(networkMode === "VRF" || networkMode === "Independent") && (
                 <>
-                  {networkMode !== "Link-Local" && (
-                    <Grid item xs={12}>
-                      <CollapsiableNamedContainer title="ETH1">
-                        <InterfaceSettings />
-                      </CollapsiableNamedContainer>
-                    </Grid>
-                  )}
+                  <Grid item xs={12}>
+                    <CollapsiableNamedContainer title="ETH1">
+                      <InterfaceSettings />
+                    </CollapsiableNamedContainer>
+                  </Grid>
                   {networkMode !== "Link-Local" && (
                     <Grid item xs={12}>
                       <CollapsiableNamedContainer title="ETH2">
@@ -1038,6 +1036,13 @@ function Network() {
                     </Grid>
                   )}
                 </>
+              )}
+              {networkMode === "Link-Local" && (
+                <Grid item xs={12}>
+                  <CollapsiableNamedContainer title="ETH1">
+                    <InterfaceSettings />
+                  </CollapsiableNamedContainer>
+                </Grid>
               )}
               <Grid item xs={12}>
                 <CollapsiableNamedContainer title="Wireless">

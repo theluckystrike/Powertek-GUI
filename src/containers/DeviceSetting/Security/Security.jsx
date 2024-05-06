@@ -313,6 +313,378 @@ const RoleACL = ({ roles, onEdit, onAdd, onDelete }) => {
   );
 };
 
+function AccessControlTableIPv4() {
+  // Services options
+  const servicesOptions = ["All", "webaccess/api", "snmp", "ssh", "syslog", "modbus"];
+
+  // Initial form state
+  const initialFormState = {
+    name: "",
+    network: "",
+    netmask: "",
+    service: "",
+    metric: "",
+    action: "allow",
+  };
+
+  // Default row
+  const defaultRow = {
+    name: "Default Rule",
+    network: "::/0",
+    service: "All",
+    netmask: "0.0.0.0",
+    metric: "255",
+    action: "deny",
+  };
+
+  const [rows, setRows] = useState([defaultRow]); // Initialize with default row
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState(initialFormState);
+  const [editingIndex, setEditingIndex] = useState(-1); // Track editing row index
+
+  const handleClickOpen = (index = -1) => {
+    if (index > -1) {
+      // Modify existing row
+      setFormData(rows[index]);
+      setEditingIndex(index);
+    } else {
+      // Add new row
+      setFormData(initialFormState);
+    }
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setEditingIndex(-1);
+  };
+
+  const handleAdd = () => {
+    if (editingIndex > -1) {
+      // Update existing row
+      const updatedRows = [...rows];
+      updatedRows[editingIndex] = formData;
+      setRows(updatedRows);
+      setEditingIndex(-1);
+    } else {
+      // Add new row
+      setRows([...rows, formData]);
+    }
+    handleClose();
+  };
+
+  const handleDelete = (index) => {
+    const updatedRows = rows.filter((_, idx) => idx !== index);
+    setRows(updatedRows);
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add Access Rule
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{editingIndex > -1 ? "Edit" : "Add New"} Access Rule</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="name"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            name="network"
+            label="Network"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={formData.network}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            name="netmask"
+            label="Netmask"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={formData.netmask}
+            onChange={handleChange}
+          />
+          <TextField
+            select
+            margin="dense"
+            name="service"
+            label="Service"
+            fullWidth
+            variant="outlined"
+            value={formData.service}
+            onChange={handleChange}
+          >
+            {servicesOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            margin="dense"
+            name="metric"
+            label="Metric"
+            type="number"
+            fullWidth
+            variant="outlined"
+            value={formData.metric}
+            onChange={handleChange}
+          />
+          <TextField
+            select
+            margin="dense"
+            name="action"
+            label="Action"
+            fullWidth
+            variant="outlined"
+            value={formData.action}
+            onChange={handleChange}
+          >
+            <MenuItem value="allow">Allow</MenuItem>
+            <MenuItem value="deny">Deny</MenuItem>
+          </TextField>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleAdd}>{editingIndex > -1 ? "Update" : "Add"}</Button>
+        </DialogActions>
+      </Dialog>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Network</TableCell>
+              <TableCell>Netmask</TableCell>
+              <TableCell>Service</TableCell>
+              <TableCell>Metric</TableCell>
+              <TableCell>Action</TableCell>
+              <TableCell>Edit/Delete</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.network}</TableCell>
+                <TableCell>{row.netmask}</TableCell>
+                <TableCell>{row.service}</TableCell>
+                <TableCell>{row.metric}</TableCell>
+                <TableCell>{row.action}</TableCell>
+                <TableCell>
+                  <IconButton onClick={() => handleClickOpen(index)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleDelete(index)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+}
+
+function AccessControlTableIPv6() {
+  // Services options
+  const servicesOptions = ["All", "webaccess/api", "snmp", "ssh", "syslog", "modbus"];
+
+  // Initial form state
+  const initialFormState = {
+    name: "",
+    network: "",
+    service: "",
+    metric: "",
+    action: "allow",
+  };
+
+  // Default row
+  const defaultRow = {
+    name: "Default Rule",
+    network: "::/0",
+    service: "All",
+    metric: "255",
+    action: "deny",
+  };
+
+  const [rows, setRows] = useState([defaultRow]); // Initialize with default row
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState(initialFormState);
+  const [editingIndex, setEditingIndex] = useState(-1); // Track editing row index
+
+  const handleClickOpen = (index = -1) => {
+    if (index > -1) {
+      // Modify existing row
+      setFormData(rows[index]);
+      setEditingIndex(index);
+    } else {
+      // Add new row
+      setFormData(initialFormState);
+    }
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setEditingIndex(-1);
+  };
+
+  const handleAdd = () => {
+    if (editingIndex > -1) {
+      // Update existing row
+      const updatedRows = [...rows];
+      updatedRows[editingIndex] = formData;
+      setRows(updatedRows);
+      setEditingIndex(-1);
+    } else {
+      // Add new row
+      setRows([...rows, formData]);
+    }
+    handleClose();
+  };
+
+  const handleDelete = (index) => {
+    const updatedRows = rows.filter((_, idx) => idx !== index);
+    setRows(updatedRows);
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add Access Rule
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{editingIndex > -1 ? "Edit" : "Add New"} Access Rule</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="name"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            name="network"
+            label="Network"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={formData.network}
+            onChange={handleChange}
+          />
+          <TextField
+            select
+            margin="dense"
+            name="service"
+            label="Service"
+            fullWidth
+            variant="outlined"
+            value={formData.service}
+            onChange={handleChange}
+          >
+            {servicesOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            margin="dense"
+            name="metric"
+            label="Metric"
+            type="number"
+            fullWidth
+            variant="outlined"
+            value={formData.metric}
+            onChange={handleChange}
+          />
+          <TextField
+            select
+            margin="dense"
+            name="action"
+            label="Action"
+            fullWidth
+            variant="outlined"
+            value={formData.action}
+            onChange={handleChange}
+          >
+            <MenuItem value="allow">Allow</MenuItem>
+            <MenuItem value="deny">Deny</MenuItem>
+          </TextField>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleAdd}>{editingIndex > -1 ? "Update" : "Add"}</Button>
+        </DialogActions>
+      </Dialog>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Network</TableCell>
+              <TableCell>Service</TableCell>
+              <TableCell>Metric</TableCell>
+              <TableCell>Action</TableCell>
+              <TableCell>Edit/Delete</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.network}</TableCell>
+                <TableCell>{row.service}</TableCell>
+                <TableCell>{row.metric}</TableCell>
+                <TableCell>{row.action}</TableCell>
+                <TableCell>
+                  <IconButton onClick={() => handleClickOpen(index)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleDelete(index)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+}
+
 function IpAccessControl4() {
   const [ipv4Enabled, setIpv4Enabled] = useState(false);
   const [inboundRules, setInboundRules] = useState([]);
@@ -1018,10 +1390,10 @@ function Security() {
               <Grid item xs={12}>
                 <CollapsiableNamedContainer title="IP Access Control">
                   <CollapsiableNamedContainer title="IPv4">
-                    <IpAccessControl4 />
+                    <AccessControlTableIPv4 />
                   </CollapsiableNamedContainer>
                   <CollapsiableNamedContainer title="IPv6">
-                    <IpAccessControl4 />
+                    <AccessControlTableIPv6 />
                   </CollapsiableNamedContainer>
                 </CollapsiableNamedContainer>
               </Grid>
