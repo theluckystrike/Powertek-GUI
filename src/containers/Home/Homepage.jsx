@@ -307,9 +307,9 @@ function HomePage(props) {
               }}
             >
               <Typography variant="h5" fontWeight="600" sx={{ width: { xs: "100%", sm: "30%" }, textAlign: "center" }}>
-                Residual Current : 0.0 mA
-                <Chip sx={{ mx: 1 }} label="Error" color="error" />
-                /
+                Residual Current : 0.0 mA{" "}
+                {/* <Chip sx={{ mx: 1 }} label="Error" color="error" />
+                / */}
                 <Chip label="Normal" color="success" />
               </Typography>
 
@@ -337,19 +337,18 @@ function HomePage(props) {
               </Dialog>
 
               <Typography variant="h5" fontWeight="600" sx={{ width: { xs: "100%", sm: "39%" }, textAlign: "center" }}>
-                Power Share :
-                <Chip sx={{ mx: 1 }} label="Inactive" color="primary" />
-                /
+                Power Share :{" "}
+                {/* <Chip sx={{ mx: 1 }} label="Inactive" color="primary" />
+                / */}
                 <Chip label="Active/Backup Power" color="error" />
-                /
-                <Chip label="Active/Main Power" color="success" />
+                {/* /
+                <Chip label="Active/Main Power" color="success" /> */}
               </Typography>
 
               <Typography variant="h5" fontWeight="600" sx={{ width: { xs: "100%", sm: "30%" } }}>
-                Over Voltage Protection :
-                <Chip sx={{ mx: 1 }} label="Activated" color="error" />
-                /
-                <Chip label="Normal" color="success" />
+                Over Voltage Protection : <Chip sx={{ mx: 1 }} label="Activated" color="error" />
+                {/* /
+                <Chip label="Normal" color="success" /> */}
               </Typography>
             </Box>
           </NamedContainer>
@@ -383,8 +382,8 @@ function HomePage(props) {
         {/* tabs */}
         <Grid item xs={12}>
           <NamedContainer title="Alarms">
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
+            {/* <Box sx={{ borderBottom: 1, borderColor: "divider" }}> */}
+            {/* <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
                 <Tab
                   icon={
                     <Chip
@@ -394,7 +393,7 @@ function HomePage(props) {
                     />
                   }
                 />
-                {/* <Tab
+                <Tab
                   icon={
                     <Chip
                       sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
@@ -402,15 +401,15 @@ function HomePage(props) {
                       clickable={true}
                     />
                   }
-                /> */}
-              </Tabs>
-              <TabPanel role="tabpanel" value={value} index={0}>
-                <AlarmListTab />
-              </TabPanel>
-              {/* <TabPanel role="tabpanel" value={value} index={1}>
+                />
+              </Tabs> */}
+            {/* <TabPanel role="tabpanel" value={value} index={0}> */}
+            <AlarmListTab />
+            {/* </TabPanel> */}
+            {/* <TabPanel role="tabpanel" value={value} index={1}>
                 <EventLogtab />
               </TabPanel> */}
-            </Box>
+            {/* </Box> */}
           </NamedContainer>
         </Grid>
       </Grid>

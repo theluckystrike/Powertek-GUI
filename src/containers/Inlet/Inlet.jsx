@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import styled from "@emotion/styled";
 import Chip from "@mui/material/Chip";
+import OverflowChip from "../../components/common/OverflowChip";
 import ToggleButton from "@mui/material/ToggleButton";
 import {
   Table,
@@ -197,36 +198,11 @@ function ThresholdDialog2({ open, onClose, onSave, defaultValues }) {
   );
 }
 
-function IntelHistory() {
+function IntelHistory({ sampleData }) {
   const downloadHistory = () => {
     // console.log("download history");
   };
-  const sampleData = [
-    { xaxis: "00:00", value: 0.07 },
-    { xaxis: "01:00", value: 0.07 },
-    { xaxis: "02:00", value: 0.07 },
-    { xaxis: "03:00", value: 0.08 },
-    { xaxis: "04:00", value: 0.07 },
-    { xaxis: "05:00", value: 0.06 },
-    { xaxis: "06:00", value: 0.07 },
-    { xaxis: "07:00", value: 0.06 },
-    { xaxis: "08:00", value: 0.06 },
-    { xaxis: "09:00", value: 0.07 },
-    { xaxis: "10:00", value: 0.07 },
-    { xaxis: "11:00", value: 0.07 },
-    { xaxis: "12:00", value: 0.07 },
-    { xaxis: "13:00", value: 0.07 },
-    { xaxis: "14:00", value: 0.07 },
-    { xaxis: "15:00", value: 0.07 },
-    { xaxis: "16:00", value: 0.07 },
-    { xaxis: "17:00", value: 0.06 },
-    { xaxis: "18:00", value: 0.07 },
-    { xaxis: "19:00", value: 0.06 },
-    { xaxis: "20:00", value: 0.05 },
-    { xaxis: "21:00", value: 0.07 },
-    { xaxis: "22:00", value: 0.07 },
-    { xaxis: "23:00", value: 0.06 },
-  ];
+
   const [dropdown, setdropdown] = React.useState("peakcurrent");
   const [chartData, setchartData] = useState(sampleData); // [xaxis, yaxis
   const handleDropDown = (event) => {
@@ -241,7 +217,7 @@ function IntelHistory() {
           <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 30, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="xaxis" />
-            <YAxis hide />
+            <YAxis />
             <Area
               type="monotone"
               dataKey="value"
@@ -249,6 +225,22 @@ function IntelHistory() {
               strokeWidth={2}
               dot={{ stroke: "white", strokeWidth: 2, fill: "#8884d8" }}
               fill="rgba(33, 233, 246, 0.2)"
+            />
+            <Area
+              type="monotone"
+              dataKey="value2"
+              stroke="#203246"
+              strokeWidth={2}
+              dot={{ stroke: "white", strokeWidth: 2, fill: "#8884d8" }}
+              fill="rgba(246, 33, 33, 0.2)"
+            />
+            <Area
+              type="monotone"
+              dataKey="value3"
+              stroke="#203246"
+              strokeWidth={2}
+              dot={{ stroke: "white", strokeWidth: 2, fill: "#8884d8" }}
+              fill="rgba(246, 33, 246, 0.2)"
             />
             <Tooltip />
           </AreaChart>
@@ -265,7 +257,7 @@ function IntelHistory() {
   );
 }
 
-function HisotryDialog({ open, onClose, onSave, data }) {
+function HisotryDialog({ open, onClose, onSave, data, chartData }) {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontWeight: "bold",
     backgroundColor: theme.palette.action.hover,
@@ -307,7 +299,7 @@ function HisotryDialog({ open, onClose, onSave, data }) {
           </Box>
         </TableContainer>
         <CollapsiableNamedContainer title="History">
-          <IntelHistory />
+          <IntelHistory sampleData={chartData} />
         </CollapsiableNamedContainer>
       </Box>
     </Dialog>
@@ -315,6 +307,32 @@ function HisotryDialog({ open, onClose, onSave, data }) {
 }
 
 function SinglePhaseCase() {
+  const sampleData = [
+    { xaxis: "00:00", value: 0.07 },
+    { xaxis: "01:00", value: 0.07 },
+    { xaxis: "02:00", value: 0.07 },
+    { xaxis: "03:00", value: 0.08 },
+    { xaxis: "04:00", value: 0.07 },
+    { xaxis: "05:00", value: 0.06 },
+    { xaxis: "06:00", value: 0.07 },
+    { xaxis: "07:00", value: 0.06 },
+    { xaxis: "08:00", value: 0.06 },
+    { xaxis: "09:00", value: 0.07 },
+    { xaxis: "10:00", value: 0.07 },
+    { xaxis: "11:00", value: 0.07 },
+    { xaxis: "12:00", value: 0.07 },
+    { xaxis: "13:00", value: 0.07 },
+    { xaxis: "14:00", value: 0.07 },
+    { xaxis: "15:00", value: 0.07 },
+    { xaxis: "16:00", value: 0.07 },
+    { xaxis: "17:00", value: 0.06 },
+    { xaxis: "18:00", value: 0.07 },
+    { xaxis: "19:00", value: 0.06 },
+    { xaxis: "20:00", value: 0.05 },
+    { xaxis: "21:00", value: 0.07 },
+    { xaxis: "22:00", value: 0.07 },
+    { xaxis: "23:00", value: 0.06 },
+  ];
   const theme = useTheme();
   const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
   const [currentThresholds, setCurrentThresholds] = useState({
@@ -324,10 +342,10 @@ function SinglePhaseCase() {
     higherCritical: "",
   });
   const [currentHistory, setCurrentHistory] = useState({
-    actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+    actual: { value: "0.073 A", lastChanged: "" },
     state: { value: "normal", lastChanged: "State hasn’t been reset" },
-    minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
-    maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+    minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM" },
+    maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM" },
   });
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -545,11 +563,11 @@ function SinglePhaseCase() {
   function getStatusColor(status) {
     switch (status) {
       case "normal":
-        return ["success", <ThumbUpAltIcon style={{ marginLeft: "-3px" }} />];
+        return ["success", ThumbUpAltIcon];
       case "warning":
-        return ["warning", <WarningIcon style={{ marginLeft: "-3px" }} />];
+        return ["warning", WarningIcon];
       case "error":
-        return ["error", <GppBadIcon style={{ marginLeft: "-3px" }} />];
+        return ["error", GppBadIcon];
       default:
         return "default";
     }
@@ -598,7 +616,13 @@ function SinglePhaseCase() {
         onSave={handleSave}
         defaultValues={currentThresholds}
       />
-      <HisotryDialog open={historyDialogOpen} onClose={handleDialogClose} onSave={handleSave} data={currentHistory} />
+      <HisotryDialog
+        open={historyDialogOpen}
+        onClose={handleDialogClose}
+        onSave={handleSave}
+        data={currentHistory}
+        chartData={sampleData}
+      />
       <TableContainer>
         <Table size="small">
           <TableHead>
@@ -637,18 +661,18 @@ function SinglePhaseCase() {
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.value}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Chip
+                  <OverflowChip
                     label={row.status}
                     color={getStatusColor(row.status)[0]}
                     size="small"
-                    icon={getStatusColor(row.status)[1]}
+                    IconComponent={getStatusColor(row.status)[1]}
                     sx={{
                       "& .MuiChip-label": {
                         fontWeight: 600,
                         textTransform: "uppercase",
-                        display: !isMdScreen ? "none" : "inline-block",
+                        // display: !isMdScreen ? "none" : "inline-block",
                       },
-                      width: "40%",
+                      width: "50%",
                     }}
                   />
                 </StyledTableCell>
@@ -667,6 +691,32 @@ function SinglePhaseCase() {
 }
 
 function ThreePhaseCaseWYE() {
+  const sampleData = [
+    { xaxis: "00:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "01:00", value: 0.07, value2: 0.02, value3: 0.02 },
+    { xaxis: "02:00", value: 0.07, value2: 0.05, value3: 0.08 },
+    { xaxis: "03:00", value: 0.08, value2: 0.05, value3: 0.05 },
+    { xaxis: "04:00", value: 0.07, value2: 0.05, value3: 0.07 },
+    { xaxis: "05:00", value: 0.06, value2: 0.05, value3: 0.05 },
+    { xaxis: "06:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "07:00", value: 0.06, value2: 0.05, value3: 0.05 },
+    { xaxis: "08:00", value: 0.06, value2: 0.05, value3: 0.05 },
+    { xaxis: "09:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "10:00", value: 0.07, value2: 0.06, value3: 0.06 },
+    { xaxis: "11:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "12:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "13:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "14:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "15:00", value: 0.07, value2: 0.03, value3: 0.03 },
+    { xaxis: "16:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "17:00", value: 0.06, value2: 0.05, value3: 0.03 },
+    { xaxis: "18:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "19:00", value: 0.06, value2: 0.08, value3: 0.08 },
+    { xaxis: "20:00", value: 0.05, value2: 0.05, value3: 0.05 },
+    { xaxis: "21:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "22:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "23:00", value: 0.06, value2: 0.03, value3: 0.06 },
+  ];
   const theme = useTheme();
   const isMdScreen = useMediaQuery("(min-width:1450px)");
   const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
@@ -677,10 +727,10 @@ function ThreePhaseCaseWYE() {
     higherCritical: "",
   });
   const [currentHistory, setCurrentHistory] = useState({
-    actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+    actual: { value: "0.073 A", lastChanged: "" },
     state: { value: "normal", lastChanged: "State hasn’t been reset" },
-    minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
-    maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+    minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM" },
+    maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM" },
   });
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -998,11 +1048,11 @@ function ThreePhaseCaseWYE() {
   function getStatusColor(status) {
     switch (status) {
       case "normal":
-        return ["success", <ThumbUpAltIcon />];
+        return ["success", ThumbUpAltIcon];
       case "warning":
-        return ["warning", <WarningIcon />];
+        return ["warning", WarningIcon];
       case "error":
-        return ["error", <GppBadIcon />];
+        return ["error", GppBadIcon];
       default:
         return "default";
     }
@@ -1047,7 +1097,13 @@ function ThreePhaseCaseWYE() {
         onSave={handleSave}
         defaultValues={currentThresholds}
       />
-      <HisotryDialog open={historyDialogOpen} onClose={handleDialogClose} onSave={handleSave} data={currentHistory} />
+      <HisotryDialog
+        open={historyDialogOpen}
+        onClose={handleDialogClose}
+        onSave={handleSave}
+        data={currentHistory}
+        chartData={sampleData}
+      />
       <TableContainer>
         <Table size="small">
           <TableHead>
@@ -1090,7 +1146,7 @@ function ThreePhaseCaseWYE() {
                 key={row.id}
                 sx={{
                   backgroundColor:
-                    index % 2 === 0 ? (theme.palette.mode === "dark" ? "#3C3C3C" : "#E0E0E0") : "inherit", // Alternating color
+                    index % 2 === 0 ? (theme.palette.mode === "dark" ? "#1c2e45" : "#f1f5f9") : "inherit", // Alternating color
                 }}
               >
                 <StyledTableCell
@@ -1105,74 +1161,70 @@ function ThreePhaseCaseWYE() {
                 <StyledTableCell align="center">{row.TIValue}</StyledTableCell>
                 <StyledTableCell align="center">
                   {row.TIStatus !== "" ? (
-                    <Chip
+                    <OverflowChip
                       label={row.TIStatus}
                       color={getStatusColor(row.TIStatus)[0]}
                       size="small"
-                      icon={getStatusColor(row.TIStatus)[1]}
+                      IconComponent={getStatusColor(row.TIStatus)[1]}
                       sx={{
                         "& .MuiChip-label": {
                           fontWeight: 600,
                           textTransform: "uppercase",
-                          display: !isMdScreen ? "none" : "inline-block",
+                          // display: !isMdScreen ? "none" : "inline-block",
                         },
-                        width: "40%",
-                        minWidth: "10px",
+                        width: "50%",
                       }}
                     />
                   ) : null}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.L1Value}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Chip
+                  <OverflowChip
                     label={row.L1Status}
                     color={getStatusColor(row.L1Status)[0]}
                     size="small"
-                    icon={getStatusColor(row.L1Status)[1]}
+                    IconComponent={getStatusColor(row.L1Status)[1]}
                     sx={{
                       "& .MuiChip-label": {
                         fontWeight: 600,
                         textTransform: "uppercase",
                         display: !isMdScreen ? "none" : "inline-block",
                       },
-                      width: "40%",
-                      minWidth: "10px",
+                      width: "50%",
                     }}
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.L2Value}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Chip
+                  <OverflowChip
                     label={row.L2Status}
                     color={getStatusColor(row.L2Status)[0]}
                     size="small"
-                    icon={getStatusColor(row.L2Status)[1]}
+                    IconComponent={getStatusColor(row.L2Status)[1]}
                     sx={{
                       "& .MuiChip-label": {
                         fontWeight: 600,
                         textTransform: "uppercase",
                         display: !isMdScreen ? "none" : "inline-block",
                       },
-                      width: "40%",
-                      minWidth: "10px",
+                      width: "50%",
                     }}
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.L3Value}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Chip
+                  <OverflowChip
                     label={row.L3Status}
                     color={getStatusColor(row.L3Status)[0]}
                     size="small"
-                    icon={getStatusColor(row.L3Status)[1]}
+                    IconComponent={getStatusColor(row.L3Status)[1]}
                     sx={{
                       "& .MuiChip-label": {
                         fontWeight: 600,
                         textTransform: "uppercase",
                         display: !isMdScreen ? "none" : "inline-block",
                       },
-                      width: "40%",
-                      minWidth: "10px",
+                      width: "50%",
                     }}
                   />
                 </StyledTableCell>
@@ -1192,6 +1244,32 @@ function ThreePhaseCaseWYE() {
 }
 
 function ThreePhaseCaseDelta() {
+  const sampleData = [
+    { xaxis: "00:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "01:00", value: 0.07, value2: 0.02, value3: 0.02 },
+    { xaxis: "02:00", value: 0.07, value2: 0.05, value3: 0.08 },
+    { xaxis: "03:00", value: 0.08, value2: 0.05, value3: 0.05 },
+    { xaxis: "04:00", value: 0.07, value2: 0.05, value3: 0.07 },
+    { xaxis: "05:00", value: 0.06, value2: 0.05, value3: 0.05 },
+    { xaxis: "06:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "07:00", value: 0.06, value2: 0.05, value3: 0.05 },
+    { xaxis: "08:00", value: 0.06, value2: 0.05, value3: 0.05 },
+    { xaxis: "09:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "10:00", value: 0.07, value2: 0.06, value3: 0.06 },
+    { xaxis: "11:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "12:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "13:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "14:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "15:00", value: 0.07, value2: 0.03, value3: 0.03 },
+    { xaxis: "16:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "17:00", value: 0.06, value2: 0.05, value3: 0.03 },
+    { xaxis: "18:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "19:00", value: 0.06, value2: 0.08, value3: 0.08 },
+    { xaxis: "20:00", value: 0.05, value2: 0.05, value3: 0.05 },
+    { xaxis: "21:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "22:00", value: 0.07, value2: 0.05, value3: 0.05 },
+    { xaxis: "23:00", value: 0.06, value2: 0.03, value3: 0.06 },
+  ];
   const theme = useTheme();
   const isMdScreen = useMediaQuery("(min-width:1450px)");
   const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
@@ -1202,10 +1280,10 @@ function ThreePhaseCaseDelta() {
     higherCritical: "",
   });
   const [currentHistory, setCurrentHistory] = useState({
-    actual: { value: "0.073 A", lastChanged: "1/6/2024, 7:19:10 PM GMT+1" },
+    actual: { value: "0.073 A", lastChanged: "" },
     state: { value: "normal", lastChanged: "State hasn’t been reset" },
-    minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM GMT+1" },
-    maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM GMT+1" },
+    minimum: { value: "0.063 A", lastChanged: "11/20/2023, 6:26:11 PM" },
+    maximum: { value: "0.206 A", lastChanged: "12/7/2023, 6:05:41 PM" },
   });
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -1533,11 +1611,11 @@ function ThreePhaseCaseDelta() {
   function getStatusColor(status) {
     switch (status) {
       case "normal":
-        return ["success", <ThumbUpAltIcon />];
+        return ["success", ThumbUpAltIcon];
       case "warning":
-        return ["warning", <WarningIcon />];
+        return ["warning", WarningIcon];
       case "error":
-        return ["error", <GppBadIcon />];
+        return ["error", GppBadIcon];
       default:
         return "default";
     }
@@ -1582,7 +1660,13 @@ function ThreePhaseCaseDelta() {
         onSave={handleSave}
         defaultValues={currentThresholds}
       />
-      <HisotryDialog open={historyDialogOpen} onClose={handleDialogClose} onSave={handleSave} data={currentHistory} />
+      <HisotryDialog
+        open={historyDialogOpen}
+        onClose={handleDialogClose}
+        onSave={handleSave}
+        data={currentHistory}
+        chartData={sampleData}
+      />
       <TableContainer>
         <Table size="small">
           <TableHead>
@@ -1625,7 +1709,7 @@ function ThreePhaseCaseDelta() {
                 key={row.id}
                 sx={{
                   backgroundColor:
-                    index % 2 === 0 ? (theme.palette.mode === "dark" ? "#3C3C3C" : "#E0E0E0") : "inherit", // Alternating color
+                    index % 2 === 0 ? (theme.palette.mode === "dark" ? "#1c2e45" : "#f1f5f9") : "inherit", // Alternating color
                 }}
               >
                 <StyledTableCell
@@ -1640,74 +1724,70 @@ function ThreePhaseCaseDelta() {
                 <StyledTableCell align="center">{row.TIvalue}</StyledTableCell>
                 <StyledTableCell align="center">
                   {row.TIstatus !== "" ? (
-                    <Chip
+                    <OverflowChip
                       label={row.TIstatus}
                       color={getStatusColor(row.TIstatus)[0]}
                       size="small"
-                      icon={getStatusColor(row.TIstatus)[1]}
+                      IconComponent={getStatusColor(row.TIstatus)[1]}
                       sx={{
                         "& .MuiChip-label": {
                           fontWeight: 600,
                           textTransform: "uppercase",
-                          display: !isMdScreen ? "none" : "inline-block",
+                          // display: !isMdScreen ? "none" : "inline-block",
                         },
-                        width: "40%",
-                        minWidth: "10px",
+                        width: "50%",
                       }}
                     />
                   ) : null}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.L1L2Value}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Chip
+                  <OverflowChip
                     label={row.L1L2status}
                     color={getStatusColor(row.L1L2status)[0]}
                     size="small"
-                    icon={getStatusColor(row.L1L2status)[1]}
+                    IconComponent={getStatusColor(row.L1L2status)[1]}
                     sx={{
                       "& .MuiChip-label": {
                         fontWeight: 600,
                         textTransform: "uppercase",
-                        display: !isMdScreen ? "none" : "inline-block",
+                        // display: !isMdScreen ? "none" : "inline-block",
                       },
-                      width: "40%",
-                      minWidth: "10px",
+                      width: "50%",
                     }}
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.L2L3Value}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Chip
+                  <OverflowChip
                     label={row.L2L3status}
                     color={getStatusColor(row.L2L3status)[0]}
                     size="small"
-                    icon={getStatusColor(row.L2L3status)[1]}
+                    IconComponent={getStatusColor(row.L2L3status)[1]}
                     sx={{
                       "& .MuiChip-label": {
                         fontWeight: 600,
                         textTransform: "uppercase",
-                        display: !isMdScreen ? "none" : "inline-block",
+                        // display: !isMdScreen ? "none" : "inline-block",
                       },
-                      width: "40%",
-                      minWidth: "10px",
+                      width: "50%",
                     }}
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.L3L1Value}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Chip
+                  <OverflowChip
                     label={row.L3L1status}
                     color={getStatusColor(row.L3L1status)[0]}
                     size="small"
-                    icon={getStatusColor(row.L3L1status)[1]}
+                    IconComponent={getStatusColor(row.L3L1status)[1]}
                     sx={{
                       "& .MuiChip-label": {
                         fontWeight: 600,
                         textTransform: "uppercase",
-                        display: !isMdScreen ? "none" : "inline-block",
+                        // display: !isMdScreen ? "none" : "inline-block",
                       },
-                      width: "40%",
-                      minWidth: "10px",
+                      width: "50%",
                     }}
                   />
                 </StyledTableCell>
