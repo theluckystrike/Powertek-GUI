@@ -150,9 +150,9 @@ function SidebarCustom(props) {
             <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/firmware-update" />}>
               Firmware Update
             </MenuItem>
-            <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/bulk-configuration" />}>
+            {/* <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/bulk-configuration" />}>
               Bulk Configuration
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem style={{ paddingLeft: "65px" }} component={<Link to="/maintenance/backup" />}>
               Backup / Restore
             </MenuItem>

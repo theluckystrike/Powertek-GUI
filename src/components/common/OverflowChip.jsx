@@ -11,7 +11,7 @@ export default function OverflowChip({ label, IconComponent, ...props }) {
       const labelNode = labelRef.current;
       const IconNode = iconRef.current;
       if (labelNode) {
-        const isOverflowing = labelNode.parentElement.offsetWidth < labelNode.parentElement.scrollWidth;
+        const isOverflowing = labelNode.parentElement.offsetWidth + 40 < labelNode.parentElement.scrollWidth;
         if (isOverflowing) {
           labelNode.parentElement.style.display = "none";
           IconNode.style.margin = "0 auto";

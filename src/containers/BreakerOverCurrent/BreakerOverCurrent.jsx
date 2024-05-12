@@ -121,8 +121,8 @@ function BreakerOverCurrent() {
     return (
       <Chip
         label={status}
-        style={{ backgroundColor: status === "OPEN" ? "green" : "red", color: "white" }}
-        icon={status === "OPEN" ? <ThumbUpAltIcon /> : <WarningIcon />}
+        style={{ backgroundColor: status !== "OPEN" ? "green" : "red", color: "white" }}
+        icon={status !== "OPEN" ? <ThumbUpAltIcon /> : <WarningIcon />}
         sx={{
           "& .MuiChip-label": {
             fontWeight: 600,
@@ -193,7 +193,7 @@ function BreakerOverCurrent() {
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">Name</StyledTableCell>
-                <StyledTableCell align="center">PDU</StyledTableCell>
+                {/* <StyledTableCell align="center">PDU</StyledTableCell> */}
                 <StyledTableCell align="center">Status</StyledTableCell>
                 <StyledTableCell align="center">RMS Current</StyledTableCell>
                 <StyledTableCell align="center">Max Current</StyledTableCell>
@@ -208,7 +208,7 @@ function BreakerOverCurrent() {
                     <Checkbox checked={checked[index]} onChange={() => handleCheckboxChange(index)} />
                   </StyledTableCell>
                   <StyledTableCell align="center">{name}</StyledTableCell>
-                  <StyledTableCell align="center">PDU name</StyledTableCell>
+                  {/* <StyledTableCell align="center">PDU name</StyledTableCell> */}
                   <StyledTableCell align="center">{getStatusChip(index % 2 === 0 ? "OPEN" : "CLOSED")}</StyledTableCell>
                   <StyledTableCell align="center" sx={{ minWidth: "150px" }}>
                     <div>

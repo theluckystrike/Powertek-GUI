@@ -53,14 +53,14 @@ const RoleACL = ({ roles, onEdit, onAdd, onDelete }) => {
   const [editedRole, setEditedRole] = useState({
     name: "",
     description: "",
-    permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {} },
+    permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {}, Full_access: {} },
   });
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [newRole, setNewRole] = useState({
     name: "",
     description: "",
-    permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {} },
+    permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {}, Full_access: {} },
   });
 
   const handleOpenDialog = (role, action = null) => {
@@ -78,7 +78,13 @@ const RoleACL = ({ roles, onEdit, onAdd, onDelete }) => {
     setEditedRole({
       name: "",
       description: "",
-      permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {} },
+      permissions: {
+        Only_Read: {},
+        Edit_Threshold: {},
+        Edit_Outlet_Status: {},
+        Edit_Configuration: {},
+        Full_access: {},
+      },
     }); // Clear the edited role
   };
 
@@ -106,7 +112,13 @@ const RoleACL = ({ roles, onEdit, onAdd, onDelete }) => {
     setNewRole({
       name: "",
       description: "",
-      permissions: { Only_Read: {}, Edit_Threshold: {}, Edit_Outlet_Status: {}, Edit_Configuration: {} },
+      permissions: {
+        Only_Read: {},
+        Edit_Threshold: {},
+        Edit_Outlet_Status: {},
+        Edit_Configuration: {},
+        Full_access: {},
+      },
     }); // Reset the new role state
   };
 
@@ -871,23 +883,56 @@ function Authentication() {
 }
 
 function Login() {
+  const [blockUser, setBlockUser] = useState(true);
+  const [passwordAging, setPasswordAging] = useState(false);
+  const [strongPasswords, setStrongPasswords] = useState(false);
+
   return (
     <Box sx={{ width: "90%", display: "flex", margin: "auto", placeContent: "center" }}>
-      <FormGroup sx={{ width: "100%", display: "flex", margin: "auto", placeContent: "center" }}>
-        <h2>Login Settings</h2>
-        <FormControlLabel control={<Checkbox />} label="Exclude ADMIN USER" />
-        <FormControlLabel control={<Checkbox defaultChecked />} label="Block user on login failure" />
-        <TextField label="Block timeout" defaultValue="10 min" margin="normal" fullWidth />
-        <TextField label="Maximum number of failed logins" defaultValue="3" margin="normal" fullWidth />
-        <TextField label="Timeout for failed login attempts" defaultValue="10 min" margin="normal" fullWidth />
-        <h2>Login Limitations</h2>
-        <FormControlLabel control={<Checkbox />} label="Exclude ADMIN USER" />
-        <TextField label="Idle timeout period" defaultValue="1 d" margin="normal" fullWidth />
+      <FormGroup
+        sx={{ width: "100%", display: "flex", flexDirection: "column", margin: "auto", placeContent: "center" }}
+      >
+        <h2>Session Timeout</h2>
+        <TextField label="Session timeout period" defaultValue="1 day" margin="normal" fullWidth />
         <FormControlLabel control={<Checkbox />} label="Prevent concurrent login with same username" />
+
+        <h2>Login Security</h2>
+        <FormControlLabel
+          control={<Checkbox checked={blockUser} onChange={() => setBlockUser(!blockUser)} />}
+          label="Block user on login failure"
+        />
+        {blockUser && (
+          <>
+            <TextField label="Block timeout" defaultValue="10 min" margin="normal" fullWidth />
+            <TextField label="Maximum number of failed logins" defaultValue="3" margin="normal" fullWidth />
+            <TextField label="Timeout for failed login attempts" defaultValue="10 min" margin="normal" fullWidth />
+          </>
+        )}
+        <FormControlLabel control={<Checkbox />} label="Exclude ADMIN USER" />
+
+        <h2>Password Policy</h2>
+        <h3>Password Aging</h3>
+        <FormControlLabel
+          control={<Checkbox checked={passwordAging} onChange={() => setPasswordAging(!passwordAging)} />}
+          label="Password Aging"
+        />
+        {passwordAging && (
+          <>
+            <TextField label="Password Aging Interval" defaultValue="30 days" margin="normal" fullWidth />
+          </>
+        )}
+
+        <h3>Strong Passwords</h3>
+        <FormControlLabel
+          control={<Checkbox checked={strongPasswords} onChange={() => setStrongPasswords(!strongPasswords)} />}
+          label="Strong Passwords Required"
+        />
+        {strongPasswords && <>{/* Include other relevant fields here if any */}</>}
+
         <Box display="flex" justifyContent="end" mt={2}>
-          <MuiButton variant="contained" color="primary">
+          <Button variant="contained" color="primary">
             Save
-          </MuiButton>
+          </Button>
         </Box>
       </FormGroup>
     </Box>
@@ -1348,6 +1393,7 @@ function Security() {
         Edit_Threshold: { PDU1: true, PDU2: true },
         Edit_Outlet_Status: {},
         Edit_Configuration: {},
+        Full_access: {},
         // ... other tasks and PDUs
       },
     },

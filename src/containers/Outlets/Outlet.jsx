@@ -44,7 +44,7 @@ const demoOutlet = {
   powerActive: "0.0",
   powerApparent: "0.0",
   voltage: "231.5",
-  powerFactor: "1.00",
+  powerFactor: "0.6",
   energy: "0.000",
   overCurrentAlarmCritical: "16.00",
   overPowerAlarmCritical: "2500",
@@ -396,9 +396,9 @@ function Outlet() {
                 defaultValue={selectedOutlet.name} // Replace with actual data
                 fullWidth
                 margin="dense"
-                InputProps={{
-                  readOnly: true,
-                }}
+                // InputProps={{
+                //   readOnly: true,
+                // }}
               />
             </Grid>
             {/* State and Status */}
@@ -431,9 +431,9 @@ function Outlet() {
                 defaultValue="Wait 3 Seconds (1-7200)" // Replace with actual data
                 fullWidth
                 margin="dense"
-                InputProps={{
-                  readOnly: true,
-                }}
+                // InputProps={{
+                //   readOnly: true,
+                // }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -442,9 +442,9 @@ function Outlet() {
                 defaultValue="Wait 3 Seconds (1-7200)" // Replace with actual data
                 fullWidth
                 margin="dense"
-                InputProps={{
-                  readOnly: true,
-                }}
+                // InputProps={{
+                //   readOnly: true,
+                // }}
               />
             </Grid>
             {/* Reboot Duration */}
@@ -454,9 +454,9 @@ function Outlet() {
                 defaultValue="5 Seconds (5-60)" // Replace with actual data
                 fullWidth
                 margin="dense"
-                InputProps={{
-                  readOnly: true,
-                }}
+                // InputProps={{
+                //   readOnly: true,
+                // }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -475,65 +475,20 @@ function Outlet() {
             </Grid>
 
             <Grid item xs={6}>
-              <Typography variant="caption">Energy (KWh)</Typography>
-              <ReportingBar value={selectedOutlet.energy} max={5000} />
+              <Typography variant="caption">Active Power (W)</Typography>
+              <ReportingBar value={selectedOutlet.powerActive} max={5000} />
             </Grid>
 
             <Grid item xs={6}>
-              <TextField
-                label="Current (A)"
-                defaultValue="0.00" // Replace with actual data
-                fullWidth
-                margin="dense"
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
+              <Typography variant="caption">Apparent Power (VAR)</Typography>
+              <ReportingBar value={selectedOutlet.powerApparent} max={5000} />
             </Grid>
+
             <Grid item xs={6}>
-              <TextField
-                label="Power (W/A)"
-                defaultValue="Active 0.0 / Apparent 0.0" // Replace with actual data
-                fullWidth
-                margin="dense"
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
+              <Typography variant="caption">Power Factor</Typography>
+              <ReportingBar value={selectedOutlet.powerFactor} max={1} min={0} />
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Voltage (V)"
-                defaultValue="231.5" // Replace with actual data
-                fullWidth
-                margin="dense"
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Power Factor"
-                defaultValue="1.00" // Replace with actual data
-                fullWidth
-                margin="dense"
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Energy (KWh)"
-                defaultValue="0.000KWh (from 01/01/1970 02:00:00)" // Replace with actual data
-                fullWidth
-                margin="dense"
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
+
             {/* Alarms */}
             <Grid item xs={12}>
               <Table>
@@ -550,9 +505,9 @@ function Outlet() {
                         label="Critical"
                         defaultValue="16.00" // Replace with actual data
                         margin="dense"
-                        InputProps={{
-                          readOnly: true,
-                        }}
+                        // InputProps={{
+                        //   readOnly: true,
+                        // }}
                       />
                     </TableCell>
                     <TableCell align="center">
@@ -560,9 +515,9 @@ function Outlet() {
                         label="Critical"
                         defaultValue="2500" // Replace with actual data
                         margin="dense"
-                        InputProps={{
-                          readOnly: true,
-                        }}
+                        // InputProps={{
+                        //   readOnly: true,
+                        // }}
                       />
                     </TableCell>
                   </TableRow>
@@ -573,9 +528,9 @@ function Outlet() {
                         label="Warning"
                         defaultValue="13.00" // Replace with actual data
                         margin="dense"
-                        InputProps={{
-                          readOnly: true,
-                        }}
+                        // InputProps={{
+                        //   readOnly: true,
+                        // }}
                       />
                     </TableCell>
                     <TableCell align="center">
@@ -583,9 +538,9 @@ function Outlet() {
                         label="Warning"
                         defaultValue="2000" // Replace with actual data
                         margin="dense"
-                        InputProps={{
-                          readOnly: true,
-                        }}
+                        // InputProps={{
+                        //   readOnly: true,
+                        // }}
                       />
                     </TableCell>
                   </TableRow>

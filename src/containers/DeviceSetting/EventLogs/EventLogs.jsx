@@ -85,6 +85,11 @@ function EventLogs() {
                       <LogViewer logs={logsData} />
                     </CollapsiableNamedContainer>
                   </Grid>
+                  <Grid item xs={12}>
+                    <CollapsiableNamedContainer title="Alarm Logs">
+                      <LogViewer logs={logsData} />
+                    </CollapsiableNamedContainer>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
