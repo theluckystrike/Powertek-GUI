@@ -186,6 +186,12 @@ function ManagePDUComponenet() {
           </Button>
         </DialogActions>
       </Dialog>
+      <Typography variant="h5" fontWeight={600} sx={{ marginTop: "12px" }}>
+        Power Share
+      </Typography>
+      <Button variant="contained" onClick={() => {}} color="primary" sx={{ marginBottom: "12px", marginTop: "12px" }}>
+        Share power with other PDUs
+      </Button>
       <Box display="flex" justifyContent="end" mt={2} sx={{ marginTop: "12px" }}>
         <MuiButton variant="contained" color="primary">
           Save

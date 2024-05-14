@@ -1810,6 +1810,11 @@ function Inlet(props) {
   const [settingsEdit, setsettingsEdit] = useState(false);
   const [selectedContainer, setSelectedContainer] = useState("SinglePhaseCase");
   const [currentMap, setCurrentMap] = useState({});
+  const [name, setName] = useState("");
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
 
   const [stats, setStats] = useState([
     { name: "Power Factor", value: "0.45" },
@@ -1894,9 +1899,7 @@ function Inlet(props) {
                     <ToggleButton
                       value="settingsEdit"
                       selected={settingsEdit}
-                      onChange={() => {
-                        setsettingsEdit(!settingsEdit);
-                      }}
+                      onChange={() => setsettingsEdit(!settingsEdit)}
                       sx={{
                         padding: "0px",
                         paddingRight: "5px",
@@ -1907,12 +1910,7 @@ function Inlet(props) {
                       }}
                       color="primary"
                     >
-                      <Typography
-                        variant=""
-                        fontWeight="400"
-                        sx={{ marginRight: "5px" }}
-                        //   color={settingsEdit ? "red" : "blue"}
-                      >
+                      <Typography variant="" fontWeight="400" sx={{ marginRight: "5px" }}>
                         Edit Settings
                       </Typography>
                       {settingsEdit ? <FaLockOpen color="red" /> : <FaLock color="#FFD700" />}
@@ -1970,12 +1968,24 @@ function Inlet(props) {
                     >
                       Name
                     </Typography>
-                    <Typography
-                      variant="body1"
-                      fontWeight="400"
-                      component={"div"}
-                      style={{ width: "50%", textAlign: "center" }}
-                    ></Typography>
+                    {settingsEdit ? (
+                      <TextField
+                        value={name}
+                        onChange={handleNameChange}
+                        variant="outlined"
+                        size="small"
+                        style={{ width: "50%" }}
+                      />
+                    ) : (
+                      <Typography
+                        variant="body1"
+                        fontWeight="400"
+                        component={"div"}
+                        style={{ width: "50%", textAlign: "center" }}
+                      >
+                        {name}
+                      </Typography>
+                    )}
                   </div>
                   <Divider />
                   <div

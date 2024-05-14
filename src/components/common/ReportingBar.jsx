@@ -5,9 +5,17 @@ import { styled } from "@mui/material/styles";
 import { useTheme } from "@emotion/react";
 import { Tooltip } from "@mui/material";
 
-const ReportingBar = ({ value, min = 0, max = 16 }) => {
+const ReportingBar = ({ value, min = 0, max = 16, gradient }) => {
   const theme = useTheme();
-  const percentage = (parseFloat(value) / (max - min)) * 100;
+  let percentage;
+  value = parseFloat(value);
+  if (value > min) {
+    percentage = ((value - min) / (max - min)) * 100;
+  } else {
+    percentage = 0;
+  }
+  const defaultGradient = "linear-gradient(90deg, rgba(15,218,30,1) 0%, rgba(223,226,16,1) 65%, rgba(255,0,0,1) 100%)";
+
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: "5px", textAlign: "center" }}>
       <Typography variant="body1" component="div" fontWeight="400" sx={{ textAlign: "center" }}>
@@ -16,7 +24,7 @@ const ReportingBar = ({ value, min = 0, max = 16 }) => {
       <Tooltip title={`${value}`} placement="bottom" arrow>
         <div
           style={{
-            background: "linear-gradient(90deg, rgba(15,218,30,1) 0%, rgba(223,226,16,1) 65%, rgba(255,0,0,1) 100%)",
+            background: gradient || defaultGradient,
             height: "15px",
             width: `100%`,
             borderRadius: 50,

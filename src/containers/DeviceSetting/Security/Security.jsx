@@ -909,26 +909,6 @@ function Login() {
           </>
         )}
         <FormControlLabel control={<Checkbox />} label="Exclude ADMIN USER" />
-
-        <h2>Password Policy</h2>
-        <h3>Password Aging</h3>
-        <FormControlLabel
-          control={<Checkbox checked={passwordAging} onChange={() => setPasswordAging(!passwordAging)} />}
-          label="Password Aging"
-        />
-        {passwordAging && (
-          <>
-            <TextField label="Password Aging Interval" defaultValue="30 days" margin="normal" fullWidth />
-          </>
-        )}
-
-        <h3>Strong Passwords</h3>
-        <FormControlLabel
-          control={<Checkbox checked={strongPasswords} onChange={() => setStrongPasswords(!strongPasswords)} />}
-          label="Strong Passwords Required"
-        />
-        {strongPasswords && <>{/* Include other relevant fields here if any */}</>}
-
         <Box display="flex" justifyContent="end" mt={2}>
           <Button variant="contained" color="primary">
             Save

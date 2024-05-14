@@ -40,12 +40,12 @@ const demoOutlet = {
   powerOnDelay: "3",
   powerOffDelay: "3",
   rebootDuration: "5",
-  current: "0.00",
-  powerActive: "0.0",
-  powerApparent: "0.0",
-  voltage: "231.5",
+  current: "3",
+  powerActive: "400",
+  powerApparent: "600",
+  voltage: "230",
   powerFactor: "0.6",
-  energy: "0.000",
+  energy: "300",
   overCurrentAlarmCritical: "16.00",
   overPowerAlarmCritical: "2500",
   overCurrentAlarmWarning: "13.00",
@@ -461,32 +461,86 @@ function Outlet() {
             </Grid>
             <Grid item xs={6}>
               <Typography variant="caption">Current (A)</Typography>
-              <ReportingBar value={selectedOutlet.current} max={30} />
+              <ReportingBar
+                value={selectedOutlet.current}
+                min={config[`outletMinMax`][`current`][0]}
+                max={config[`outletMinMax`][`current`][1]}
+                gradient={
+                  "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,165,0,1) 25%, rgba(0,255,0,1) 50%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%)"
+                }
+              />
             </Grid>
 
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <Typography variant="caption">Power (W)</Typography>
-              <ReportingBar value={selectedOutlet.powerActive} max={1000} />
-            </Grid>
+              <ReportingBar
+                value={selectedOutlet.powerActive}
+                min={config[`outletMinMax`][`power`][0]}
+                max={config[`outletMinMax`][`power`][1]}
+                gradient={
+                  "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,165,0,1) 25%, rgba(0,255,0,1) 50%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%)"
+                }
+              />
+            </Grid> */}
 
             <Grid item xs={6}>
               <Typography variant="caption">Voltage (V)</Typography>
-              <ReportingBar value={selectedOutlet.voltage} max={500} />
+              <ReportingBar
+                value={selectedOutlet.voltage}
+                min={config[`outletMinMax`][`voltage`][0]}
+                max={config[`outletMinMax`][`voltage`][1]}
+                gradient={
+                  "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,165,0,1) 25%, rgba(0,255,0,1) 50%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%)"
+                }
+              />
             </Grid>
 
             <Grid item xs={6}>
               <Typography variant="caption">Active Power (W)</Typography>
-              <ReportingBar value={selectedOutlet.powerActive} max={5000} />
+              <ReportingBar
+                value={selectedOutlet.powerActive}
+                min={config[`outletMinMax`][`activePower`][0]}
+                max={config[`outletMinMax`][`activePower`][1]}
+                gradient={
+                  "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,165,0,1) 25%, rgba(0,255,0,1) 50%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%)"
+                }
+              />
             </Grid>
 
             <Grid item xs={6}>
               <Typography variant="caption">Apparent Power (VAR)</Typography>
-              <ReportingBar value={selectedOutlet.powerApparent} max={5000} />
+              <ReportingBar
+                value={selectedOutlet.powerApparent}
+                min={config[`outletMinMax`][`apperantPower`][0]}
+                max={config[`outletMinMax`][`apperantPower`][1]}
+                gradient={
+                  "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,165,0,1) 25%, rgba(0,255,0,1) 50%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%)"
+                }
+              />
             </Grid>
 
             <Grid item xs={6}>
               <Typography variant="caption">Power Factor</Typography>
-              <ReportingBar value={selectedOutlet.powerFactor} max={1} min={0} />
+              <ReportingBar
+                value={selectedOutlet.powerFactor}
+                min={config[`outletMinMax`][`powerFactor`][0]}
+                max={config[`outletMinMax`][`powerFactor`][1]}
+                gradient={
+                  "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,165,0,1) 25%, rgba(0,255,0,1) 50%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%)"
+                }
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <Typography variant="caption">Energy (kWh)</Typography>
+              <ReportingBar
+                value={selectedOutlet.energy}
+                min={config[`outletMinMax`][`energy`][0]}
+                max={config[`outletMinMax`][`energy`][1]}
+                gradient={
+                  "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,165,0,1) 25%, rgba(0,255,0,1) 50%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%)"
+                }
+              />
             </Grid>
 
             {/* Alarms */}

@@ -13,7 +13,16 @@
     "circuitBreakerLines": { "Circuit 1 L1": "L1-N", "Circuit 2 L1": "L1-N" },
     "breakerThreholds": { "Circuit 1 L1": [0.01, 0, 13, 16, 1, 0], "Circuit 2 L1": [0.01, 0, 13, 16, 1, 0] },
     "inlets": ["L1", "Neutral"],
-    "caseType": "SinglePhaseCase"
+    "caseType": "SinglePhaseCase",
+    "outletMinMax": {
+      "current": [0, 10],
+      "power": [0, 100],
+      "voltage": [210, 250],
+      "activePower": [0, 1000],
+      "apperantPower": [0, 1000],
+      "powerFactor": [0.8, 1],
+      "energy": [0, 400]
+    }
   },
   {
     "outletNumber": 48,
@@ -78,7 +87,16 @@
       "Circuit 12 L3": [0.01, 0, 13, 16, 1, 0]
     },
     "inlets": ["L1", "L2", "L3", "Neutral"],
-    "caseType": "ThreePhaseCaseWYE"
+    "caseType": "ThreePhaseCaseWYE",
+    "outletMinMax": {
+      "current": [0, 10],
+      "power": [0, 100],
+      "voltage": [210, 250],
+      "activePower": [0, 1000],
+      "apperantPower": [0, 1000],
+      "powerFactor": [0.8, 1],
+      "energy": [0, 400]
+    }
   },
   {
     "outletNumber": 36,
@@ -103,6 +121,15 @@
       "Circuit 3 L3/L1": [0.01, 0, 13, 16, 1, 0]
     },
     "inlets": ["L1", "L2", "L3"],
-    "caseType": "ThreePhaseCaseDelta"
+    "caseType": "ThreePhaseCaseDelta",
+    "outletMinMax": {
+      "current": [0, 10],
+      "power": [0, 100],
+      "voltage": [210, 250],
+      "activePower": [0, 1000],
+      "apperantPower": [0, 1000],
+      "powerFactor": [0.8, 1],
+      "energy": [0, 400]
+    }
   }
 ]

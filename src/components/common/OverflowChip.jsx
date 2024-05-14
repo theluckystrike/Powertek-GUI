@@ -1,54 +1,75 @@
 import React, { useState, useEffect, useRef } from "react";
 import Chip from "@mui/material/Chip";
 
-export default function OverflowChip({ label, IconComponent, ...props }) {
+export default function OverflowChip({ label, IconComponent, sx, ...props }) {
   const labelRef = useRef(null);
-  const iconRef = useRef(null);
   const [isOverflow, setIsOverflow] = useState(false);
+  const [iconStyle, setIconStyle] = useState({
+    margin: isOverflow ? "0 auto" : "",
+  });
+
+  const [labelStyle, setlabelStyle] = useState({
+    whiteSpace: "nowrap",
+    display: isOverflow ? "none" : "",
+  });
 
   useEffect(() => {
     const checkOverflow = () => {
       const labelNode = labelRef.current;
-      const IconNode = iconRef.current;
-      if (labelNode) {
-        const isOverflowing = labelNode.parentElement.offsetWidth + 40 < labelNode.parentElement.scrollWidth;
-        if (isOverflowing) {
-          labelNode.parentElement.style.display = "none";
-          IconNode.style.margin = "0 auto";
-        } else if (labelNode.parentElement.style.display != "none") {
-          labelNode.parentElement.style.display = "";
-          IconNode.style.margin = "";
+      const parentNode = labelNode ? labelNode.parentElement : null;
+
+      if (parentNode) {
+        const labelTextRef = labelNode.innerHTML;
+        labelNode.innerHTML = "WARNING";
+        const isOverflowing = parentNode.scrollWidth > parentNode.clientWidth;
+        console.log(parentNode, isOverflowing, isOverflow, parentNode.scrollWidth, parentNode.clientWidth);
+        if (isOverflowing !== isOverflow) {
+          setIsOverflow(isOverflowing);
+          setIconStyle({
+            margin: isOverflowing ? "0 auto" : "",
+          });
+          setlabelStyle({
+            whiteSpace: "nowrap",
+            display: isOverflowing ? "none" : "",
+          });
+          parentNode.style.display = isOverflowing ? "none" : "inline-block";
         }
-        setIsOverflow(isOverflowing);
+        labelNode.innerHTML = labelTextRef;
       }
     };
 
-    // Check on mount and window resize
+    const resizeObserver = new ResizeObserver(checkOverflow);
+
+    if (labelRef.current) {
+      const parentElement = labelRef.current.parentElement;
+      resizeObserver.observe(parentElement);
+      checkOverflow(); // Initial check
+    }
+
     window.addEventListener("resize", checkOverflow);
-    if (labelRef != null) new ResizeObserver(checkOverflow).observe(labelRef.current.parentElement.parentElement);
-    checkOverflow();
 
-    // return () => window.removeEventListener("resize", checkOverflow);
+    return () => {
+      window.removeEventListener("resize", checkOverflow);
+      if (labelRef.current) {
+        const parentElement = labelRef.current.parentElement;
+        if (parentElement) {
+          resizeObserver.unobserve(parentElement);
+        }
+      }
+    };
   }, []);
-
-  // Style objects for dynamic styling
-  const iconStyle = {
-    margin: isOverflow ? "0 auto" : "",
-  };
-
-  const labelStyle = {
-    whiteSpace: "nowrap",
-    // display: isOverflow ? "none" : "",
-  };
 
   return (
     <Chip
-      icon={<IconComponent style={iconStyle} ref={iconRef} />}
+      icon={<IconComponent style={iconStyle} />}
       label={
-        <span id={"loll"} ref={labelRef} style={labelStyle}>
+        <span ref={labelRef} style={labelStyle}>
           {label}
         </span>
       }
+      sx={{
+        ...sx,
+      }}
       {...props} // Spread all other props to the Chip component
     />
   );

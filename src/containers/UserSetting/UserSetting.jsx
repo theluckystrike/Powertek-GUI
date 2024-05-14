@@ -36,11 +36,26 @@ const userListGlobal = [
 ];
 
 function UserDialog(props) {
-  const { open, onClose } = props;
+  const { open, onClose, user } = props;
+  const [formData, setFormData] = useState({ ...user });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSave = () => {
+    // Save the changes
+    onClose();
+  };
+
+  const renewApiKey = () => {
+    // Logic to renew API Key
+  };
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Edit User - webdemo</DialogTitle>
+      <DialogTitle>Edit User - {user.username}</DialogTitle>
       <DialogContent>
         <Box sx={{ p: 0.5 }} />
         <NamedContainer title="User Information">
@@ -49,27 +64,110 @@ function UserDialog(props) {
             margin="dense"
             id="username"
             label="User name"
+            name="username"
             type="text"
             fullWidth
             variant="outlined"
+            value={formData.username}
+            onChange={handleChange}
+            disabled={user.isAdmin}
           />
-          <TextField margin="dense" id="fullname" label="Full name" type="text" fullWidth variant="outlined" />
-          <TextField margin="dense" id="password" label="Password" type="password" fullWidth variant="outlined" />
+          <TextField
+            margin="dense"
+            id="fullname"
+            label="Full name"
+            name="fullName"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={formData.fullName}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            id="password"
+            label="Password"
+            name="password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            value={formData.password}
+            onChange={handleChange}
+          />
           <TextField
             margin="dense"
             id="confirmPassword"
             label="Confirm password"
+            name="confirmPassword"
             type="password"
             fullWidth
             variant="outlined"
+            value={formData.confirmPassword}
+            onChange={handleChange}
           />
-          <TextField margin="dense" id="telephone" label="Telephone number" type="tel" fullWidth variant="outlined" />
-          <TextField margin="dense" id="email" label="Email address" type="email" fullWidth variant="outlined" />
-          <FormControlLabel control={<Checkbox checked={true} name="enable" />} label="Enable" />
+          <TextField
+            margin="dense"
+            id="telephone"
+            label="Telephone number"
+            name="telephone"
+            type="tel"
+            fullWidth
+            variant="outlined"
+            value={formData.telephone}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            id="email"
+            label="Email address"
+            name="email"
+            type="email"
+            fullWidth
+            variant="outlined"
+            value={formData.email}
+            onChange={handleChange}
+          />
           <FormControlLabel
-            control={<Checkbox checked={false} name="forceChange" />}
+            control={<Checkbox checked={formData.Enabled} name="Enabled" onChange={handleChange} />}
+            label="Enable"
+            disabled={user.isAdmin}
+          />
+          <FormControlLabel
+            control={<Checkbox checked={formData.forceChange} name="forceChange" onChange={handleChange} />}
             label="Force password change on next login"
           />
+        </NamedContainer>
+        <Box sx={{ p: 0.5 }} />
+        <NamedContainer title="API Key">
+          <TextField
+            margin="dense"
+            name="apiKey"
+            label="API Key"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={formData.apiKey}
+            onChange={handleChange}
+            disabled
+          />
+          <Button onClick={renewApiKey}>Renew API Key</Button>
+        </NamedContainer>
+        <Box sx={{ p: 0.5 }} />
+        <NamedContainer title="RBAC">
+          <TextField
+            select
+            fullWidth
+            margin="dense"
+            label="RBAC"
+            name="rbac"
+            value={formData.rbac}
+            onChange={handleChange}
+            variant="outlined"
+          >
+            <MenuItem value="role1">Role 1</MenuItem>
+            <MenuItem value="role2">Role 2</MenuItem>
+            {/* Add more roles as needed */}
+          </TextField>
         </NamedContainer>
         <Box sx={{ p: 0.5 }} />
         <NamedContainer title="SSH Key">
@@ -82,6 +180,8 @@ function UserDialog(props) {
             multiline
             rows={4}
             variant="outlined"
+            value={formData.sshKey}
+            onChange={handleChange}
           />
         </NamedContainer>
         <Box sx={{ p: 0.5 }} />
@@ -144,7 +244,7 @@ function UserDialog(props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onClose}>Save</Button>
+        <Button onClick={handleSave}>Save</Button>
       </DialogActions>
     </Dialog>
   );
@@ -156,28 +256,13 @@ function UserSetting() {
   const [settingsEdit, setsettingsEdit] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const handleDialogOpen = () => {
-    if (checked) {
-      setDialogOpen(true);
-    } else {
-      alert("Please select a user to edit");
-    }
+  const handleDialogOpen = (user) => {
+    setChecked(user);
+    setDialogOpen(true);
   };
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-  };
-
-  const handleCheckboxChange = (id) => {
-    if (checked && checked.id === id) {
-      setChecked(null);
-    } else {
-      userList.forEach((user) => {
-        if (user.id === id) {
-          setChecked(user);
-        }
-      });
-    }
   };
 
   const toggleUser = (id) => {
@@ -190,19 +275,10 @@ function UserSetting() {
     setUserList(userListCopy);
   };
 
-  const deleteUser = () => {
-    if (checked == null) {
-      alert("Please select a user to delete");
-      return;
-    } else {
-      const userListCopy = [...userList];
-      userListCopy.forEach((user) => {
-        if (user.id === checked.id) {
-          user.delete = true;
-        }
-      });
-      setUserList(userListCopy);
-    }
+  const deleteUser = (id) => {
+    const userListCopy = [...userList];
+    const updatedList = userListCopy.filter((user) => user.id !== id);
+    setUserList(updatedList);
   };
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -222,23 +298,6 @@ function UserSetting() {
               <IconButton size="small" sx={{ fontSize: "24px" }}>
                 <HiUserAdd />
               </IconButton>
-              <IconButton size="small" sx={{ fontSize: "24px" }} onClick={deleteUser}>
-                <MdDelete />
-              </IconButton>
-              <IconButton size="small" sx={{ fontSize: "24px" }} onClick={handleDialogOpen}>
-                <MdEdit />
-              </IconButton>
-              <IconButton
-                value="settingsEdit"
-                selected={settingsEdit}
-                onClick={() => setsettingsEdit(!settingsEdit)}
-                sx={{
-                  fontSize: "20px",
-                }}
-                size="small"
-              >
-                {settingsEdit ? <FaLockOpen color="red" /> : <FaLock color="#FFD700" />}
-              </IconButton>
             </div>
           </div>
         }
@@ -247,32 +306,31 @@ function UserSetting() {
           <Table aria-label="PDU table">
             <TableHead>
               <TableRow>
-                <StyledTableCell align="center">Select</StyledTableCell>
                 <StyledTableCell align="center">Username</StyledTableCell>
                 <StyledTableCell align="center">Full Name</StyledTableCell>
-                <StyledTableCell align="center">Roles</StyledTableCell>
+                <StyledTableCell align="center">RBAC</StyledTableCell>
                 <StyledTableCell align="center">Enabled/Disabled</StyledTableCell>
+                <StyledTableCell align="center">Actions</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {userList
                 .filter((user) => !user.delete)
-                .map((_, index) => (
-                  <TableRow key={index}>
+                .map((user) => (
+                  <TableRow key={user.id}>
+                    <StyledTableCell align="center">{user.username}</StyledTableCell>
+                    <StyledTableCell align="center">{user.fullName}</StyledTableCell>
+                    <StyledTableCell align="center">{user.roles}</StyledTableCell>
                     <StyledTableCell padding="checkbox" align="center">
-                      {!_.isAdmin ? (
-                        <Checkbox checked={checked && checked.id == _.id} onChange={() => handleCheckboxChange(_.id)} />
-                      ) : settingsEdit ? (
-                        <Checkbox checked={checked && checked.id == _.id} onChange={() => handleCheckboxChange(_.id)} />
-                      ) : (
-                        <FaLock />
-                      )}
+                      <Checkbox checked={user.Enabled} onChange={() => toggleUser(user.id)} />
                     </StyledTableCell>
-                    <StyledTableCell align="center">{_.username}</StyledTableCell>
-                    <StyledTableCell align="center">{_.fullName}</StyledTableCell>
-                    <StyledTableCell align="center">{_.roles}</StyledTableCell>
-                    <StyledTableCell padding="checkbox" align="center">
-                      <Checkbox checked={_.Enabled} onChange={() => toggleUser(_.id)} />
+                    <StyledTableCell align="center">
+                      <IconButton size="small" sx={{ fontSize: "24px" }} onClick={() => handleDialogOpen(user)}>
+                        <MdEdit />
+                      </IconButton>
+                      <IconButton size="small" sx={{ fontSize: "24px" }} onClick={() => deleteUser(user.id)}>
+                        <MdDelete />
+                      </IconButton>
                     </StyledTableCell>
                   </TableRow>
                 ))}
@@ -280,7 +338,7 @@ function UserSetting() {
           </Table>
         </TableContainer>
       </NamedContainer>
-      <UserDialog open={isDialogOpen} onClose={handleDialogClose} />
+      {checked && <UserDialog open={isDialogOpen} onClose={handleDialogClose} user={checked} />}
     </Box>
   );
 }
