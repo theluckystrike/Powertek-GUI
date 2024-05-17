@@ -79,6 +79,13 @@ function ManagePDUComponenet() {
     setPdus(pdus.filter((pdu) => pdu.sn !== sn));
   };
 
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    // Add any additional logic you need to handle when the switch is toggled
+  };
+
   return (
     <>
       <Button variant="contained" onClick={() => handleOpenDialog()} color="primary" sx={{ marginBottom: "12px" }}>
@@ -189,9 +196,12 @@ function ManagePDUComponenet() {
       <Typography variant="h5" fontWeight={600} sx={{ marginTop: "12px" }}>
         Power Share
       </Typography>
-      <Button variant="contained" onClick={() => {}} color="primary" sx={{ marginBottom: "12px", marginTop: "12px" }}>
-        Share power with other PDUs
-      </Button>
+      <Box sx={{ marginBottom: "12px", marginTop: "12px" }}>
+        <FormControlLabel
+          control={<Switch checked={checked} onChange={handleChange} color="primary" />}
+          label="Share power with other PDUs"
+        />
+      </Box>
       <Box display="flex" justifyContent="end" mt={2} sx={{ marginTop: "12px" }}>
         <MuiButton variant="contained" color="primary">
           Save

@@ -531,8 +531,17 @@ function Outlet() {
               />
             </Grid>
 
-            <Grid item xs={6}>
-              <Typography variant="caption">Energy (kWh)</Typography>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Energy (kWh)"
+                defaultValue={selectedOutlet.energy} // Replace with actual data
+                margin="dense"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+              {/* <Typography variant="caption">Energy (kWh)</Typography>
               <ReportingBar
                 value={selectedOutlet.energy}
                 min={config[`outletMinMax`][`energy`][0]}
@@ -540,7 +549,7 @@ function Outlet() {
                 gradient={
                   "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,165,0,1) 25%, rgba(0,255,0,1) 50%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%)"
                 }
-              />
+              /> */}
             </Grid>
 
             {/* Alarms */}

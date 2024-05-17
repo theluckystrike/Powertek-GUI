@@ -19,6 +19,7 @@ import {
   FormControlLabel,
   Button,
   MenuItem,
+  InputAdornment,
 } from "@mui/material";
 import Dialog from "../../components/common/DialogWithClose";
 import NamedContainer from "../../components/common/NamedContainer";
@@ -28,9 +29,20 @@ import { HiUserAdd } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import styled from "@emotion/styled";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const userListGlobal = [
-  { id: 1, username: "User1", fullName: "David", roles: "Engineer", Enabled: false, delete: false },
+  {
+    id: 1,
+    username: "User1",
+    fullName: "David",
+    roles: "Engineer",
+    Enabled: false,
+    delete: false,
+    apiKey: "123-45asdnbsdub-abbsibiinnnini-aasd",
+  },
   { id: 2, username: "User2", fullName: "Jane Doe", roles: "Breaker", Enabled: true, delete: false },
   { id: 3, username: "Admin", fullName: "James", roles: "Maintainer", Enabled: true, isAdmin: true, delete: false },
 ];
@@ -51,6 +63,13 @@ function UserDialog(props) {
 
   const renewApiKey = () => {
     // Logic to renew API Key
+  };
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000); // Reset copied status after 2 seconds
   };
 
   return (
@@ -149,6 +168,17 @@ function UserDialog(props) {
             value={formData.apiKey}
             onChange={handleChange}
             disabled
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <CopyToClipboard text={formData.apiKey} onCopy={handleCopy}>
+                    <IconButton edge="end" size="small">
+                      {copied ? <CheckCircleIcon color="success" /> : <ContentCopyIcon />}
+                    </IconButton>
+                  </CopyToClipboard>
+                </InputAdornment>
+              ),
+            }}
           />
           <Button onClick={renewApiKey}>Renew API Key</Button>
         </NamedContainer>
