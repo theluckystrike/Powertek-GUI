@@ -282,6 +282,10 @@ function HomePage(props) {
                   onChange={handleClickOpen}
                   sx={{
                     padding: "0px",
+                    paddingRight: "5px",
+                    paddingLeft: "5px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
                     borderRadius: "5px",
                     textTransform: "none",
                     border: "1px solid rgba(0, 0, 0, 0.87)",

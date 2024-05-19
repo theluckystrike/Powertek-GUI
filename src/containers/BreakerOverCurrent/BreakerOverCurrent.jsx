@@ -121,8 +121,8 @@ function BreakerOverCurrent() {
     return (
       <Chip
         label={status}
-        style={{ backgroundColor: status !== "OPEN" ? "green" : "red", color: "white" }}
-        icon={status !== "OPEN" ? <ThumbUpAltIcon /> : <WarningIcon />}
+        style={{ backgroundColor: status !== "TRIP" ? "green" : "red", color: "white" }}
+        icon={status !== "TRIP" ? <ThumbUpAltIcon /> : <WarningIcon />}
         sx={{
           "& .MuiChip-label": {
             fontWeight: 600,
@@ -209,7 +209,7 @@ function BreakerOverCurrent() {
                   </StyledTableCell>
                   <StyledTableCell align="center">{name}</StyledTableCell>
                   {/* <StyledTableCell align="center">PDU name</StyledTableCell> */}
-                  <StyledTableCell align="center">{getStatusChip(index % 2 === 0 ? "OPEN" : "CLOSED")}</StyledTableCell>
+                  <StyledTableCell align="center">{getStatusChip(index % 2 === 0 ? "TRIP" : "CLOSED")}</StyledTableCell>
                   <StyledTableCell align="center" sx={{ minWidth: "150px" }}>
                     <div>
                       <div>{index}/ 16 A</div>
