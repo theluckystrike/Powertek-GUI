@@ -1,193 +1,78 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Button,
-  Tabs,
-  Tab,
-  Stack,
-  Avatar,
-  Card,
-  CardContent,
-  // Dialog,
+  Grid,
+  Chip,
+  Box,
+  ToggleButton,
   DialogTitle,
   DialogContent,
   TextField,
   DialogActions,
-  IconButton,
-  ToggleButton,
+  Button,
 } from "@mui/material";
 import Dialog from "../../components/common/DialogWithClose";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Chip from "@mui/material/Chip";
-
 import OfflineBoltIcon from "@mui/icons-material/OfflineBolt";
-import SettingsIcon from "@mui/icons-material/Settings";
-
-import { FaLockOpen } from "react-icons/fa";
-import { FaLock } from "react-icons/fa";
-
+import { FaLockOpen, FaLock } from "react-icons/fa";
 import NamedContainer from "../../components/common/NamedContainer";
 import InletStats from "../../components/homepage/InletStats";
 import CircuitBreakerStatus from "../../components/homepage/CircuitBreakerStatus";
-
 import ConfigContext from "../../components/common/ConfigContext";
 import PDUSelect from "../../components/common/PDUSelect";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-
 import { useTheme } from "@emotion/react";
-import { ReportingBar } from "../../components/common/ReportingBar";
-import EventLogtab from "./EventLogtab";
 import AlarmListTab from "./AlarmListTab";
+import axios from "axios";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <div>{children}</div>}
-    </Typography>
-  );
-}
 function HomePage(props) {
   const { config, setConfig } = useContext(ConfigContext);
 
   const [open, setOpen] = useState(false);
-  const [settingsEdit, setsettingsEdit] = useState(false);
+  const [settingsEdit, setSettingsEdit] = useState(false);
+  const [stats, setStats] = useState([]);
+  const [currentMap, setCurrentMap] = useState({});
+  const [circuitBreakerMap, setCircuitBreakerMap] = useState({});
+  const [outletStatus, setOutletStatus] = useState([]);
+  const [value, setValue] = useState(0);
+
+  const outletWarningThreshold = config[`outletWarningThreshold`];
+  const outletErrorThreshold = config[`outletErrorThreshold`];
+  const circuitBreakerNumber = config[`circuitBreakerNames`].length;
+  const maxCurrent = config[`maxBreakerCurrent`];
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("/api/HomePageData");
+      const data = response.data;
+      console.log(data);
+      setStats(data.stats);
+      setCurrentMap(data.currentMap);
+      setCircuitBreakerMap(data.circuitBreakerMap);
+      setOutletStatus(data.outletStatus);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 10000);
+    return () => clearInterval(interval);
+  }, [config]);
 
   const handleClickOpen = () => {
     setOpen(true);
-    setsettingsEdit(!settingsEdit);
+    setSettingsEdit(!settingsEdit);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setsettingsEdit(!settingsEdit);
+    setSettingsEdit(!settingsEdit);
   };
 
   const handleSave = () => {
     console.log("Threshold saved");
     handleClose();
   };
-
-  const [stats, setStats] = useState([
-    { name: "Power Factor", value: "0.45" },
-    { name: "Frequency", value: "50Hz" },
-    { name: "RMS Voltage", value: "220V" },
-    { name: "Active Power", value: "28.31 KWh" },
-    { name: "Reactive Power", value: "0.5VAr" },
-    { name: "Apparent Power", value: "65.60kVAh" },
-  ]);
-
-  const [currentMap, setCurrentMap] = useState(
-    config["inlets"].reduce(
-      (acc, curr) => {
-        acc[curr] = Math.floor(Math.random() * 16);
-        return acc;
-      },
-      {
-        // L1: 0,
-        // L2: 0,
-        // L3: 0,
-        // Neutral: 0,
-      }
-    )
-  );
-
-  const [circuitBreakerMap, setCircuitBreakerMap] = useState({});
-  const [outletStatus, setOutletStatus] = useState([]);
-
-  // Configs
-  const outletWarningThreshold = config[`outletWarningThreshold`];
-  const outletErrorThreshold = config[`outletErrorThreshold`];
-  const circuitBreakerNumber = config[`circuitBreakerNames`].length;
-  const maxCurrent = config[`maxBreakerCurrent`];
-
-  useEffect(() => {
-    let temp = {};
-    for (let name of config[`circuitBreakerNames`]) {
-      temp[name] = Math.floor(Math.random() * 16);
-    }
-    setCircuitBreakerMap(temp);
-
-    let outletStatusTemp = [];
-    for (let i = 1; i <= config[`outletNumber`]; i++) {
-      let temp2 = {};
-      temp2[`Label`] = `Outlet ${i}`;
-      temp2[`Current`] = (Math.random() * 16).toFixed(2);
-
-      if (temp2[`Current`] > outletWarningThreshold) {
-        temp2[`Status`] = "warning";
-      } else if (temp2[`Current`] > outletErrorThreshold) {
-        temp2[`Status`] = "error";
-      } else {
-        temp2[`Status`] = "success";
-      }
-
-      outletStatusTemp.push(temp2);
-    }
-    setOutletStatus(outletStatusTemp);
-
-    const interval = setInterval(() => {
-      setCurrentMap(
-        config["inlets"].reduce(
-          (acc, curr) => {
-            acc[curr] = Math.floor(Math.random() * 16);
-            return acc;
-          },
-          {
-            // L1: 0,
-            // L2: 0,
-            // L3: 0,
-            // Neutral: 0,
-          }
-        )
-      );
-
-      let temp = {};
-      for (let name of config[`circuitBreakerNames`]) {
-        temp[name] = Math.floor(Math.random() * 16);
-      }
-      setCircuitBreakerMap(temp);
-
-      let outletStatusTemp = [];
-
-      for (let i = 1; i <= config[`outletNumber`]; i++) {
-        let temp2 = {};
-        temp2[`Label`] = `Outlet ${i}`;
-        temp2[`Current`] = (Math.random() * 16).toFixed(2);
-
-        if (temp2[`Current`] > outletErrorThreshold) {
-          temp2[`Status`] = "error";
-        } else if (temp2[`Current`] > outletWarningThreshold) {
-          temp2[`Status`] = "warning";
-        } else {
-          temp2[`Status`] = "success";
-        }
-        outletStatusTemp.push(temp2);
-      }
-
-      setOutletStatus(outletStatusTemp);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [config]);
-
-  // tabs
-  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -273,9 +158,6 @@ function HomePage(props) {
                   alignItems: { xs: "start", sm: "center" },
                 }}
               >
-                {/* <Typography variant="h5" sx={{ fontWeight: "600", mb: { xs: 1, sm: 0 } }}>
-                  Residual Current Monitoring
-                </Typography> */}
                 <ToggleButton
                   value="settingsEdit"
                   selected={settingsEdit}
@@ -311,10 +193,7 @@ function HomePage(props) {
               }}
             >
               <Typography variant="h5" fontWeight="600" sx={{ width: { xs: "100%", sm: "30%" }, textAlign: "center" }}>
-                Residual Current : 0.0 mA{" "}
-                {/* <Chip sx={{ mx: 1 }} label="Error" color="error" />
-                / */}
-                <Chip label="Normal" color="success" />
+                Residual Current : 0.0 mA <Chip label="Normal" color="success" />
               </Typography>
 
               <Dialog open={open} onClose={handleClose}>
@@ -341,18 +220,11 @@ function HomePage(props) {
               </Dialog>
 
               <Typography variant="h5" fontWeight="600" sx={{ width: { xs: "100%", sm: "39%" }, textAlign: "center" }}>
-                Power Share :{" "}
-                {/* <Chip sx={{ mx: 1 }} label="Inactive" color="primary" />
-                / */}
-                <Chip label="Active/Backup Power" color="error" />
-                {/* /
-                <Chip label="Active/Main Power" color="success" /> */}
+                Power Share : <Chip label="Active/Backup Power" color="error" />
               </Typography>
 
               <Typography variant="h5" fontWeight="600" sx={{ width: { xs: "100%", sm: "30%" } }}>
                 Over Voltage Protection : <Chip sx={{ mx: 1 }} label="Activated" color="error" />
-                {/* /
-                <Chip label="Normal" color="success" /> */}
               </Typography>
             </Box>
           </NamedContainer>
@@ -383,37 +255,9 @@ function HomePage(props) {
           </Grid>
         </Grid>
 
-        {/* tabs */}
         <Grid item xs={12}>
           <NamedContainer title="Alarms">
-            {/* <Box sx={{ borderBottom: 1, borderColor: "divider" }}> */}
-            {/* <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-                <Tab
-                  icon={
-                    <Chip
-                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
-                      label="Alarm List"
-                      clickable={true}
-                    />
-                  }
-                />
-                <Tab
-                  icon={
-                    <Chip
-                      sx={{ "& .MuiChip-label": { fontWeight: 600 }, borderRadius: "9px" }}
-                      label="Event Log"
-                      clickable={true}
-                    />
-                  }
-                />
-              </Tabs> */}
-            {/* <TabPanel role="tabpanel" value={value} index={0}> */}
             <AlarmListTab />
-            {/* </TabPanel> */}
-            {/* <TabPanel role="tabpanel" value={value} index={1}>
-                <EventLogtab />
-              </TabPanel> */}
-            {/* </Box> */}
           </NamedContainer>
         </Grid>
       </Grid>
