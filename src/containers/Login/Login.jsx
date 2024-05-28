@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -24,13 +26,23 @@ function Login(props) {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (username === "admin" && password === "admin") {
+    try {
+      const response = await axios.post(
+        "/api/login",
+        {},
+        {
+          withCredentials: true,
+          auth: {
+            username: username,
+            password: password,
+          },
+        }
+      );
       localStorage.setItem("isAuthenticated", true);
       navigate("/");
-    } else {
-      localStorage.setItem("isAuthenticated", false);
+    } catch (error) {
       setUsername("");
       setPassword("");
       setOpenSnackbar(true);
@@ -56,19 +68,19 @@ function Login(props) {
           display: "flex",
           flexGrow: "1",
           background:
-            theme.palette.mode == "light"
+            theme.palette.mode === "light"
               ? `linear-gradient(
                 180deg, 
                 #87CEEB 0%, /* Soft Sky Blue */
                 #E6E6FA 50%, /* Gentle Lavender */
                 #FFB6C1 100% /* Pastel Pink */
-              );`
+              )`
               : `linear-gradient(
                 180deg,
                 #0f4c81 0%,    /* Deep blue at the top */
                 #1e3b5a 50%,   /* Mid-tone blue in the middle */
                 #2c3e50 100%   /* Dark slate grey at the bottom */
-              );`,
+              )`,
         }}
       >
         <Grid item lg={3} md={8} xs={8}>
@@ -83,10 +95,10 @@ function Login(props) {
               </Box>
             }
             paperSx={{
-              backgroundColor: theme.palette.mode == "light" ? "rgba(255, 255, 255, 0.3)" : "rgba(255, 255, 255, 0.1)",
+              backgroundColor: theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.3)" : "rgba(255, 255, 255, 0.1)",
               backdropFilter: "blur(5px)",
               boxShadow:
-                theme.palette.mode == "light"
+                theme.palette.mode === "light"
                   ? "0px 0px 35px 12px rgba(0,0,0,0.25)"
                   : "0px 0px 35px 12px rgba(255,255,255, 0.25)",
               borderRadius: "10px",
@@ -144,7 +156,7 @@ function Login(props) {
                 sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", height: "10%" }}
               >
                 <IconButton size="small" onClick={props.toggleTheme}>
-                  {theme.palette.mode == "light" ? <LightModeIcon /> : <DarkModeIcon />}
+                  {theme.palette.mode === "light" ? <LightModeIcon /> : <DarkModeIcon />}
                 </IconButton>
               </Box>
             </Box>

@@ -33,4 +33,32 @@ export const handlers = [
       ],
     });
   }),
+
+  http.post("/api/login", async ({ request }) => {
+    if (request.headers.get("Authorization").split(" ")[1] == "YWRtaW46YWRtaW4=") {
+      return new HttpResponse(null, {
+        headers: {
+          "Set-Cookie": `session_token=1234abcd; Domain=localhost; Path=/; Expires=${new Date(
+            Date.now() + 200000
+          ).toUTCString()}; SameSite=None; Secure, isAuthenticated=true;Domain=localhost; Path=/; Expires=${new Date(
+            Date.now() + 200000
+          ).toUTCString()}; SameSite=None; Secure `,
+        },
+      });
+    } else {
+      return new HttpResponse(null, { status: 401 });
+    }
+  }),
+
+  http.get("/api/logout", async ({ request }) => {
+    return new HttpResponse(null, {
+      headers: {
+        "Set-Cookie": `session_token=; Domain=localhost; Path=/; Expires=${new Date(
+          Date.now() - 200000
+        ).toUTCString()}; SameSite=None; Secure, isAuthenticated=;Domain=localhost; Path=/; Expires=${new Date(
+          Date.now() - 200000
+        ).toUTCString()}; SameSite=None; Secure `,
+      },
+    });
+  }),
 ];

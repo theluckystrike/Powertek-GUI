@@ -1,5 +1,7 @@
 import { useState, useContext } from "react";
 import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 import PrivateRoute from "./components/common/PrivateRoute";
 import { ThemeProvider } from "@mui/material/styles";
@@ -43,7 +45,7 @@ function App() {
   const allConfig = default_config;
   const allUIConfig = UI_Config;
   const [theme, setTheme] = useState("dark");
-  const [config, setConfig] = useState(default_config[0]); // [config, setConfig
+  const [config, setConfig] = useState(default_config[0]);
   const [UIConfig, setUIConfig] = useState(UI_Config[0]);
   const [sideBarCollapsed, setsideBarCollapsed] = useState(false);
   const [sideBarToggle, setsideBarToggle] = useState(false);
@@ -52,18 +54,19 @@ function App() {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
-  const logout = () => {
-    localStorage.setItem("isAuthenticated", "false");
-    navigate("/login");
+  const logout = async () => {
+    try {
+      await axios.get("/api/logout");
+      Cookies.remove("sessionToken");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+      navigate("/login");
+    }
   };
 
   const isAuthenticated = () => {
-    const isAuthenticated = localStorage.getItem("isAuthenticated");
-    if (isAuthenticated === "true") {
-      return true;
-    } else {
-      return false;
-    }
+    return !!Cookies.get("isAuthenticated");
   };
 
   return (
@@ -103,7 +106,6 @@ function App() {
                 }
               >
                 <Route path="/" element={<HomePage />} />
-                {/* <Route index element={<PrivateRoute Component={<HomePage />} />} /> */}
                 <Route path="/inlet" element={<PrivateRoute Component={<Inlet />} />} />
                 <Route path="/outlet" element={<PrivateRoute Component={<OutletPage />} />} />
                 <Route

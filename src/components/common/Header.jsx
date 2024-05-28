@@ -11,10 +11,11 @@ import LoginIcon from "@mui/icons-material/Login";
 import LanguageIcon from "@mui/icons-material/Language";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 import { Tooltip, useTheme } from "@mui/material";
 import { MenuItem, FormControl, Select, InputLabel } from "@mui/material";
 import ConfigContext, { UIConfigContext } from "./ConfigContext";
+import { useNavigate } from "react-router-dom";
 
 import { IoFlower } from "react-icons/io5";
 import { GiBreakingChain } from "react-icons/gi";
@@ -38,9 +39,9 @@ const pageStyles = {
 };
 
 const StyledSelect = styled(Select)(({ theme }) => ({
-  'fieldset': {
+  fieldset: {
     borderColor: theme.palette.mode === "dark" ? "#233a57 !important" : "#233a57 !important",
-  }
+  },
 }));
 
 export default function Header(props) {
@@ -49,6 +50,7 @@ export default function Header(props) {
   const { config, setConfig, allConfig } = React.useContext(ConfigContext);
   const { UIConfig, setUIConfig, allUIConfig } = React.useContext(UIConfigContext);
   const [value, setValue] = React.useState(0);
+  const navigate = useNavigate();
 
   const handleConfigChange = (event) => {
     setConfig(allConfig[event.target.value]);
@@ -63,10 +65,10 @@ export default function Header(props) {
       setDisplayStyle(window.innerWidth < 769 ? "block" : "none");
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -78,10 +80,10 @@ export default function Header(props) {
           edge="start"
           color="inherit"
           aria-label="menu"
-          style = {{lineHeight:"0.7"}}
+          style={{ lineHeight: "0.7" }}
           sx={{ mr: 2, display: displayStyle }}
           onClick={() => {
-            setsideBarToggle(!sideBarToggle)
+            setsideBarToggle(!sideBarToggle);
           }}
         >
           <MenuIcon />
@@ -97,9 +99,12 @@ export default function Header(props) {
             value={value}
             onChange={handleConfigChange}
             size="small"
-            sx={{ maxWidth: "200px", maxHeight: "40px", margin: "auto",
+            sx={{
+              maxWidth: "200px",
+              maxHeight: "40px",
+              margin: "auto",
               color: theme.palette.mode === "dark" ? "#fff !important" : "#fff !important",
-          }}
+            }}
           >
             <MenuItem value={0}>Config 1 (Company 1 || Single phase 63)</MenuItem>
             <MenuItem value={1}>Config 2 (Company 2 || three phase WYE 63)</MenuItem>
@@ -108,22 +113,36 @@ export default function Header(props) {
           <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
             <LanguageIcon />
           </IconButton>
-          <Tooltip title={props.isAuthenticated ? "Logout" : "Login"} placement="bottom">
-            <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.logout}>
-              {props.isAuthenticated ? <LogoutIcon /> : <LoginIcon />}
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Account" placement="bottom">
+          {props.isAuthenticated ? (
+            <Tooltip title={"Logout"} placement="bottom">
+              <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.logout}>
+                {<LogoutIcon />}
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title={"Login"} placement="bottom">
+              <IconButton
+                size="large"
+                edge="end"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={() => navigate("/login")}
+              >
+                {<AccountCircle />}
+              </IconButton>
+            </Tooltip>
+          )}
+          {/* <Tooltip title="Account" placement="bottom">
             <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
               <AccountCircle />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip title="Toggle Theme" placement="bottom">
             <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.toggleTheme}>
               {theme.palette.mode == "light" ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton>
           </Tooltip>
-          <Tooltip title={config.daisyChain ? "Daisy Chain Enabled" : "Daisy Chain Disabled"} placement="bottom">
+          {/* <Tooltip title={config.daisyChain ? "Daisy Chain Enabled" : "Daisy Chain Disabled"} placement="bottom">
             <IconButton
               size="large"
               edge="end"
@@ -137,7 +156,7 @@ export default function Header(props) {
             >
               {config.daisyChain ? <IoFlower /> : <GiBreakingChain />}
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       </Toolbar>
     </AppBar>
