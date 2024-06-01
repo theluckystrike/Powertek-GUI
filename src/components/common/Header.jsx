@@ -119,24 +119,24 @@ export default function Header(props) {
                 {<LogoutIcon />}
               </IconButton>
             </Tooltip>
-          ) : (
-            <Tooltip title={"Login"} placement="bottom">
-              <IconButton
-                size="large"
-                edge="end"
-                aria-haspopup="true"
-                color="inherit"
-                onClick={() => navigate("/login")}
-              >
-                {<AccountCircle />}
-              </IconButton>
-            </Tooltip>
-          )}
-          {/* <Tooltip title="Account" placement="bottom">
-            <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
-              <AccountCircle />
+          ) : null}
+          <Tooltip title={props.isAuthenticated ? "Change Password" : "Login"} placement="bottom">
+            <IconButton
+              size="large"
+              edge="end"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={() => {
+                if (props.isAuthenticated) {
+                  //change password
+                } else {
+                  navigate("/login");
+                }
+              }}
+            >
+              {<AccountCircle />}
             </IconButton>
-          </Tooltip> */}
+          </Tooltip>
           <Tooltip title="Toggle Theme" placement="bottom">
             <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.toggleTheme}>
               {theme.palette.mode == "light" ? <LightModeIcon /> : <DarkModeIcon />}

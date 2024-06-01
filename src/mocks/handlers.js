@@ -61,4 +61,31 @@ export const handlers = [
       },
     });
   }),
+
+  http.get("/api/devicesettings/network/networkmode", async ({ request }) => {
+    // Simulating fetching network mode from a database or other source
+    const networkMode = "Independent"; // or "VRF" or "Link-Local"
+
+    return new HttpResponse(JSON.stringify({ NetworkMode: networkMode }), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }),
+
+  // Mock PUT endpoint for updating network mode
+  http.put("/api/devicesettings/network/networkmode", async ({ request }) => {
+    const requestBody = await request.json();
+    const { NetworkMode } = requestBody;
+
+    // Simulating saving network mode to a database or other source
+    // Here, we're just logging the new network mode for demonstration
+    console.log(`Updated NetworkMode to: ${NetworkMode}`);
+
+    return new HttpResponse(JSON.stringify({ NetworkMode: NetworkMode }), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }),
 ];

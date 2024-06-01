@@ -41,6 +41,7 @@ import Backup from "./containers/Maintenance/Backup";
 import APIErrorDemo from "./containers/APIErrorDemo/APIErrorDemo";
 
 function App() {
+  // axios.defaults.baseURL = "https://powertek.xaviram.com/";
   const navigate = useNavigate();
   const allConfig = default_config;
   const allUIConfig = UI_Config;

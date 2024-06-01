@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -23,6 +23,7 @@ import NamedContainer, { CollapsiableNamedContainer } from "../../../components/
 import MuiButton from "../../../components/common/styled/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import axios from "axios";
 
 function NetworkSettingsForm() {
   const ipv4Routes = [];
@@ -162,7 +163,7 @@ function IPConfiguration() {
   );
 }
 
-function IPv4() {
+function IPv4({ mode }) {
   const [ipv4Enabled, setIpv4Enabled] = useState(true);
   const [ipv4Configuration, setIpv4Configuration] = useState("static");
   const [ipAddress, setIpAddress] = useState("192.168.33.130/24");
@@ -173,6 +174,37 @@ function IPv4() {
   const [routes, setRoutes] = useState([
     { id: 1, network: "192.168.1.0", mask: "255.255.255.0", metric: 1, nextHop: "192.168.0.15" },
   ]);
+
+  useEffect(() => {
+    // Fetch initial IPv4 settings
+    axios
+      .get("/api/devicesettings/network/ipv4")
+      .then((response) => {
+        const data = response.data;
+
+        if (mode === "VRF") {
+          const eth1 = data.eth1;
+          setIpv4Enabled(eth1.ipv4enable);
+          setIpv4Configuration(eth1.mode);
+          setIpAddress(eth1.ipaddress);
+          setDefaultGateway(eth1.gateway);
+          setDns1(eth1.dns1);
+          setDns2(eth1.dns2);
+          setDns3(eth1.dns3);
+        } else {
+          setIpv4Enabled(data.ipv4enable);
+          setIpv4Configuration(data.mode);
+          setIpAddress(data.ipaddress);
+          setDefaultGateway(data.gateway);
+          setDns1(data.dns1);
+          setDns2(data.dns2);
+          setDns3(data.dns3);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching IPv4 settings:", error);
+      });
+  }, [mode]);
 
   const handleAddRoute = () => {
     const newRoute = { id: Date.now(), network: "", mask: "", metric: 0, nextHop: "" };
@@ -191,6 +223,51 @@ function IPv4() {
 
   const handleRemoveRoute = (id) => {
     setRoutes(routes.filter((route) => route.id !== id));
+  };
+
+  const handleSave = () => {
+    const payload = {
+      ipv4enable: ipv4Enabled,
+      mode: ipv4Configuration,
+      ipaddress: ipAddress,
+      netmask: "255.255.255.0", // Assuming netmask is static, can be modified
+      gateway: defaultGateway,
+      dnsdhcp: false,
+      dns1: dns1,
+      dns2: dns2,
+      dns3: dns3,
+    };
+
+    if (mode === "VRF") {
+      payload.eth1 = { ...payload };
+      delete payload.ipv4enable;
+      delete payload.mode;
+      delete payload.ipaddress;
+      delete payload.netmask;
+      delete payload.gateway;
+      delete payload.dnsdhcp;
+      delete payload.dns1;
+      delete payload.dns2;
+      delete payload.dns3;
+
+      axios
+        .put("/api/devicesettings/network/ipv4", payload)
+        .then((response) => {
+          console.log("IPv4 settings saved:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error saving IPv4 settings:", error);
+        });
+    } else {
+      axios
+        .put("/api/devicesettings/network/ipv4", payload)
+        .then((response) => {
+          console.log("IPv4 settings saved:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error saving IPv4 settings:", error);
+        });
+    }
   };
 
   return (
@@ -312,7 +389,7 @@ function IPv4() {
       </Box>
 
       <Box display="flex" justifyContent="end">
-        <MuiButton variant="contained" color="primary">
+        <MuiButton variant="contained" color="primary" onClick={handleSave}>
           Save
         </MuiButton>
       </Box>
@@ -958,6 +1035,33 @@ function Wireless() {
 function Network() {
   const [networkMode, setNetworkMode] = useState("Independent");
 
+  useEffect(() => {
+    // Fetch the initial network mode from the API
+    axios
+      .get("/api/devicesettings/network/networkmode")
+      .then((response) => {
+        setNetworkMode(response.data.NetworkMode);
+      })
+      .catch((error) => {
+        console.error("Error fetching network mode:", error);
+      });
+  }, []);
+
+  const handleNetworkModeChange = (event) => {
+    const newMode = event.target.value;
+    setNetworkMode(newMode);
+
+    // Update the network mode in the API
+    axios
+      .put("/api/devicesettings/network/networkmode", { NetworkMode: newMode })
+      .then((response) => {
+        console.log("Network mode updated:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating network mode:", error);
+      });
+  };
+
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
       <Grid container rowSpacing={2}>
@@ -971,7 +1075,7 @@ function Network() {
                 id="network-mode-select"
                 value={networkMode}
                 label="Network Mode"
-                onChange={(e) => setNetworkMode(e.target.value)}
+                onChange={handleNetworkModeChange}
                 sx={{ marginBottom: "20px" }}
               >
                 <MenuItem value="Independent">Independent</MenuItem>
@@ -985,7 +1089,7 @@ function Network() {
                 <CollapsiableNamedContainer
                   title={networkMode == "VRF" || networkMode == "Link-Local" ? "IPv4-Eth1" : "IPv4"}
                 >
-                  <IPv4 />
+                  <IPv4 mode={networkMode} />
                 </CollapsiableNamedContainer>
               </Grid>
               <Grid item xs={12}>
