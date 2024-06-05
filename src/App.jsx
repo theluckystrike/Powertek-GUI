@@ -2,9 +2,11 @@ import { useState, useContext } from "react";
 import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { apiSuccessMessages } from "./components/common/apiSuccessMessages";
 
 import PrivateRoute from "./components/common/PrivateRoute";
 import { ThemeProvider } from "@mui/material/styles";
+import { Snackbar, Alert } from "@mui/material";
 import ConfigContext, { UIConfigContext } from "./components/common/ConfigContext";
 import Box from "@mui/material/Box";
 
@@ -41,7 +43,6 @@ import Backup from "./containers/Maintenance/Backup";
 import APIErrorDemo from "./containers/APIErrorDemo/APIErrorDemo";
 
 function App() {
-  // axios.defaults.baseURL = "https://powertek.xaviram.com/";
   const navigate = useNavigate();
   const allConfig = default_config;
   const allUIConfig = UI_Config;
@@ -51,6 +52,49 @@ function App() {
   const [sideBarCollapsed, setsideBarCollapsed] = useState(false);
   const [sideBarToggle, setsideBarToggle] = useState(false);
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+  const matchApiMessage = (url, method) => {
+    const requestKey = `${method.toUpperCase()} ${url}`;
+    for (let [key, message] of Object.entries(apiSuccessMessages)) {
+      const regexKey = key.replace(/\*/g, ".*"); // Replace * with .* to create a regex pattern
+      const regex = new RegExp(`^${regexKey}$`);
+      if (regex.test(requestKey)) {
+        return message;
+      }
+    }
+    return null;
+  };
+
+  axios.defaults.baseURL = "https://powertek.xaviram.com/";
+  axios.interceptors.response.use(
+    (response) => {
+      if (response.status === 200) {
+        const message = matchApiMessage(response.config.url, response.config.method.toUpperCase());
+        if (message) {
+          setSnackbarMessage(message);
+          setSnackbarSeverity("success");
+          setSnackbarOpen(true);
+        }
+      }
+      return response;
+    },
+    (error) => {
+      if (error.response && error.response.status === 403) {
+        localStorage.setItem("redirectedDueTo403", "true");
+        setSnackbarOpen(false);
+        navigate("/login");
+      } else {
+        setSnackbarMessage(error.response.data.detail);
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
+      return Promise.reject(error);
+    }
+  );
+
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
@@ -58,7 +102,8 @@ function App() {
   const logout = async () => {
     try {
       await axios.get("/api/logout");
-      Cookies.remove("sessionToken");
+      Cookies.remove("session_token");
+      Cookies.remove("isAuthenticated");
       navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);
@@ -141,6 +186,11 @@ function App() {
                 <Route path="/about" element={<h1>About</h1>} />
               </Route>
             </Routes>
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+              <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: "100%" }}>
+                {snackbarMessage}
+              </Alert>
+            </Snackbar>
           </div>
         </ThemeProvider>
       </UIConfigContext.Provider>

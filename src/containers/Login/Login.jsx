@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -24,7 +24,17 @@ function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarText, setSnackbarText] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const redirectedDueTo403 = localStorage.getItem("redirectedDueTo403");
+    if (redirectedDueTo403) {
+      setSnackbarText("Unauthorized access, please login to gain access!");
+      setOpenSnackbar(true);
+      localStorage.removeItem("redirectedDueTo403");
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -45,6 +55,7 @@ function Login(props) {
     } catch (error) {
       setUsername("");
       setPassword("");
+      setSnackbarText("Incorrect Username or Password!");
       setOpenSnackbar(true);
     }
   };
@@ -165,7 +176,7 @@ function Login(props) {
       </Grid>
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <MuiAlert onClose={handleCloseSnackbar} severity="error" sx={{ width: "100%" }}>
-          Incorrect password!
+          {snackbarText}
         </MuiAlert>
       </Snackbar>
     </>

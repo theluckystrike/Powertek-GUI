@@ -7,6 +7,10 @@ const PrivateRoute = ({ Component }) => {
     return !!Cookies.get("isAuthenticated");
   };
 
+  if (!isAuthenticated()) {
+    localStorage.setItem("redirectedDueTo403", "true");
+  }
+
   return isAuthenticated() ? Component : <Navigate to="/login" replace />;
 };
 
