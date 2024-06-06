@@ -113,13 +113,6 @@ export default function Header(props) {
           <IconButton size="large" edge="end" aria-haspopup="true" color="inherit">
             <LanguageIcon />
           </IconButton>
-          {props.isAuthenticated ? (
-            <Tooltip title={"Logout"} placement="bottom">
-              <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.logout}>
-                {<LogoutIcon />}
-              </IconButton>
-            </Tooltip>
-          ) : null}
           <Tooltip title={props.isAuthenticated ? "Change Password" : "Login"} placement="bottom">
             <IconButton
               size="large"
@@ -137,6 +130,13 @@ export default function Header(props) {
               {<AccountCircle />}
             </IconButton>
           </Tooltip>
+          {props.isAuthenticated ? (
+            <Tooltip title={"Logout"} placement="bottom">
+              <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.logout}>
+                {<LogoutIcon />}
+              </IconButton>
+            </Tooltip>
+          ) : null}
           <Tooltip title="Toggle Theme" placement="bottom">
             <IconButton size="large" edge="end" aria-haspopup="true" color="inherit" onClick={props.toggleTheme}>
               {theme.palette.mode == "light" ? <LightModeIcon /> : <DarkModeIcon />}

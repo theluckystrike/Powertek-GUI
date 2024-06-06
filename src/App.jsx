@@ -186,7 +186,12 @@ function App() {
                 <Route path="/about" element={<h1>About</h1>} />
               </Route>
             </Routes>
-            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={3000}
+              onClose={() => setSnackbarOpen(false)}
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            >
               <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: "100%" }}>
                 {snackbarMessage}
               </Alert>
