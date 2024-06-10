@@ -22,6 +22,7 @@ import PDUSelect from "../../components/common/PDUSelect";
 import { useTheme } from "@emotion/react";
 import AlarmListTab from "./AlarmListTab";
 import axios from "axios";
+import { alpha } from "@mui/system";
 
 function HomePage(props) {
   const { config, setConfig } = useContext(ConfigContext);
@@ -30,7 +31,7 @@ function HomePage(props) {
   const [settingsEdit, setSettingsEdit] = useState(false);
   const [stats, setStats] = useState([]);
   const [currentMap, setCurrentMap] = useState({});
-  const [circuitBreakerMap, setCircuitBreakerMap] = useState({});
+  const [circuitBreakerMap, setCircuitBreakerMap] = useState([]);
   const [outletStatus, setOutletStatus] = useState([]);
   const [value, setValue] = useState(0);
 
@@ -79,6 +80,52 @@ function HomePage(props) {
   };
 
   const theme = useTheme();
+
+  const statusToColor = (status) => {
+    if (theme.palette.mode === "dark") {
+      switch (status) {
+        case "off":
+          return "rgba(64, 64, 64, 1)"; // darker gray
+        case "normal":
+          return "rgba(0, 100, 0, 1)"; // darker green
+        case "success":
+          return "rgba(0, 100, 0, 1)"; // darker green
+        case "warning":
+          return "rgba(255, 140, 0, 1)"; // darker orange
+        case "critical":
+          return "rgba(139, 0, 0, 1)"; // darker red
+        case "free":
+          return "rgba(70, 130, 180, 1)"; // steel blue
+        case "nodata":
+          return "rgba(105, 105, 105, 1)"; // dim gray
+        case "reset":
+          return "rgba(219, 112, 147, 1)"; // darker pink
+        default:
+          return "rgba(255, 255, 255, 1)"; // white
+      }
+    } else {
+      switch (status) {
+        case "off":
+          return "rgba(169, 169, 169, 1)"; // dark gray
+        case "normal":
+          return "rgba(0, 128, 0, 1)"; // green
+        case "success":
+          return "rgba(0, 128, 0, 1)"; // green
+        case "warning":
+          return "rgba(255, 165, 0, 1)"; // orange
+        case "critical":
+          return "rgba(255, 0, 0, 1)"; // red
+        case "free":
+          return "rgba(173, 216, 230, 1)"; // light blue
+        case "nodata":
+          return "rgba(128, 128, 128, 1)"; // gray
+        case "reset":
+          return "rgba(255, 192, 203, 1)"; // pink
+        default:
+          return "rgba(0, 0, 0, 1)"; // black
+      }
+    }
+  };
 
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>
@@ -134,10 +181,16 @@ function HomePage(props) {
                   }}
                 >
                   <Chip
-                    sx={{ "& .MuiChip-label": { fontWeight: 600 }, width: "200px" }}
+                    sx={(theme) => ({
+                      "& .MuiChip-label": { fontWeight: 600 },
+                      width: "200px",
+                      bgcolor: statusToColor(outlet[`Status`]),
+                      "&:hover": {
+                        bgcolor: alpha(statusToColor(outlet[`Status`]), 0.8),
+                      },
+                    })}
                     icon={<OfflineBoltIcon />}
-                    color={outlet[`Status`]}
-                    label={`${outlet["Label"]} (${outlet["Current"]} A)`}
+                    label={`${outlet["Label"]} (${outlet["Current"]})`}
                     clickable={true}
                   />
                 </Grid>

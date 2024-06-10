@@ -7,21 +7,21 @@ import { ReportingBar } from "../common/ReportingBar";
 import { Box, Chip } from "@mui/material";
 import { IoMdWarning } from "react-icons/io";
 
-function CircuitBreakerStatus({ circuitBreakerMap = {}, maxCurrent = 16, minCurrent = 0 }) {
+function CircuitBreakerStatus({ circuitBreakerMap, maxCurrent = 16, minCurrent = 0 }) {
   return (
     <Grid container spacing={2} sx={{ display: "flex", justifyContent: "normal" }}>
-      {Object.keys(circuitBreakerMap).map((key, index) => (
-        <Grid item xs="auto" key={key}>
+      {circuitBreakerMap.map((breaker, index) => (
+        <Grid item xs="auto" key={index}>
           <Item color="#fff" sx={{ boxShadow: "none", width: "160px" }}>
             <Typography variant="body1" component="div" fontWeight="600" sx={{ textAlign: "center" }}>
-              {key} :{" "}
+              {breaker[`label`]} :{" "}
             </Typography>
-            {index % 2 == 0 ? (
+            {breaker["status"] !== "trip" ? (
               <>
                 <Typography variant="body1" component="div" fontWeight="600" sx={{ textAlign: "center" }}>
-                  {circuitBreakerMap[key]} / {maxCurrent} A
+                  {breaker["current"]} / {maxCurrent} A
                 </Typography>
-                <ReportingBar value={circuitBreakerMap[key]} max={maxCurrent} min={minCurrent} />
+                <ReportingBar value={parseInt(breaker["current"], 10)} max={maxCurrent} min={minCurrent} />
               </>
             ) : (
               <Box sx={{ display: "flex", placeContent: "center", marginTop: "12px" }}>

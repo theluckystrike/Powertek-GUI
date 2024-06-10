@@ -176,6 +176,7 @@ function IPv4({ mode, eth, snackbar }) {
   const [dns2, setDns2] = useState("");
   const [dns3, setDns3] = useState("");
   const [routes, setRoutes] = useState([]);
+  const [dataUpdated, setDataUpdated] = useState(false);
 
   useEffect(() => {
     axios
@@ -227,7 +228,7 @@ function IPv4({ mode, eth, snackbar }) {
       .catch((error) => {
         console.error("Error fetching routes:", error);
       });
-  }, [mode, eth]);
+  }, [mode, eth, dataUpdated]);
 
   const handleAddRoute = () => {
     const newRoute = { id: Date.now(), network: "", netmask: "", metric: 0, nexthop: "", edited: true, new: true };
@@ -303,6 +304,7 @@ function IPv4({ mode, eth, snackbar }) {
         .put(`/api/devicesettings/network/ipv4/${eth}`, payload)
         .then((response) => {
           console.log("IPv4 settings saved:", response.data);
+          setDataUpdated(!dataUpdated);
         })
         .catch((error) => {
           console.error("Error saving IPv4 settings:", error);
@@ -312,6 +314,7 @@ function IPv4({ mode, eth, snackbar }) {
         .put(`/api/devicesettings/network/ipv4/${eth}`, payload)
         .then((response) => {
           console.log("IPv4 settings saved:", response.data);
+          setDataUpdated(!dataUpdated);
         })
         .catch((error) => {
           console.error("Error saving IPv4 settings:", error);
@@ -368,6 +371,7 @@ function IPv4({ mode, eth, snackbar }) {
             return route;
           });
           setRoutes(newRoutes.sort((a, b) => a.metric - b.metric));
+          setDataUpdated(!dataUpdated);
         })
         .catch((error) => {
           console.error("Error saving route:", error);
@@ -388,6 +392,7 @@ function IPv4({ mode, eth, snackbar }) {
             return route;
           });
           setRoutes(newRoutes.sort((a, b) => a.metric - b.metric));
+          setDataUpdated(!dataUpdated);
         })
         .catch((error) => {
           console.error("Error saving route:", error);
@@ -416,34 +421,32 @@ function IPv4({ mode, eth, snackbar }) {
             <MenuItem value="dhcp">DHCP</MenuItem>
           </Select>
         </FormControl>
-        {ipv4Configuration === "static" ? (
-          <>
-            <TextField
-              fullWidth
-              margin="normal"
-              label="IP address"
-              value={ipAddress}
-              onChange={(e) => setIpAddress(e.target.value)}
-              disabled={!ipv4Enabled} // Disable if IPv4 is disabled
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Netmask"
-              value={netMask}
-              onChange={(e) => setNetMask(e.target.value)}
-              disabled={!ipv4Enabled} // Disable if IPv4 is disabled
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Default gateway"
-              value={defaultGateway}
-              onChange={(e) => setDefaultGateway(e.target.value)}
-              disabled={!ipv4Enabled} // Disable if IPv4 is disabled
-            />
-          </>
-        ) : null}
+        <>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="IP address"
+            value={ipAddress}
+            onChange={(e) => setIpAddress(e.target.value)}
+            disabled={!ipv4Enabled || ipv4Configuration !== "static"} // Disable if IPv4 is disabled
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Netmask"
+            value={netMask}
+            onChange={(e) => setNetMask(e.target.value)}
+            disabled={!ipv4Enabled || ipv4Configuration !== "static"} // Disable if IPv4 is disabled
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Default gateway"
+            value={defaultGateway}
+            onChange={(e) => setDefaultGateway(e.target.value)}
+            disabled={!ipv4Enabled || ipv4Configuration !== "static"} // Disable if IPv4 is disabled
+          />
+        </>
         {ipv4Configuration === "dhcp" ? (
           <FormControlLabel
             control={<Checkbox checked={dnsdhcp} onChange={(e) => setdnsdhcp(e.target.checked)} />}
@@ -475,6 +478,12 @@ function IPv4({ mode, eth, snackbar }) {
           disabled={!ipv4Enabled || (ipv4Configuration === "dhcp" && !dnsdhcp)} // Disable if IPv4 is disabled
         />
       </FormGroup>
+
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary" onClick={handleSave} sx={{ marginTop: "12px" }}>
+          Save
+        </MuiButton>
+      </Box>
 
       <Box>
         <Table>
@@ -545,12 +554,6 @@ function IPv4({ mode, eth, snackbar }) {
           </MuiButton>
         </Box>
       </Box>
-
-      <Box display="flex" justifyContent="end">
-        <MuiButton variant="contained" color="primary" onClick={handleSave}>
-          Save
-        </MuiButton>
-      </Box>
     </Box>
   );
 }
@@ -565,6 +568,7 @@ function IPv6({ mode, eth, snackbar }) {
   const [dns2, setDns2] = useState("");
   const [dns3, setDns3] = useState("");
   const [routes, setRoutes] = useState([]);
+  const [dataUpdated, setDataUpdated] = useState(false);
 
   useEffect(() => {
     axios
@@ -614,7 +618,7 @@ function IPv6({ mode, eth, snackbar }) {
       .catch((error) => {
         console.error("Error fetching routes:", error);
       });
-  }, [mode, eth]);
+  }, [mode, eth, dataUpdated]);
 
   const handleAddRoute = () => {
     const newRoute = { id: Date.now(), network: "", netmask: "", metric: 0, nexthop: "", edited: true, new: true };
@@ -684,6 +688,7 @@ function IPv6({ mode, eth, snackbar }) {
         .put(`/api/devicesettings/network/ipv6/${eth}`, payload)
         .then((response) => {
           console.log("IPv4 settings saved:", response.data);
+          setDataUpdated(!dataUpdated);
         })
         .catch((error) => {
           console.error("Error saving IPv4 settings:", error);
@@ -693,6 +698,7 @@ function IPv6({ mode, eth, snackbar }) {
         .put(`/api/devicesettings/network/ipv6/${eth}`, payload)
         .then((response) => {
           console.log("IPv4 settings saved:", response.data);
+          setDataUpdated(!dataUpdated);
         })
         .catch((error) => {
           console.error("Error saving IPv4 settings:", error);
@@ -742,6 +748,7 @@ function IPv6({ mode, eth, snackbar }) {
             return route;
           });
           setRoutes(newRoutes.sort((a, b) => a.metric - b.metric));
+          setDataUpdated(!dataUpdated);
         })
         .catch((error) => {
           console.error("Error saving route:", error);
@@ -762,6 +769,7 @@ function IPv6({ mode, eth, snackbar }) {
             return route;
           });
           setRoutes(newRoutes.sort((a, b) => a.metric - b.metric));
+          setDataUpdated(!dataUpdated);
         })
         .catch((error) => {
           console.error("Error saving route:", error);
@@ -791,26 +799,24 @@ function IPv6({ mode, eth, snackbar }) {
             <MenuItem value="manual">Manual</MenuItem>
           </Select>
         </FormControl>
-        {ipv6Configuration === "manual" ? (
-          <>
-            <TextField
-              fullWidth
-              margin="normal"
-              label="IP address/Prefix"
-              value={ipAddress}
-              onChange={(e) => setIpAddress(e.target.value)}
-              disabled={!ipv6Enabled} // Disable if IPv4 is disabled
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Default gateway"
-              value={defaultGateway}
-              onChange={(e) => setDefaultGateway(e.target.value)}
-              disabled={!ipv6Enabled} // Disable if IPv4 is disabled
-            />
-          </>
-        ) : null}
+        <>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="IP address/Prefix"
+            value={ipAddress}
+            onChange={(e) => setIpAddress(e.target.value)}
+            disabled={!ipv6Enabled || ipv6Configuration !== "manual"} // Disable if IPv4 is disabled
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Default gateway"
+            value={defaultGateway}
+            onChange={(e) => setDefaultGateway(e.target.value)}
+            disabled={!ipv6Enabled || ipv6Configuration !== "manual"} // Disable if IPv4 is disabled
+          />
+        </>
         {ipv6Configuration === "dhcp" || ipv6Configuration === "auto" ? (
           <FormControlLabel
             control={<Checkbox checked={dnsauto} onChange={(e) => setdnsauto(e.target.checked)} />}
@@ -843,6 +849,12 @@ function IPv6({ mode, eth, snackbar }) {
         />
       </FormGroup>
 
+      <Box display="flex" justifyContent="end">
+        <MuiButton variant="contained" color="primary" onClick={handleSave} sx={{ marginTop: "12px" }}>
+          Save
+        </MuiButton>
+      </Box>
+
       <Box>
         <Table>
           <TableHead>
@@ -861,6 +873,7 @@ function IPv6({ mode, eth, snackbar }) {
                     value={route.network}
                     onChange={(e) => handleRouteChange(route.id, "network", e.target.value)}
                     disabled={!ipv6Enabled}
+                    fullWidth
                   />
                 </TableCell>
                 <TableCell>
@@ -868,7 +881,7 @@ function IPv6({ mode, eth, snackbar }) {
                     type="number"
                     value={route.metric}
                     onChange={(e) => handleRouteChange(route.id, "metric", parseInt(e.target.value, 10))}
-                    inputProps={{ readOnly: route.new ? false : true }}
+                    // inputProps={{ readOnly: route.new ? false : true }}
                     disabled={!ipv6Enabled}
                   />
                 </TableCell>
@@ -877,6 +890,7 @@ function IPv6({ mode, eth, snackbar }) {
                     value={route.nexthop}
                     onChange={(e) => handleRouteChange(route.id, "nexthop", e.target.value)}
                     disabled={!ipv6Enabled}
+                    fullWidth
                   />
                 </TableCell>
                 <TableCell>
@@ -904,12 +918,6 @@ function IPv6({ mode, eth, snackbar }) {
           </MuiButton>
         </Box>
       </Box>
-
-      <Box display="flex" justifyContent="end">
-        <MuiButton variant="contained" color="primary" onClick={handleSave}>
-          Save
-        </MuiButton>
-      </Box>
     </Box>
   );
 }
@@ -931,6 +939,7 @@ function InterfaceSettings({ eth }) {
   const [userCertFile, setUserCertFile] = useState(null);
   const [caCertFile, setCaCertFile] = useState(null);
   const [privateKeyFile, setPrivateKeyFile] = useState(null);
+  const [dataUpdated, setDataUpdated] = useState(false);
 
   useEffect(() => {
     // Fetch data from API
@@ -942,7 +951,7 @@ function InterfaceSettings({ eth }) {
         setSpeed(data.speed);
         setMtu(data.mtu);
         setEnableLLDP(data.lldp);
-        setAuthentication(data[`${eth}xauth`]);
+        setAuthentication(data[`xauth`]);
 
         const newAuthData = {
           md5: data.md5 || {},
@@ -957,7 +966,7 @@ function InterfaceSettings({ eth }) {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [dataUpdated]);
 
   const handleFileUpload = (e, fileType) => {
     const file = e.target.files[0];
@@ -989,7 +998,7 @@ function InterfaceSettings({ eth }) {
       speed: speed,
       mtu: mtu,
       lldp: enableLLDP,
-      [`${eth}xauth`]: authentication,
+      [`xauth`]: authentication,
     };
 
     if (authentication === "md5") {
@@ -1053,6 +1062,7 @@ function InterfaceSettings({ eth }) {
       .put(`/api/devicesettings/network/${eth}`, data)
       .then((response) => {
         console.log("Data saved successfully:", response.data);
+        setDataUpdated(!dataUpdated);
         // handle success response
       })
       .catch((error) => {
@@ -1088,7 +1098,10 @@ function InterfaceSettings({ eth }) {
               margin="normal"
               label="Password"
               type="password"
-              value={authData.md5.password || ""}
+              value={authData.md5.password === true ? "********" : authData.md5.password || ""}
+              onFocus={(e) =>
+                e.target.value === "********" && setAuthData({ ...authData, md5: { ...authData.md5, password: "" } })
+              }
               onChange={(e) => setAuthData({ ...authData, md5: { ...authData.md5, password: e.target.value } })}
             />
           </>
@@ -1163,7 +1176,11 @@ function InterfaceSettings({ eth }) {
               label="Private Key Password"
               type="password"
               variant="outlined"
-              value={authData.tls.privatekeypassword || ""}
+              value={authData.tls.privatekeypassword === true ? "********" : authData.tls.privatekeypassword || ""}
+              onFocus={(e) =>
+                e.target.value === "********" &&
+                setAuthData({ ...authData, tls: { ...authData.tls, privatekeypassword: "" } })
+              }
               onChange={(e) =>
                 setAuthData({ ...authData, tls: { ...authData.tls, privatekeypassword: e.target.value } })
               }
@@ -1185,7 +1202,10 @@ function InterfaceSettings({ eth }) {
               margin="normal"
               label="Password"
               type="password"
-              value={authData.pwd.password || ""}
+              value={authData.pwd.password === true ? "********" : authData.pwd.password || ""}
+              onFocus={(e) =>
+                e.target.value === "********" && setAuthData({ ...authData, pwd: { ...authData.pwd, password: "" } })
+              }
               onChange={(e) => setAuthData({ ...authData, pwd: { ...authData.pwd, password: e.target.value } })}
             />
           </>
@@ -1224,9 +1244,13 @@ function InterfaceSettings({ eth }) {
               margin="normal"
               label="Password"
               type="password"
-              value={authData.fast.password || ""}
+              value={authData.fast.password === true ? "********" : authData.fast.password || ""}
+              onFocus={(e) =>
+                e.target.value === "********" && setAuthData({ ...authData, fast: { ...authData.fast, password: "" } })
+              }
               onChange={(e) => setAuthData({ ...authData, fast: { ...authData.fast, password: e.target.value } })}
             />
+
             <FormControlLabel
               control={
                 <Checkbox
@@ -1308,7 +1332,10 @@ function InterfaceSettings({ eth }) {
               margin="normal"
               label="Password"
               type="password"
-              value={authData.peap.password || ""}
+              value={authData.peap.password === true ? "********" : authData.peap.password || ""}
+              onFocus={(e) =>
+                e.target.value === "********" && setAuthData({ ...authData, peap: { ...authData.peap, password: "" } })
+              }
               onChange={(e) => setAuthData({ ...authData, peap: { ...authData.peap, password: e.target.value } })}
             />
           </>
@@ -1364,7 +1391,10 @@ function InterfaceSettings({ eth }) {
               margin="normal"
               label="Password"
               type="password"
-              value={authData.ttls.password || ""}
+              value={authData.ttls.password === true ? "********" : authData.ttls.password || ""}
+              onFocus={(e) =>
+                e.target.value === "********" && setAuthData({ ...authData, ttls: { ...authData.ttls, password: "" } })
+              }
               onChange={(e) => setAuthData({ ...authData, ttls: { ...authData.ttls, password: e.target.value } })}
             />
           </>
