@@ -220,9 +220,13 @@ function IPv4({ mode, eth, snackbar }) {
 
         if (mode === "vrf") {
           const ethRoutes = data[eth] || [];
-          setRoutes(ethRoutes.map((route, index) => ({ ...route, id: index + 1, edited: false })));
+          setRoutes(
+            ethRoutes.map((route, index) => ({ ...route, id: index + 1, edited: false, orignalMetric: route.metric }))
+          );
         } else {
-          setRoutes(data.map((route, index) => ({ ...route, id: index + 1, edited: false })));
+          setRoutes(
+            data.map((route, index) => ({ ...route, id: index + 1, edited: false, orignalMetric: route.metric }))
+          );
         }
       })
       .catch((error) => {
@@ -357,7 +361,7 @@ function IPv4({ mode, eth, snackbar }) {
     if (mode == "vrf") {
       const url = routeToSave.new
         ? `/api/devicesettings/network/ipv4/${eth}/route`
-        : `/api/devicesettings/network/ipv4/${eth}/route/${routeToSave.metric}`;
+        : `/api/devicesettings/network/ipv4/${eth}/route/${routeToSave.orignalMetric}`;
 
       axiosMethod(url, payload)
         .then((response) => {
@@ -379,7 +383,7 @@ function IPv4({ mode, eth, snackbar }) {
     } else {
       const url = routeToSave.new
         ? `/api/devicesettings/network/ipv4/route`
-        : `/api/devicesettings/network/ipv4/route/${routeToSave.metric}`;
+        : `/api/devicesettings/network/ipv4/route/${routeToSave.orignalMetric}`;
       axiosMethod(url, payload)
         .then((response) => {
           console.log("Route saved:", response.data);
@@ -518,7 +522,7 @@ function IPv4({ mode, eth, snackbar }) {
                     type="number"
                     value={route.metric}
                     onChange={(e) => handleRouteChange(route.id, "metric", parseInt(e.target.value, 10))}
-                    inputProps={{ readOnly: route.new ? false : true }}
+                    // inputProps={{ readOnly: route.new ? false : true }}
                     disabled={!ipv4Enabled}
                   />
                 </TableCell>
@@ -610,9 +614,13 @@ function IPv6({ mode, eth, snackbar }) {
 
         if (mode === "vrf") {
           const ethRoutes = data[eth] || [];
-          setRoutes(ethRoutes.map((route, index) => ({ ...route, id: index + 1, edited: false })));
+          setRoutes(
+            ethRoutes.map((route, index) => ({ ...route, id: index + 1, edited: false, orignalMetric: route.metric }))
+          );
         } else {
-          setRoutes(data.map((route, index) => ({ ...route, id: index + 1, edited: false })));
+          setRoutes(
+            data.map((route, index) => ({ ...route, id: index + 1, edited: false, orignalMetric: route.metric }))
+          );
         }
       })
       .catch((error) => {
@@ -734,7 +742,7 @@ function IPv6({ mode, eth, snackbar }) {
     if (mode == "vrf") {
       const url = routeToSave.new
         ? `/api/devicesettings/network/ipv6/${eth}/route`
-        : `/api/devicesettings/network/ipv6/${eth}/route/${routeToSave.metric}`;
+        : `/api/devicesettings/network/ipv6/${eth}/route/${routeToSave.orignalMetric}`;
 
       axiosMethod(url, payload)
         .then((response) => {
@@ -756,7 +764,7 @@ function IPv6({ mode, eth, snackbar }) {
     } else {
       const url = routeToSave.new
         ? `/api/devicesettings/network/ipv6/route`
-        : `/api/devicesettings/network/ipv6/route/${routeToSave.metric}`;
+        : `/api/devicesettings/network/ipv6/route/${routeToSave.orignalMetric}`;
       axiosMethod(url, payload)
         .then((response) => {
           console.log("Route saved:", response.data);
@@ -970,26 +978,40 @@ function InterfaceSettings({ eth }) {
 
   const handleFileUpload = (e, fileType) => {
     const file = e.target.files[0];
-    setAuthData((prevState) => {
-      const updatedData = { ...prevState };
-      switch (fileType) {
-        case "userCertificate":
-          setUserCertFile(file);
-          updatedData.tls.usercertfilename = file.name;
-          break;
-        case "caCertificate":
-          setCaCertFile(file);
-          updatedData.tls.cacertfilename = file.name;
-          break;
-        case "privateKey":
-          setPrivateKeyFile(file);
-          updatedData.tls.privatekeyfilename = file.name;
-          break;
-        default:
-          break;
-      }
-      return updatedData;
-    });
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64String = reader.result.split(",")[1]; // Getting the base64 string part
+
+      setAuthData((prevState) => {
+        const updatedData = { ...prevState };
+        switch (fileType) {
+          case "userCertificate":
+            setUserCertFile(file);
+            updatedData.tls.usercertfilename = file.name;
+            updatedData.tls.usercert = base64String;
+            break;
+          case "caCertificate":
+            setCaCertFile(file);
+            updatedData.tls.cacertfilename = file.name;
+            updatedData.tls.cacert = base64String;
+            break;
+          case "privateKey":
+            setPrivateKeyFile(file);
+            updatedData.tls.privatekeyfilename = file.name;
+            updatedData.tls.privatekey = base64String;
+            break;
+          case "pacfile":
+            updatedData.fast.pacfilename = file.name;
+            updatedData.fast.pacfile = base64String;
+          default:
+            break;
+        }
+        return updatedData;
+      });
+    };
+
+    reader.readAsDataURL(file); // Pass the file to the FileReader
   };
 
   const handleSave = () => {
@@ -1010,13 +1032,13 @@ function InterfaceSettings({ eth }) {
       data.tls = {
         identity: authData.tls.identity,
         usercertfilename: authData.tls.usercertfilename,
-        usercert: userCertFile,
+        usercert: authData.tls.usercert,
         noca: authData.tls.noca,
         cacertfilename: authData.tls.cacertfilename,
-        cacert: caCertFile,
+        cacert: authData.tls.cacert,
         privatekeyfilename: authData.tls.privatekeyfilename,
-        privatekey: privateKeyFile,
-        privatekeypassword: authData.tls.privatekeypassword,
+        privatekey: authData.tls.privateKey,
+        // // privatekeypassword: authData.tls.privatekeypassword,
       };
     } else if (authentication === "pwd") {
       data.pwd = {
@@ -1125,6 +1147,7 @@ function InterfaceSettings({ eth }) {
               onChange={(e) => handleFileUpload(e, "userCertificate")}
               fullWidth
               margin="normal"
+              value={authData.tls.usercertfilename}
             />
             {userCertFile && (
               <Typography variant="body2" color="textSecondary">
@@ -1228,10 +1251,12 @@ function InterfaceSettings({ eth }) {
               variant="outlined"
               label="PAC File"
               InputProps={{ inputProps: { accept: ".pac" } }}
-              onChange={(e) => handleFileUpload(e, "pacFile")}
+              onChange={(e) => handleFileUpload(e, "pacfile")}
               fullWidth
               margin="normal"
+              value={authData.fast.pacfile ? "" : null}
             />
+            File on server: {authData.fast.pacfilename ? authData.fast.pacfilename : authData.fast.pacfile}
             <TextField
               fullWidth
               margin="normal"
@@ -1250,7 +1275,6 @@ function InterfaceSettings({ eth }) {
               }
               onChange={(e) => setAuthData({ ...authData, fast: { ...authData.fast, password: e.target.value } })}
             />
-
             <FormControlLabel
               control={
                 <Checkbox

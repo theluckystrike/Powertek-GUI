@@ -82,49 +82,43 @@ function HomePage(props) {
   const theme = useTheme();
 
   const statusToColor = (status) => {
-    if (theme.palette.mode === "dark") {
-      switch (status) {
-        case "off":
-          return "rgba(64, 64, 64, 1)"; // darker gray
-        case "normal":
-          return "rgba(0, 100, 0, 1)"; // darker green
-        case "success":
-          return "rgba(0, 100, 0, 1)"; // darker green
-        case "warning":
-          return "rgba(255, 140, 0, 1)"; // darker orange
-        case "critical":
-          return "rgba(139, 0, 0, 1)"; // darker red
-        case "free":
-          return "rgba(70, 130, 180, 1)"; // steel blue
-        case "nodata":
-          return "rgba(105, 105, 105, 1)"; // dim gray
-        case "reset":
-          return "rgba(219, 112, 147, 1)"; // darker pink
-        default:
-          return "rgba(255, 255, 255, 1)"; // white
-      }
-    } else {
-      switch (status) {
-        case "off":
-          return "rgba(169, 169, 169, 1)"; // dark gray
-        case "normal":
-          return "rgba(0, 128, 0, 1)"; // green
-        case "success":
-          return "rgba(0, 128, 0, 1)"; // green
-        case "warning":
-          return "rgba(255, 165, 0, 1)"; // orange
-        case "critical":
-          return "rgba(255, 0, 0, 1)"; // red
-        case "free":
-          return "rgba(173, 216, 230, 1)"; // light blue
-        case "nodata":
-          return "rgba(128, 128, 128, 1)"; // gray
-        case "reset":
-          return "rgba(255, 192, 203, 1)"; // pink
-        default:
-          return "rgba(0, 0, 0, 1)"; // black
-      }
+    const theme = useTheme();
+    const isDarkMode = theme.palette.mode === "dark";
+    switch (status) {
+      case "off":
+        return isDarkMode ? "rgba(44, 44, 44, 1)" : "rgba(105, 105, 105, 1)"; // gray
+      case "normal":
+      case "success":
+        return isDarkMode ? "rgba(0, 150, 0, 1)" : "rgba(34, 139, 34, 1)"; // green
+      case "warning":
+        return isDarkMode ? "rgba(255, 165, 0, 1)" : "rgba(255, 140, 0, 1)"; // orange
+      case "critical":
+        return isDarkMode ? "rgba(200, 0, 0, 1)" : "rgba(220, 20, 60, 1)"; // red
+      case "free":
+        return isDarkMode ? "rgba(100, 149, 237, 1)" : "rgba(173, 216, 230, 1)"; // blue
+      case "nodata":
+        return isDarkMode ? "rgba(169, 169, 169, 1)" : "rgba(128, 128, 128, 1)"; // gray
+      case "reset":
+        return isDarkMode ? "rgba(255, 105, 180, 1)" : "rgba(255, 20, 147, 1)"; // pink
+      default:
+        return isDarkMode ? "rgba(255, 255, 255, 1)" : "rgba(0, 0, 0, 1)"; // white/black
     }
+  };
+
+  const iconColor = (status) => {
+    const theme = useTheme();
+    const isDarkMode = theme.palette.mode === "dark";
+
+    const getContrastColor = (color) => {
+      const [r, g, b] = color.match(/\d+/g).map(Number);
+      // Calculate luminance
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      // Return white for dark colors and black for light colors
+      return luminance > 0.5 ? "rgba(0, 0, 0, 1)" : "rgba(255, 255, 255, 1)";
+    };
+
+    const statusColor = statusToColor(status);
+    return getContrastColor(statusColor);
   };
 
   return (
@@ -182,11 +176,14 @@ function HomePage(props) {
                 >
                   <Chip
                     sx={(theme) => ({
-                      "& .MuiChip-label": { fontWeight: 600 },
+                      "& .MuiChip-label": { fontWeight: 600, color: iconColor(outlet["Status"]) },
                       width: "200px",
-                      bgcolor: statusToColor(outlet[`Status`]),
+                      bgcolor: statusToColor(outlet["Status"], theme),
                       "&:hover": {
-                        bgcolor: alpha(statusToColor(outlet[`Status`]), 0.8),
+                        bgcolor: (theme) => alpha(statusToColor(outlet["Status"], theme), 0.8),
+                      },
+                      "& .MuiChip-icon": {
+                        color: iconColor(outlet["Status"], theme),
                       },
                     })}
                     icon={<OfflineBoltIcon />}

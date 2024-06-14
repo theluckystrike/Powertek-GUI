@@ -659,7 +659,7 @@ function SMTPSettings() {
           senderEmail: data.smtpsendfrom,
           requiresAuth: data.smtpauthentication,
           username: data.smtpusername,
-          password: data.smtppassword ? prevSettings.password : "",
+          password: data.smtppassword,
           smtpOverTls: data.smtptls,
           allowInvalidCerts: data.smtpnocheckcert,
         }));
@@ -685,7 +685,7 @@ function SMTPSettings() {
       smtpsendfrom: smtpSettings.senderEmail,
       smtpauthentication: smtpSettings.requiresAuth,
       smtpusername: smtpSettings.username,
-      smtppassword: smtpSettings.password !== "", // sending true if password is set
+      smtppassword: smtpSettings.password,
       smtptls: smtpSettings.smtpOverTls,
       smtpnocheckcert: smtpSettings.allowInvalidCerts,
     };
@@ -785,7 +785,13 @@ function SMTPSettings() {
                 label="Password"
                 name="password"
                 type="password"
-                value={smtpSettings.password}
+                value={smtpSettings.password === true ? "********" : smtpSettings.password || ""}
+                onFocus={(e) => {
+                  if (e.target.value === "********") {
+                    e.target.value = "";
+                    handleInputChange(e);
+                  }
+                }}
                 onChange={handleInputChange}
                 margin="normal"
                 fullWidth
