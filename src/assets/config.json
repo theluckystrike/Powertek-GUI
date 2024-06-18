@@ -1,5 +1,6 @@
 [
   {
+    "id": 0,
     "outletNumber": 36,
     "maxBreakerCurrent": 30,
     "outletWarningThreshold": 10,
@@ -25,6 +26,7 @@
     }
   },
   {
+    "id": 1,
     "outletNumber": 48,
     "maxBreakerCurrent": 30,
     "outletWarningThreshold": 10,
@@ -99,6 +101,7 @@
     }
   },
   {
+    "id": 2,
     "outletNumber": 36,
     "maxBreakerCurrent": 30,
     "outletWarningThreshold": 10,

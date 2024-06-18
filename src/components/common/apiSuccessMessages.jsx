@@ -10,6 +10,8 @@ export const apiSuccessMessages = {
   "PUT /api/devicesettings/network/ipv6/*": "Network settings saved successfully!",
   "DELETE /api/devicesettings/network/ipv6/*/route/*": "Route deleted successfully!",
   "DELETE /api/devicesettings/network/ipv6/route/*": "Route deleted successfully!",
+  // Interface
+  "PUT /api/devicesettings/network/*": "Interface settings saved successfully!",
   // Network Services
   // Web Access
   "PUT /api/devicesettings/networkservices/webaccess": "Webaccess settings saved successfully!",

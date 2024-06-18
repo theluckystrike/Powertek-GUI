@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Grid,
@@ -17,6 +17,7 @@ import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import TimePicker from "@mui/lab/TimePicker";
 import NamedContainer from "../../../components/common/NamedContainer";
 import MuiButton from "../../../components/common/styled/Button";
+import axios from "axios";
 
 function DateTime() {
   const [timezone, setTimezone] = useState("(UTC-05:00) Eastern Time (US & Canada)");
@@ -33,6 +34,23 @@ function DateTime() {
   const handleNtpServer2Change = (event) => setNtpServer2(event.target.value);
   const handleDateChange = (newValue) => setManualDate(newValue);
   const handleTimeChange = (newValue) => setManualTime(newValue);
+  const [dataUpdated, setDataUpdated] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get(`/api/settings/datetime`)
+      .then((response) => {
+        const data = response.data;
+        setTimezone(data.timezone);
+        setAutomaticDST(data.enablentp);
+        setNtpServer1(data.ntpserver1);
+        setNtpServer2(data.ntpserver2);
+        setTimeSetupMethod(data.enablentp ? "ntp" : "manual");
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [dataUpdated]);
 
   return (
     <Box sx={{ p: 4, height: "100%", overflow: "auto" }}>

@@ -18,7 +18,9 @@ import {
   TableHead,
   TableRow,
   IconButton,
+  InputAdornment,
 } from "@mui/material";
+import { AttachFile } from "@mui/icons-material";
 import NamedContainer, { CollapsiableNamedContainer } from "../../../components/common/NamedContainer";
 import { Snackbar, Alert } from "@mui/material";
 import MuiButton from "../../../components/common/styled/Button";
@@ -1054,7 +1056,7 @@ function InterfaceSettings({ eth }) {
         pacfile: authData.fast.pacfile,
         innerauthentication: authData.fast.innerauthentication,
         username: authData.fast.username,
-        password: authData.fast.password,
+        password: authData.fast.password === true ? "" : authData.fast.password,
       };
     } else if (authentication === "peap") {
       data.peap = {
@@ -1138,37 +1140,64 @@ function InterfaceSettings({ eth }) {
               value={authData.tls.identity || ""}
               onChange={(e) => setAuthData({ ...authData, tls: { ...authData.tls, identity: e.target.value } })}
             />
-            <TextField
-              type="file"
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-              label="User Certificate"
-              InputProps={{ inputProps: { accept: ".pem,.crt" } }}
-              onChange={(e) => handleFileUpload(e, "userCertificate")}
-              fullWidth
-              margin="normal"
-              value={authData.tls.usercertfilename}
-            />
-            {userCertFile && (
-              <Typography variant="body2" color="textSecondary">
-                {userCertFile.name}
-              </Typography>
-            )}
-            <TextField
-              type="file"
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-              label="CA Certificate"
-              InputProps={{ inputProps: { accept: ".pem,.crt" } }}
-              onChange={(e) => handleFileUpload(e, "caCertificate")}
-              fullWidth
-              margin="normal"
-            />
-            {caCertFile && (
-              <Typography variant="body2" color="textSecondary">
-                {caCertFile.name}
-              </Typography>
-            )}
+            <Box>
+              <input
+                type="file"
+                accept=".pem,.crt"
+                onChange={(e) => handleFileUpload(e, "userCertificate")}
+                style={{ display: "none" }}
+                id="userCertificate-input"
+              />
+              <TextField
+                variant="outlined"
+                label="User Certificate"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{ shrink: true }}
+                value={authData.tls.usercertfilename ? authData.tls.usercertfilename : "Please select a file"}
+                InputProps={{
+                  readOnly: true,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <label htmlFor="userCertificate-input">
+                        <IconButton component="span">
+                          <AttachFile />
+                        </IconButton>
+                      </label>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+            <Box>
+              <input
+                type="file"
+                accept=".pem,.crt"
+                onChange={(e) => handleFileUpload(e, "caCertificate")}
+                style={{ display: "none" }}
+                id="caCertificate-input"
+              />
+              <TextField
+                variant="outlined"
+                label="CA Certificate"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{ shrink: true }}
+                value={authData.tls.cacertfilename ? authData.tls.cacertfilename : "Please select a file"}
+                InputProps={{
+                  readOnly: true,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <label htmlFor="caCertificate-input">
+                        <IconButton component="span">
+                          <AttachFile />
+                        </IconButton>
+                      </label>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
             <FormControlLabel
               control={
                 <Checkbox
@@ -1178,21 +1207,35 @@ function InterfaceSettings({ eth }) {
               }
               label="No CA certificate required"
             />
-            <TextField
-              type="file"
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-              label="Private Key"
-              InputProps={{ inputProps: { accept: ".key" } }}
-              onChange={(e) => handleFileUpload(e, "privateKey")}
-              fullWidth
-              margin="normal"
-            />
-            {privateKeyFile && (
-              <Typography variant="body2" color="textSecondary">
-                {privateKeyFile.name}
-              </Typography>
-            )}
+            <Box>
+              <input
+                type="file"
+                accept=".key"
+                onChange={(e) => handleFileUpload(e, "privateKey")}
+                style={{ display: "none" }}
+                id="privateKey-input"
+              />
+              <TextField
+                variant="outlined"
+                label="Private Key"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{ shrink: true }}
+                value={authData.tls.privatekeyfilename ? authData.tls.privatekeyfilename : "Please select a file"}
+                InputProps={{
+                  readOnly: true,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <label htmlFor="privateKey-input">
+                        <IconButton component="span">
+                          <AttachFile />
+                        </IconButton>
+                      </label>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
             <TextField
               fullWidth
               margin="normal"
@@ -1245,18 +1288,35 @@ function InterfaceSettings({ eth }) {
                 setAuthData({ ...authData, fast: { ...authData.fast, anonymousidentity: e.target.value } })
               }
             />
-            <TextField
-              type="file"
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-              label="PAC File"
-              InputProps={{ inputProps: { accept: ".pac" } }}
-              onChange={(e) => handleFileUpload(e, "pacfile")}
-              fullWidth
-              margin="normal"
-              value={authData.fast.pacfile ? "" : null}
-            />
-            File on server: {authData.fast.pacfilename ? authData.fast.pacfilename : authData.fast.pacfile}
+            <Box>
+              <input
+                type="file"
+                accept=".pac"
+                onChange={(e) => handleFileUpload(e, "pacfile")}
+                style={{ display: "none" }}
+                id="pacfile-input"
+              />
+              <TextField
+                variant="outlined"
+                label="PAC File"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{ shrink: true }}
+                value={authData.fast.pacfilename ? authData.fast.pacfilename : authData.fast.pacfile}
+                InputProps={{
+                  readOnly: true,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <label htmlFor="pacfile-input">
+                        <IconButton component="span">
+                          <AttachFile />
+                        </IconButton>
+                      </label>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
             <TextField
               fullWidth
               margin="normal"

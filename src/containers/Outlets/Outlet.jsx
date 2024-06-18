@@ -31,15 +31,16 @@ import { useTheme } from "@emotion/react";
 import PDUSelect from "../../components/common/PDUSelect";
 import ConfigContext from "../../components/common/ConfigContext";
 import styled from "@emotion/styled";
+import axios from "axios";
 
 const demoOutlet = {
   id: 1,
   name: "Outlet 01",
   state: "ON",
   status: "Normal",
-  powerOnDelay: "3",
-  powerOffDelay: "3",
-  rebootDuration: "5",
+  ondelay: "3",
+  offdealay: "3",
+  reboottime: "5",
   current: "3",
   powerActive: "400",
   powerApparent: "600",
@@ -71,9 +72,9 @@ function Outlet() {
   //     name: "Outlet 01",
   //     state: "ON",
   //     status: "Normal",
-  //     powerOnDelay: "3",
-  //     powerOffDelay: "3",
-  //     rebootDuration: "5",
+  //     ondelay: "3",
+  //     offdealay: "3",
+  //     reboottime: "5",
   //     current: "0.00",
   //     powerActive: "0.0",
   //     powerApparent: "0.0",
@@ -91,9 +92,9 @@ function Outlet() {
   //     name: "Outlet 02",
   //     state: "ON",
   //     status: "Lower Critical",
-  //     powerOnDelay: "3",
-  //     powerOffDelay: "3",
-  //     rebootDuration: "5",
+  //     ondelay: "3",
+  //     offdealay: "3",
+  //     reboottime: "5",
   //     current: "0.00",
   //     powerActive: "0.0",
   //     powerApparent: "0.0",
@@ -111,9 +112,9 @@ function Outlet() {
   //     name: "Outlet 03",
   //     state: "ON",
   //     status: "Normal",
-  //     powerOnDelay: "3",
-  //     powerOffDelay: "3",
-  //     rebootDuration: "5",
+  //     ondelay: "3",
+  //     offdealay: "3",
+  //     reboottime: "5",
   //     current: "0.00",
   //     powerActive: "0.0",
   //     powerApparent: "0.0",
@@ -131,9 +132,9 @@ function Outlet() {
   //     name: "Outlet 04",
   //     state: "ON",
   //     status: "Normal",
-  //     powerOnDelay: "3",
-  //     powerOffDelay: "3",
-  //     rebootDuration: "5",
+  //     ondelay: "3",
+  //     offdealay: "3",
+  //     reboottime: "5",
   //     current: "0.00",
   //     powerActive: "0.0",
   //     powerApparent: "0.0",
@@ -152,9 +153,9 @@ function Outlet() {
   //     name: "Outlet 14",
   //     state: "OFF",
   //     status: "Lower Warning",
-  //     powerOnDelay: "3",
-  //     powerOffDelay: "3",
-  //     rebootDuration: "5",
+  //     ondelay: "3",
+  //     offdealay: "3",
+  //     reboottime: "5",
   //     current: "12",
   //     powerActive: "0.0",
   //     powerApparent: "0.0",
@@ -172,16 +173,28 @@ function Outlet() {
   const [outlets, setOutlets] = useState([]);
 
   useEffect(() => {
-    let temp_outlets = [];
-    for (let i = 1; i <= config["outletNumber"]; i = i + 1) {
-      const demoCopy = JSON.parse(JSON.stringify(demoOutlet));
-      demoCopy.id = i;
-      demoCopy.name = `Outlet ${i}`;
-      const breakername = findKeyContainingNumber(config["protectedOutlet"], i);
-      demoCopy.lines = [config["circuitBreakerLines"][`${breakername}`]];
-      temp_outlets.push(demoCopy);
-    }
-    setOutlets(temp_outlets);
+    axios
+      .get(`/api/outlet/${config.id + 1}`)
+      .then((response) => {
+        const outletData = response.data;
+        axios.get(`/api/outlet/threshold/${config.id + 1}`).then((thresholdResponse) => {
+          const thresholdData = thresholdResponse.data;
+          for (let i = 0; i <= outletData.length - 1; i = i + 1) {
+            outletData[i].id = outletData[i]["name"].split(" ").at(-1);
+            const breakername = findKeyContainingNumber(config["protectedOutlet"], parseInt(outletData[i].id));
+            outletData[i].lines = [config["circuitBreakerLines"][`${breakername}`]];
+
+            outletData[i].overCurrentAlarmCritical = thresholdData[i].criticalCurrent;
+            outletData[i].overPowerAlarmCritical = thresholdData[i].criticalPower;
+            outletData[i].overCurrentAlarmWarning = thresholdData[i].warningCurrent;
+            outletData[i].overPowerAlarmWarning = thresholdData[i].warningPower;
+          }
+          setOutlets(outletData);
+        });
+      })
+      .catch((error) => {
+        console.error(`Error in getting API: ${error}`);
+      });
   }, [config]);
 
   const [open, setOpen] = useState(false);
@@ -241,8 +254,7 @@ function Outlet() {
       <Chip
         label={state}
         size="small"
-        color={state === "ON" ? "success" : "error"}
-        // style={{ color: "white" }}
+        color={state === "reset" ? "warning" : state === "on" ? "success" : "error"}
         sx={{
           "& .MuiChip-label": { fontWeight: 600, textTransform: "uppercase" },
           width: "40%",
@@ -396,16 +408,13 @@ function Outlet() {
                 defaultValue={selectedOutlet.name} // Replace with actual data
                 fullWidth
                 margin="dense"
-                // InputProps={{
-                //   readOnly: true,
-                // }}
               />
             </Grid>
             {/* State and Status */}
             <Grid item xs={6}>
               <TextField
                 label="State"
-                defaultValue="ON" // Replace with actual data
+                value={selectedOutlet.state ? selectedOutlet.state.toUpperCase() : "  "}
                 fullWidth
                 margin="dense"
                 InputProps={{
@@ -416,7 +425,7 @@ function Outlet() {
             <Grid item xs={6}>
               <TextField
                 label="Status"
-                defaultValue="Normal" // Replace with actual data
+                value={selectedOutlet.status ? selectedOutlet.status.toUpperCase() : ""}
                 fullWidth
                 margin="dense"
                 InputProps={{
@@ -428,35 +437,26 @@ function Outlet() {
             <Grid item xs={6}>
               <TextField
                 label="Power On Delay"
-                defaultValue="Wait 3 Seconds (1-7200)" // Replace with actual data
+                value={selectedOutlet.ondelay ? selectedOutlet.ondelay : 0}
                 fullWidth
                 margin="dense"
-                // InputProps={{
-                //   readOnly: true,
-                // }}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
                 label="Power Off Delay"
-                defaultValue="Wait 3 Seconds (1-7200)" // Replace with actual data
+                value={selectedOutlet.offdealay ? selectedOutlet.offdealay : 0}
                 fullWidth
                 margin="dense"
-                // InputProps={{
-                //   readOnly: true,
-                // }}
               />
             </Grid>
             {/* Reboot Duration */}
             <Grid item xs={12}>
               <TextField
                 label="Reboot Duration"
-                defaultValue="5 Seconds (5-60)" // Replace with actual data
+                value={selectedOutlet.reboottime ? selectedOutlet.reboottime : 0}
                 fullWidth
                 margin="dense"
-                // InputProps={{
-                //   readOnly: true,
-                // }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -535,7 +535,7 @@ function Outlet() {
               <TextField
                 fullWidth
                 label="Energy (kWh)"
-                defaultValue={selectedOutlet.energy} // Replace with actual data
+                defaultValue={selectedOutlet.energy}
                 margin="dense"
                 InputProps={{
                   readOnly: true,
@@ -556,55 +556,28 @@ function Outlet() {
             <Grid item xs={12}>
               <Table>
                 <TableBody>
-                  {/* Headers */}
                   <TableRow>
                     <TableCell align="center">Over Current Alarm (A)</TableCell>
                     <TableCell align="center">Over Power Alarm (W)</TableCell>
                   </TableRow>
-                  {/* Critical Row */}
                   <TableRow>
                     <TableCell align="center">
                       <TextField
                         label="Critical"
-                        defaultValue="16.00" // Replace with actual data
+                        defaultValue={selectedOutlet.overCurrentAlarmCritical}
                         margin="dense"
-                        // InputProps={{
-                        //   readOnly: true,
-                        // }}
                       />
                     </TableCell>
                     <TableCell align="center">
-                      <TextField
-                        label="Critical"
-                        defaultValue="2500" // Replace with actual data
-                        margin="dense"
-                        // InputProps={{
-                        //   readOnly: true,
-                        // }}
-                      />
+                      <TextField label="Critical" defaultValue={selectedOutlet.overPowerAlarmCritical} margin="dense" />
                     </TableCell>
                   </TableRow>
-                  {/* Warning Row */}
                   <TableRow>
                     <TableCell align="center">
-                      <TextField
-                        label="Warning"
-                        defaultValue="13.00" // Replace with actual data
-                        margin="dense"
-                        // InputProps={{
-                        //   readOnly: true,
-                        // }}
-                      />
+                      <TextField label="Warning" defaultValue={selectedOutlet.overCurrentAlarmWarning} margin="dense" />
                     </TableCell>
                     <TableCell align="center">
-                      <TextField
-                        label="Warning"
-                        defaultValue="2000" // Replace with actual data
-                        margin="dense"
-                        // InputProps={{
-                        //   readOnly: true,
-                        // }}
-                      />
+                      <TextField label="Warning" defaultValue={selectedOutlet.overPowerAlarmWarning} margin="dense" />
                     </TableCell>
                   </TableRow>
                 </TableBody>
